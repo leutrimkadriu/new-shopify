@@ -96,10 +96,11 @@
     "split": {
       "type": "split-commerce-story",
       "settings": {
+        "image": "shopify://shop_images/tshirts.jpg",
         "eyebrow": "Material note / 03",
         "heading": "A study in contrast",
         "text": "<p>Pair bold visual storytelling with a direct path to discovery.</p>",
-        "product": "",
+        "product": "the-collection-snowboard-hydrogen",
         "button_label": "Read the story",
         "button_link": "",
         "reverse": false,
