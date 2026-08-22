@@ -1,0 +1,6 @@
+<ul class="nx-socials" role="list">
+  {% if settings.social_instagram != blank %}<li><a href="{{ settings.social_instagram }}" aria-label="Instagram">{% render 'icon', icon: 'instagram' %}<span class="visually-hidden">Instagram</span></a></li>{% endif %}
+  {% if settings.social_tiktok != blank %}<li><a href="{{ settings.social_tiktok }}" aria-label="TikTok">{% render 'icon', icon: 'tiktok' %}<span class="visually-hidden">TikTok</span></a></li>{% endif %}
+  {% if settings.social_pinterest != blank %}<li><a href="{{ settings.social_pinterest }}" aria-label="Pinterest">{% render 'icon', icon: 'pinterest' %}<span class="visually-hidden">Pinterest</span></a></li>{% endif %}
+  {% if settings.social_youtube != blank %}<li><a href="{{ settings.social_youtube }}" aria-label="YouTube">{% render 'icon', icon: 'youtube' %}<span class="visually-hidden">YouTube</span></a></li>{% endif %}
+</ul>

@@ -1,0 +1,24 @@
+{% if predictive_search.performed %}
+  <div id="predictive-search-results" role="listbox" aria-label="{{ 'search.predictive' | t }}">
+    {% if predictive_search.resources.products.size > 0 %}
+      <div class="nx-predictive-search__group">
+        <h3>{{ 'search.products' | t }}</h3>
+        {% for product in predictive_search.resources.products %}
+          <a class="nx-predictive-search__product" href="{{ product.url }}" role="option">
+            {% if product.featured_image %}{{ product.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60,120', sizes: '56px', alt: product.featured_image.alt }}{% endif %}
+            <span><strong>{{ product.title | escape }}</strong><small>{{ product.price | money }}</small></span>
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% assign secondary_count = predictive_search.resources.collections.size | plus: predictive_search.resources.pages.size | plus: predictive_search.resources.articles.size %}
+    {% if secondary_count > 0 %}
+      <div class="nx-predictive-search__group">
+        <h3>{{ 'search.explore' | t }}</h3>
+        {% for collection in predictive_search.resources.collections %}<a href="{{ collection.url }}" role="option"><span class="nx-eyebrow">{{ 'search.collection' | t }}</span>{{ collection.title | escape }}</a>{% endfor %}
+        {% for page in predictive_search.resources.pages %}<a href="{{ page.url }}" role="option"><span class="nx-eyebrow">{{ 'search.page' | t }}</span>{{ page.title | escape }}</a>{% endfor %}
+        {% for article in predictive_search.resources.articles %}<a href="{{ article.url }}" role="option"><span class="nx-eyebrow">{{ 'search.journal' | t }}</span>{{ article.title | escape }}</a>{% endfor %}
+      </div>
+    {% endif %}
+  </div>
+{% endif %}

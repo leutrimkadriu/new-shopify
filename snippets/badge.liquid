@@ -1,0 +1,2 @@
+{% if product.available == false %}<span class="nx-badge">{{ 'products.product.sold_out' | t }}</span>{% elsif product.compare_at_price_max > product.price %}<span class="nx-badge nx-badge--sale">{{ 'products.product.sale' | t }}</span>{% endif %}
+{% if product.metafields.custom.badge != blank %}<span class="nx-badge">{{ product.metafields.custom.badge | escape }}</span>{% endif %}

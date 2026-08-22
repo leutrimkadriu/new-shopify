@@ -1,0 +1,56 @@
+{% render 'breadcrumbs' %}
+<section class="nx-section nx-page-width">
+  <header class="nx-collection-hero">
+    <div>
+      <div class="nx-eyebrow">Collection / {{ collection.products_count }}</div>
+      <h1>{{ collection.title | escape }}</h1>
+      {% if collection.description != blank %}<div class="nx-rte">{{ collection.description }}</div>{% endif %}
+    </div>
+    {% if section.settings.show_image and collection.image %}{% render 'responsive-image', image: collection.image, loading: 'eager', fetchpriority: 'high', sizes: '(min-width:990px) 55vw, 100vw' %}{% endif %}
+  </header>
+
+  {% paginate collection.products by section.settings.products_per_page %}
+    <nx-facets id="NxFacets">
+      <div class="nx-filter-toolbar">
+        <button class="nx-button nx-button--outline nx-filter-trigger" type="button" data-open="NxFilterDrawer">{{ 'collections.general.filter' | t }}</button>
+        <form class="nx-filter-desktop" method="get">
+          <div class="nx-facets__form">{% for filter in collection.filters %}{% render 'facet', filter: filter %}{% endfor %}</div>
+          <label class="nx-sort">{{ 'collections.general.sort_by' | t }}<select name="sort_by">{% assign sort_by = collection.sort_by | default: collection.default_sort_by %}{% for option in collection.sort_options %}<option value="{{ option.value | escape }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name | escape }}</option>{% endfor %}</select></label>
+        </form>
+
+        <div class="nx-active-filters">
+          {% assign has_active_filters = false %}
+          {% for filter in collection.filters %}
+            {% for value in filter.active_values %}{% assign has_active_filters = true %}<a href="{{ value.url_to_remove }}">{{ value.label | escape }} <span aria-hidden="true">×</span></a>{% endfor %}
+            {% if filter.min_value.value != nil or filter.max_value.value != nil %}{% assign has_active_filters = true %}<a href="{{ filter.url_to_remove }}">{{ filter.label | escape }} <span aria-hidden="true">×</span></a>{% endif %}
+          {% endfor %}
+          {% if has_active_filters %}<a class="nx-active-filters__clear" href="{{ collection.url }}">{{ 'collections.general.clear_all' | t }}</a>{% endif %}
+        </div>
+      </div>
+
+      <nx-drawer id="NxFilterDrawer" class="nx-drawer" aria-label="{{ 'collections.general.filter' | t }}">
+        <button class="nx-drawer__overlay" type="button" data-close aria-label="{{ 'accessibility.close' | t }}"></button>
+        <div class="nx-drawer__panel nx-filter-drawer" data-panel>
+          <header class="nx-drawer__header"><h2>{{ 'collections.general.filter' | t }}</h2><button class="nx-icon-button" type="button" data-close aria-label="{{ 'accessibility.close' | t }}">{% render 'icon', icon: 'close' %}</button></header>
+          <form method="get">
+            {% for filter in collection.filters %}{% render 'facet', filter: filter %}{% endfor %}
+            <label class="nx-sort">{{ 'collections.general.sort_by' | t }}<select name="sort_by">{% for option in collection.sort_options %}<option value="{{ option.value | escape }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name | escape }}</option>{% endfor %}</select></label>
+            <button class="nx-button" type="submit">{{ 'collections.general.filter' | t }}</button>
+          </form>
+        </div>
+      </nx-drawer>
+    </nx-facets>
+
+    <div id="NxProductGrid">
+      <p class="nx-muted">{{ 'collections.general.products_count' | t: count: collection.products_count }}</p>
+      <div class="nx-product-grid" style="--nx-cols:{{ section.settings.columns }};--nx-grid-gap:{{ section.settings.gap }}px">
+        {% for product in collection.products %}{% render 'product-card', card_product: product, card_style: section.settings.card_style %}{% else %}<p>{{ 'collections.general.no_matches' | t }}</p>{% endfor %}
+      </div>
+      {% render 'pagination', paginate: paginate %}
+    </div>
+  {% endpaginate %}
+</section>
+
+{% schema %}
+{"name":"Collection products","settings":[{"type":"checkbox","id":"show_image","label":"Show collection image","default":true},{"type":"range","id":"products_per_page","min":8,"max":48,"step":4,"label":"Products per page","default":24},{"type":"range","id":"columns","min":2,"max":5,"step":1,"label":"Desktop columns","default":4},{"type":"range","id":"gap","min":8,"max":40,"step":4,"unit":"px","label":"Grid spacing","default":20},{"type":"select","id":"card_style","label":"Card style","options":[{"value":"minimal","label":"Minimal"},{"value":"editorial","label":"Editorial"},{"value":"commerce","label":"Commerce"}],"default":"editorial"}]}
+{% endschema %}

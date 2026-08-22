@@ -1,0 +1,45 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}" dir="{% if request.locale.iso_code == 'ar' or request.locale.iso_code == 'he' %}rtl{% else %}ltr{% endif %}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{{ settings.color_accent }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+    {%- if settings.favicon != blank -%}<link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">{%- endif -%}
+    <title>{{ page_title }}{% if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif %}{% if current_page != 1 %} &ndash; {{ 'general.pagination.page' | t: number: current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}</title>
+    {% if page_description %}<meta name="description" content="{{ page_description | escape }}">{% endif %}
+    {% render 'meta-tags' %}
+    {% render 'structured-data' %}
+    {{ content_for_header }}
+    {%- liquid
+      assign body_font_bold = settings.type_body_font | font_modify: 'weight', '700'
+      assign body_font_italic = settings.type_body_font | font_modify: 'style', 'italic'
+    -%}
+    <style>
+      {{ settings.type_body_font | font_face: font_display: 'swap' }}
+      {{ body_font_bold | font_face: font_display: 'swap' }}
+      {{ body_font_italic | font_face: font_display: 'swap' }}
+      {{ settings.type_heading_font | font_face: font_display: 'swap' }}
+      :root{--nx-bg:{{ settings.color_background }};--nx-text:{{ settings.color_text }};--nx-muted:{{ settings.color_muted }};--nx-accent:{{ settings.color_accent }};--nx-accent-text:{{ settings.color_accent_text }};--nx-border:{{ settings.color_border }};--nx-page:{{ settings.page_width }}px;--nx-section-space:{{ settings.section_spacing }}px;--nx-media-radius:{{ settings.media_radius }}px;--nx-button-radius:{{ settings.button_radius }}px;--nx-card-radius:{{ settings.card_radius }}px;--nx-body-font:{{ settings.type_body_font.family }},{{ settings.type_body_font.fallback_families }};--nx-heading-font:{{ settings.type_heading_font.family }},{{ settings.type_heading_font.fallback_families }};--nx-display-fluid:{{ settings.heading_scale | times: 0.06 }}vw;--nx-section-fluid:{{ settings.heading_scale | times: 0.04 }}vw;--nx-subheading-fluid:{{ settings.heading_scale | times: 0.017 }}vw;--nx-border-alpha:{{ settings.border_strength | divided_by: 100.0 }};}
+    </style>
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ 'components.css' | asset_url | stylesheet_tag }}
+    {{ 'sections.css' | asset_url | stylesheet_tag }}
+    {{ 'header.css' | asset_url | stylesheet_tag }}
+    {{ 'footer.css' | asset_url | stylesheet_tag }}
+    <script>document.documentElement.classList.replace('no-js','js');window.NX={routes:{cart:'{{ routes.cart_url }}',cartAdd:'{{ routes.cart_add_url }}',cartChange:'{{ routes.cart_change_url }}',predictive:'{{ routes.predictive_search_url }}'},strings:{added:{{ 'cart.added' | t | json }},error:{{ 'cart.error' | t | json }}}};</script>
+    <script src="{{ 'theme.js' | asset_url }}" defer></script>
+    <script src="{{ 'cart.js' | asset_url }}" defer></script>
+    {% if request.page_type == 'product' %}<script src="{{ 'product.js' | asset_url }}" defer></script><script src="{{ 'media-gallery.js' | asset_url }}" defer></script>{% endif %}
+    {% if request.page_type == 'collection' or request.page_type == 'search' %}<script src="{{ 'facets.js' | asset_url }}" defer></script>{% endif %}
+  </head>
+  <body class="template-{{ request.page_type | handle }}{% if settings.enable_animations %} nx-motion{% endif %}">
+    <a class="nx-skip-link" href="#MainContent">{{ 'accessibility.skip_to_content' | t }}</a>
+    {% sections 'header-group' %}
+    <main id="MainContent" tabindex="-1">{{ content_for_layout }}</main>
+    {% sections 'footer-group' %}
+    {% render 'cart-drawer' %}
+    {% render 'search-drawer' %}
+    <div id="nx-live-region" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+  </body>
+</html>

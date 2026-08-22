@@ -1,0 +1,37 @@
+{%- liquid
+  assign card_style = card_style | default: settings.card_style
+  assign featured = card_product.featured_media.preview_image
+  assign second = card_product.media[1].preview_image
+-%}
+<article class="nx-product-card nx-product-card--{{ card_style }}">
+  <div class="nx-product-card__media">
+    <div class="nx-product-card__badges">{% render 'badge', product: card_product %}</div>
+    <a href="{{ card_product.url }}" aria-label="{{ card_product.title | escape }}">
+      {% if featured %}{% render 'responsive-image', image: featured, sizes: '(min-width: 990px) 25vw, 50vw' %}{% else %}<div class="nx-placeholder">{{ 'product-1' | placeholder_svg_tag }}</div>{% endif %}
+      {% if settings.show_second_image and second %}{% render 'responsive-image', image: second, sizes: '(min-width: 990px) 25vw, 50vw', class: 'nx-product-card__secondary' %}{% endif %}
+    </a>
+    {% if settings.enable_quick_add %}<div class="nx-product-card__quick">
+      {% if card_product.available and card_product.has_only_default_variant %}
+        <nx-product-form><form method="post" action="{{ routes.cart_add_url }}" enctype="multipart/form-data"><input type="hidden" name="id" value="{{ card_product.selected_or_first_available_variant.id }}"><button class="nx-button" type="submit">{{ 'products.product.add_to_cart' | t }}</button><span class="visually-hidden" data-error></span></form></nx-product-form>
+      {% else %}<a class="nx-button" href="{{ card_product.url }}">{{ 'products.product.choose_options' | t }}</a>{% endif %}
+    </div>{% endif %}
+  </div>
+  {% if settings.show_vendor %}<div class="nx-product-card__vendor">{{ card_product.vendor | escape }}</div>{% endif %}
+  <h3 class="nx-product-card__title"><a href="{{ card_product.url }}">{{ card_product.title | escape }}</a></h3>
+  {% render 'price', product: card_product %}
+  {% if settings.show_swatches %}
+    {% for option in card_product.options_with_values %}
+      {% assign option_name = option.name | downcase %}
+      {% if option_name contains 'color' or option_name contains 'colour' %}
+        <div class="nx-product-card__swatches" aria-label="{{ option.name | escape }}">
+          {% for value in option.values limit: 5 %}
+            <span class="nx-swatch" title="{{ value | escape }}"{% if value.swatch.color %} style="--nx-swatch:{{ value.swatch.color }}"{% endif %}><span class="visually-hidden">{{ value }}</span></span>
+          {% endfor %}
+          {% if option.values.size > 5 %}<span class="nx-product-card__swatch-more">+{{ option.values.size | minus: 5 }}</span>{% endif %}
+        </div>
+        {% break %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+  <div class="shopify-product-reviews-badge" data-id="{{ card_product.id }}"></div>
+</article>

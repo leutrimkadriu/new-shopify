@@ -1,0 +1,1 @@
+<a class="nx-button{% if style %} nx-button--{{ style }}{% endif %}" href="{{ url | default: '#' }}"{% if label == blank %} aria-label="{{ aria_label | escape }}"{% endif %}>{{ label | escape }}{% if show_arrow %}{% render 'icon', icon: 'arrow' %}{% endif %}</a>

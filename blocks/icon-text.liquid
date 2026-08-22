@@ -1,0 +1,2 @@
+<div class="nx-icon-text" {{ block.shopify_attributes }}><strong>{{ block.settings.heading | escape }}</strong><div class="nx-rte">{{ block.settings.text }}</div></div>
+{% schema %}{"name":"Icon with text","settings":[{"type":"text","id":"heading","label":"Heading","default":"Useful information"},{"type":"richtext","id":"text","label":"Text","default":"<p>Add concise supporting information.</p>"}],"presets":[{"name":"Icon with text"}]}{% endschema %}

@@ -1,0 +1,4 @@
+{
+  "sections":{"header":{"name":"Header","settings":{"layout":"Layout","sticky":"Sticky header"}},"footer":{"name":"Footer"},"hero":{"name":"Editorial hero"},"featured_collection":{"name":"Featured collection"},"main_product":{"name":"Product information"}},
+  "settings":{"colors":{"name":"Colors"},"typography":{"name":"Typography"},"layout":{"name":"Layout"},"products":{"name":"Product cards"}}
+}

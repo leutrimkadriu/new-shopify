@@ -1,0 +1,96 @@
+<div class="nx-header-wrap{% if section.settings.sticky %} is-sticky{% endif %}{% if section.settings.transparent_home and request.page_type == 'index' %} is-transparent{% endif %}" style="--nx-logo-height:{{ section.settings.logo_height }}px">
+  <header class="nx-header nx-header--{{ section.settings.layout }}">
+    <button class="nx-icon-button nx-mobile-toggle" type="button" data-open="NxMobileMenu" aria-label="{{ 'accessibility.menu' | t }}">{% render 'icon', icon: 'menu' %}</button>
+
+    <a class="nx-header__brand" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+      {% if settings.logo %}
+        {{ settings.logo | image_url: width: settings.logo_width | image_tag: widths: '80,120,160,220,320,440', width: settings.logo_width, alt: shop.name }}
+      {% else %}
+        {{ shop.name | default: 'NEXORA' | escape }}
+      {% endif %}
+    </a>
+
+    <nav class="nx-header__nav" aria-label="Primary navigation">
+      <ul role="list">
+        {% for link in section.settings.menu.links %}
+          <li>
+            {% if link.links != blank %}
+              <details>
+                <summary>{{ link.title | escape }} {% render 'icon', icon: 'chevron' %}</summary>
+                <div class="nx-mega">
+                  <div class="nx-mega__links">
+                    <strong>{{ link.title | escape }}</strong>
+                    <ul role="list">
+                      {% for child in link.links %}
+                        <li>
+                          <a href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>{{ child.title | escape }}</a>
+                          {% if child.links != blank %}<ul role="list">{% for grandchild in child.links %}<li><a href="{{ grandchild.url }}"{% if grandchild.current %} aria-current="page"{% endif %}>{{ grandchild.title | escape }}</a></li>{% endfor %}</ul>{% endif %}
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                  {% for block in section.blocks %}
+                    {% if block.type == 'promo' %}
+                      <a class="nx-mega__promo" href="{{ block.settings.link | default: routes.all_products_collection_url }}" {{ block.shopify_attributes }}>
+                        {% render 'responsive-image', image: block.settings.image, sizes: '(min-width: 990px) 220px, 1px' %}
+                        <span>{{ block.settings.heading | escape }} {% render 'icon', icon: 'arrow' %}</span>
+                      </a>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </details>
+            {% else %}
+              <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <div class="nx-header__actions">
+      <button class="nx-icon-button nx-header__action" type="button" data-open="NxSearchDrawer" aria-label="{{ 'accessibility.search' | t }}">{% render 'icon', icon: 'search' %}</button>
+      {% if section.settings.show_account and shop.customer_accounts_enabled %}<a class="nx-icon-button nx-header__action nx-header__account" href="{{ routes.account_url }}" aria-label="{{ 'accessibility.account' | t }}">{% render 'icon', icon: 'account' %}</a>{% endif %}
+      <button class="nx-icon-button nx-header__action" type="button" data-open="NxCartDrawer" aria-label="{{ 'accessibility.cart' | t }}">
+        {% render 'icon', icon: 'cart' %}
+        <span class="nx-header__cart-count" data-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
+      </button>
+    </div>
+  </header>
+</div>
+
+<nx-drawer id="NxMobileMenu" class="nx-drawer" aria-label="Primary navigation">
+  <button class="nx-drawer__overlay" type="button" data-close aria-label="{{ 'accessibility.close' | t }}"></button>
+  <div class="nx-drawer__panel" data-panel>
+    <header class="nx-drawer__header">
+      <span class="nx-mobile-menu__brand">{{ shop.name | escape }}</span>
+      <button class="nx-icon-button" type="button" data-close aria-label="{{ 'accessibility.close' | t }}">{% render 'icon', icon: 'close' %}</button>
+    </header>
+    <nav>
+      <ul role="list">
+        {% for link in section.settings.menu.links %}
+          <li>
+            {% if link.links != blank %}
+              <details class="nx-accordion">
+                <summary>{{ link.title | escape }} {% render 'icon', icon: 'chevron' %}</summary>
+                <div class="nx-accordion__content">
+                  <ul role="list">
+                    {% for child in link.links %}
+                      <li><a href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>{{ child.title | escape }}</a></li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </details>
+            {% else %}
+              <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+    {% if section.settings.show_localization %}{% render 'localization-form', id: 'mobile-menu' %}{% endif %}
+  </div>
+</nx-drawer>
+
+{% schema %}
+{"name":"Header","limit":1,"enabled_on":{"groups":["header"]},"settings":[{"type":"select","id":"layout","label":"Layout","options":[{"value":"logo_left","label":"Logo left, navigation center"},{"value":"logo_center","label":"Logo centered"},{"value":"compact","label":"Compact editorial"}],"default":"logo_left"},{"type":"link_list","id":"menu","label":"Menu","default":"main-menu"},{"type":"checkbox","id":"sticky","label":"Sticky header","default":true},{"type":"checkbox","id":"transparent_home","label":"Transparent on home page","default":false},{"type":"range","id":"logo_height","min":24,"max":64,"step":2,"unit":"px","label":"Logo height","default":34},{"type":"checkbox","id":"show_account","label":"Show account","default":true},{"type":"checkbox","id":"show_localization","label":"Show localization in mobile menu","default":true}],"blocks":[{"type":"promo","name":"Mega menu promotion","limit":3,"settings":[{"type":"image_picker","id":"image","label":"Image"},{"type":"text","id":"heading","label":"Heading","default":"Featured edit"},{"type":"url","id":"link","label":"Link"}]}]}
+{% endschema %}
