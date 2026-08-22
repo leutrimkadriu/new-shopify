@@ -75,6 +75,7 @@
         "two"
       ],
       "settings": {
+        "image": "shopify://shop_images/theme_cover_image.jpg",
         "eyebrow": "Object study / 01",
         "heading": "Form meets function",
         "text": "<p>A tactile study of materials, proportion, and the details that last.</p>"
@@ -85,7 +86,7 @@
       "settings": {
         "eyebrow": "Browse sideways / 02",
         "heading": "In motion",
-        "collection": "",
+        "collection": "hydrogen",
         "limit": 8,
         "card_size": 30,
         "card_style": "editorial",
