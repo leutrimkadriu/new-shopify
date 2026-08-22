@@ -1,2 +1,18 @@
-<section class="nx-section nx-page-width"><h1>{{ 'cart.title' | t }}</h1>{% if cart.item_count == 0 %}<p>{{ 'cart.empty' | t }}</p><a class="nx-button" href="{{ routes.all_products_collection_url }}">{{ 'general.continue_shopping' | t }}</a>{% else %}<form action="{{ routes.cart_url }}" method="post">{% for item in cart.items %}{% render 'cart-item', item: item, line: forloop.index %}{% endfor %}{% if section.settings.cart_note %}<div class="nx-field"><label for="CartNote">{{ 'cart.note' | t }}</label><textarea id="CartNote" name="note">{{ cart.note }}</textarea></div>{% endif %}<p><strong>{{ 'cart.subtotal' | t }}: {{ cart.total_price | money_with_currency }}</strong></p><button class="nx-button nx-button--outline" type="submit" name="update">{{ 'cart.update' | t }}</button> <button class="nx-button" type="submit" name="checkout">{{ 'cart.checkout' | t }}</button></form>{% endif %}</section>
+<nx-cart-page id="NxCartPage" data-section-id="{{ section.id }}">
+  <section class="nx-section nx-page-width">
+    <h1>{{ 'cart.title' | t }}</h1>
+    {% if cart.item_count == 0 %}
+      <p>{{ 'cart.empty' | t }}</p>
+      <a class="nx-button" href="{{ routes.all_products_collection_url }}">{{ 'general.continue_shopping' | t }}</a>
+    {% else %}
+      <form action="{{ routes.cart_url }}" method="post">
+        {% for item in cart.items %}{% render 'cart-item', item: item, line: forloop.index %}{% endfor %}
+        {% if section.settings.cart_note %}<div class="nx-field"><label for="CartNote">{{ 'cart.note' | t }}</label><textarea id="CartNote" name="note">{{ cart.note }}</textarea></div>{% endif %}
+        <p><strong>{{ 'cart.subtotal' | t }}: <span data-cart-subtotal>{{ cart.total_price | money_with_currency }}</span></strong></p>
+        <button class="nx-button nx-button--outline" type="submit" name="update">{{ 'cart.update' | t }}</button>
+        <button class="nx-button" type="submit" name="checkout">{{ 'cart.checkout' | t }}</button>
+      </form>
+    {% endif %}
+  </section>
+</nx-cart-page>
 {% schema %}{"name":"Cart","settings":[{"type":"checkbox","id":"cart_note","label":"Show order note","default":true}]}{% endschema %}

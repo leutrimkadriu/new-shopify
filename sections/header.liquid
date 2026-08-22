@@ -50,10 +50,17 @@
     <div class="nx-header__actions">
       <button class="nx-icon-button nx-header__action" type="button" data-open="NxSearchDrawer" aria-label="{{ 'accessibility.search' | t }}">{% render 'icon', icon: 'search' %}</button>
       {% if section.settings.show_account and shop.customer_accounts_enabled %}<a class="nx-icon-button nx-header__action nx-header__account" href="{{ routes.account_url }}" aria-label="{{ 'accessibility.account' | t }}">{% render 'icon', icon: 'account' %}</a>{% endif %}
-      <button class="nx-icon-button nx-header__action" type="button" data-open="NxCartDrawer" aria-label="{{ 'accessibility.cart' | t }}">
-        {% render 'icon', icon: 'cart' %}
-        <span class="nx-header__cart-count" data-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
-      </button>
+      {% if settings.cart_drawer %}
+        <button class="nx-icon-button nx-header__action" type="button" data-open="NxCartDrawer" aria-label="{{ 'accessibility.cart' | t }}">
+          {% render 'icon', icon: 'cart' %}
+          <span class="nx-header__cart-count" data-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
+        </button>
+      {% else %}
+        <a class="nx-icon-button nx-header__action" href="{{ routes.cart_url }}" aria-label="{{ 'accessibility.cart' | t }}">
+          {% render 'icon', icon: 'cart' %}
+          <span class="nx-header__cart-count" data-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
+        </a>
+      {% endif %}
     </div>
   </header>
 </div>

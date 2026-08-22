@@ -1,0 +1,20 @@
+<nx-product-form class="nx-buy-buttons">
+  {% form 'product', product, id: 'nx-main-product-form' %}
+    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+    <button
+      class="nx-button"
+      type="submit"
+      name="add"
+      data-product-submit
+      data-add="{{ 'products.product.add_to_cart' | t }}"
+      data-sold="{{ 'products.product.sold_out' | t }}"
+      data-unavailable="{{ 'products.product.unavailable' | t }}"
+      data-available="{% if product.selected_or_first_available_variant.available %}true{% else %}false{% endif %}"
+      {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}
+    >
+      {% if product.selected_or_first_available_variant.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}
+    </button>
+    <span class="visually-hidden" data-error aria-live="polite"></span>
+    {% if block.settings.dynamic_checkout %}<div class="nx-dynamic-checkout">{{ form | payment_button }}</div>{% endif %}
+  {% endform %}
+</nx-product-form>

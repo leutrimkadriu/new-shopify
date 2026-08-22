@@ -20,6 +20,8 @@
 .nx-header__action:active, .nx-mobile-toggle:active { transform: scale(.94); }
 .nx-header__action .nx-icon, .nx-mobile-toggle .nx-icon { width: 18px; height: 18px; stroke-width: 1.65; }
 .nx-header__cart-count { position: absolute; inset-block-start: -1px; inset-inline-end: -2px; display: grid; min-width: 17px; height: 17px; padding-inline: 3px; place-items: center; border: 2px solid var(--nx-bg); border-radius: 999px; background: var(--nx-accent); color: var(--nx-accent-text); font-size: .56rem; font-weight: 800; line-height: 1; }
+.nx-header__cart-count.is-updated { animation: nx-cart-count .38s var(--nx-ease); }
+@keyframes nx-cart-count { 50% { transform: scale(1.22); } }
 .nx-mobile-toggle { display: none; }
 
 .nx-mega { position: absolute; inset-block-start: 100%; inset-inline: var(--nx-header-pad); display: grid; width: auto; grid-template-columns: minmax(220px, 1.15fr) repeat(3, minmax(150px, .85fr)); gap: clamp(1.5rem, 3vw, 3.5rem); padding: clamp(1.75rem, 3.5vw, 3.5rem); border: 1px solid var(--nx-line); border-top: 0; background: var(--nx-bg); color: var(--nx-text); box-shadow: 0 28px 70px rgb(18 18 15 / .13); }
@@ -85,4 +87,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   .nx-header, .nx-header__nav a::after, .nx-header__nav summary::after, .nx-header__action, .nx-mobile-toggle { transition: none; }
+  .nx-header__cart-count.is-updated { animation: none; }
 }

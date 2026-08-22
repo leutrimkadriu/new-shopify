@@ -12,7 +12,7 @@
     </a>
     {% if settings.enable_quick_add %}<div class="nx-product-card__quick">
       {% if card_product.available and card_product.has_only_default_variant %}
-        <nx-product-form><form method="post" action="{{ routes.cart_add_url }}" enctype="multipart/form-data"><input type="hidden" name="id" value="{{ card_product.selected_or_first_available_variant.id }}"><button class="nx-button" type="submit">{{ 'products.product.add_to_cart' | t }}</button><span class="visually-hidden" data-error></span></form></nx-product-form>
+        <nx-product-form><form method="post" action="{{ routes.cart_add_url }}" enctype="multipart/form-data"><input type="hidden" name="id" value="{{ card_product.selected_or_first_available_variant.id }}"><button class="nx-button" type="submit" name="add" data-product-submit data-available="true">{{ 'products.product.add_to_cart' | t }}</button><span class="visually-hidden" data-error aria-live="polite"></span></form></nx-product-form>
       {% else %}<a class="nx-button" href="{{ card_product.url }}">{{ 'products.product.choose_options' | t }}</a>{% endif %}
     </div>{% endif %}
   </div>
