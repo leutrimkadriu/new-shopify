@@ -113,6 +113,7 @@
         "image1": {
           "type": "image",
           "settings": {
+            "image": "shopify://shop_images/theme_cover_image.jpg",
             "size": "wide"
           }
         },
