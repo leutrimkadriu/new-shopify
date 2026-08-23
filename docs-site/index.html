@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Official merchant documentation for the VEYLORA Shopify theme.">
+    <meta name="theme-color" content="#805c3b">
+    <meta property="og:title" content="VEYLORA Documentation">
+    <meta property="og:description" content="Everything you need to build, customize, and manage your VEYLORA storefront.">
+    <title>VEYLORA Documentation</title>
+    <link rel="stylesheet" href="./css/docs.css">
+    <script src="./js/docs.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to documentation</a>
+    <header class="site-header">
+      <a class="wordmark" href="./index.html" aria-label="VEYLORA documentation home">VEYLORA</a>
+      <nav class="utility-nav" aria-label="Utility navigation">
+        <a href="./changelog.html">Changelog</a>
+        <a class="button button-small" href="./support.html">Get support</a>
+      </nav>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="docs-nav">
+        <span>Contents</span><span aria-hidden="true">＋</span>
+      </button>
+    </header>
+
+    <div class="docs-shell">
+      <aside class="sidebar" id="docs-nav" aria-label="Documentation contents">
+        <div class="sidebar-inner">
+          <p class="eyebrow">VEYLORA 1.0.0</p>
+          <label class="search-field" for="doc-search">
+            <span class="visually-hidden">Search documentation</span>
+            <input id="doc-search" type="search" placeholder="Search documentation" autocomplete="off">
+            <kbd aria-hidden="true">/</kbd>
+          </label>
+          <nav class="section-nav" aria-label="On this page">
+            <p>Start</p>
+            <a href="#getting-started">Getting started</a>
+            <a href="#theme-settings">Theme settings</a>
+            <p>Storefront</p>
+            <a href="#header-navigation">Header &amp; navigation</a>
+            <a href="#footer">Footer</a>
+            <a href="#homepage">Homepage sections</a>
+            <a href="#product-pages">Product pages</a>
+            <a href="#product-cards">Product cards</a>
+            <a href="#collections">Collections</a>
+            <a href="#cart">Cart</a>
+            <a href="#search">Search</a>
+            <p>Extend &amp; optimize</p>
+            <a href="#localization">Localization</a>
+            <a href="#sections-blocks">Sections &amp; blocks</a>
+            <a href="#apps">Apps</a>
+            <a href="#custom-liquid">Custom Liquid</a>
+            <a href="#mobile">Mobile</a>
+            <a href="#accessibility">Accessibility</a>
+            <a href="#performance">Performance</a>
+            <a href="#troubleshooting">Troubleshooting</a>
+          </nav>
+          <div class="sidebar-footer">
+            <a href="./support.html">Support</a>
+            <a href="./changelog.html">Changelog</a>
+          </div>
+        </div>
+      </aside>
+
+      <main id="main-content" class="docs-main">
+        <section class="hero doc-section" data-search="introduction overview version">
+          <p class="eyebrow">Merchant guide · Version 1.0.0</p>
+          <h1>VEYLORA<br>Documentation</h1>
+          <p class="hero-copy">Everything you need to build, customize, and manage your VEYLORA storefront.</p>
+          <div class="hero-actions">
+            <a class="button" href="#getting-started">Start building</a>
+            <a class="text-link" href="./support.html">Visit support <span aria-hidden="true">↗</span></a>
+          </div>
+          <dl class="facts" aria-label="Theme details">
+            <div><dt>Theme</dt><dd>VEYLORA</dd></div>
+            <div><dt>Version</dt><dd>1.0.0</dd></div>
+            <div><dt>Platform</dt><dd>Shopify Online Store 2.0</dd></div>
+          </dl>
+        </section>
+
+        <div id="no-results" class="callout warning" hidden>
+          <strong>No matching documentation.</strong>
+          <p>Try a shorter term, or clear the search to see every section.</p>
+        </div>
+
+        <section id="getting-started" class="doc-section" data-search="install upload publish duplicate backup theme editor customize getting started">
+          <header class="section-heading"><span>01</span><div><p class="eyebrow">Start here</p><h2>Getting started</h2></div></header>
+          <p class="lede">Install VEYLORA as an unpublished theme, review it with your store data, then publish only when you are ready.</p>
+          <ol class="steps">
+            <li><span>1</span><div><h3>Install the theme</h3><p>In Shopify admin, go to <strong>Online Store → Themes</strong>. Choose <strong>Add theme → Upload zip file</strong>, select the VEYLORA package, and wait for it to appear in your theme library.</p></div></li>
+            <li><span>2</span><div><h3>Open the Theme Editor</h3><p>Find VEYLORA in the theme library and choose <strong>Customize</strong>. Use the page selector at the top to move between home, product, collection, cart, blog, and other templates.</p></div></li>
+            <li><span>3</span><div><h3>Add your store content</h3><p>Choose menus, collections, products, imagery, policies, social links, and Markets settings. Preview desktop and mobile layouts before publishing.</p></div></li>
+            <li><span>4</span><div><h3>Publish when ready</h3><p>From the theme library, open the VEYLORA actions menu and choose <strong>Publish</strong>. Publishing replaces the current live theme but keeps the previous one in the library.</p></div></li>
+          </ol>
+          <aside class="callout tip"><strong>Duplicate before customizing</strong><p>Use the theme actions menu and choose <strong>Duplicate</strong> before major visual changes, app installations, or custom code. Name the copy with a date so you have a clear rollback point.</p></aside>
+        </section>
+
+        <section id="theme-settings" class="doc-section" data-search="theme settings logo inverse favicon colors typography heading font body font page width spacing radius product card sticky cart filters search animations social">
+          <header class="section-heading"><span>02</span><div><p class="eyebrow">Foundation</p><h2>Theme settings</h2></div></header>
+          <p>Open the gear icon in the Theme Editor to edit global settings. These values apply across templates unless an individual section provides its own option.</p>
+          <div class="setting-grid">
+            <article><h3>Logo</h3><p>Upload a standard logo and favicon, and set the logo width from 60–260px. The header also provides a separate 24–64px logo-height control. An inverse-logo picker exists in 1.0.0, but current storefront output does not reference it.</p></article>
+            <article><h3>Colors</h3><p>Set background, text, secondary text, accent, accent text, and border colors. Border strength controls the opacity of border treatments.</p></article>
+            <article><h3>Typography</h3><p>Choose Shopify-hosted heading and body fonts and adjust the global heading scale from 80–140%.</p></article>
+            <article><h3>Layout</h3><p>Control page width, section spacing, media radius, card radius, and button radius. Page width ranges from 1000–1800px.</p></article>
+            <article><h3>Product cards</h3><p>Choose Minimal, Editorial, or Commerce styling. Toggle vendor names, second-image hover, quick add, and color swatches.</p></article>
+            <article><h3>Product pages</h3><p>Enable sticky add to cart and set the low-stock threshold used by inventory messaging.</p></article>
+            <article><h3>Collection pages</h3><p>The Collection products section controls 2–5 desktop columns, grid spacing, card style, image visibility, and products per page. Global Collection columns and Filter layout fields are present in 1.0.0 but are not referenced by current collection output.</p></article>
+            <article><h3>Cart</h3><p>Enable the AJAX cart drawer, cart notes, and free-shipping progress. The shipping threshold is entered in shop-currency subunits—for example, 5000 represents 50.00 in a two-decimal currency.</p></article>
+            <article><h3>Search &amp; motion</h3><p>Predictive search is implemented in the header search drawer. Its global toggle is present but is not referenced by current storefront output in 1.0.0. Reveal animations can be toggled and are reduced for visitors who request reduced motion.</p></article>
+            <article><h3>Social media</h3><p>Add Instagram, TikTok, Pinterest, and YouTube URLs. Icons appear in the footer only when both the footer toggle and at least one URL are set.</p></article>
+          </div>
+        </section>
+
+        <section id="header-navigation" class="doc-section" data-search="header navigation menu mega menu promo sticky transparent account logo mobile nested links">
+          <header class="section-heading"><span>03</span><div><p class="eyebrow">Navigation</p><h2>Header &amp; navigation</h2></div></header>
+          <p>Open the <strong>Header</strong> section in the Theme Editor. Choose Logo left/navigation center, Logo centered, or Compact editorial layout; select a Shopify navigation menu; and optionally enable sticky behavior, a transparent homepage state, the customer account icon, and localization in the mobile menu.</p>
+          <h3>Configure navigation</h3>
+          <ol>
+            <li>Create or edit a menu under <strong>Content → Menus</strong> in Shopify admin.</li>
+            <li>Nest links under a top-level item to create a desktop dropdown/mega panel and expandable mobile group.</li>
+            <li>Select that menu in the Header section.</li>
+          </ol>
+          <h3>Mega menu promotions</h3>
+          <p>Add up to three <strong>Mega menu promotion</strong> blocks to the Header. Each block accepts an image, heading, and link. Promotion blocks appear inside nested desktop menu panels; if a link is empty, the promotion leads to the all-products collection.</p>
+          <aside class="callout note"><strong>Menu not visible?</strong><p>A navigation item with no assigned links renders nothing. Confirm the selected menu contains published links and that nested links are indented beneath the intended parent.</p></aside>
+          <h3>Announcement bar</h3>
+          <p>The header group includes one announcement bar with up to five messages. Messages can rotate every 3–12 seconds, link to a destination, include an optional ISO-format countdown date, and be dismissible for the browser session.</p>
+        </section>
+
+        <section id="footer" class="doc-section" data-search="footer newsletter menus text blocks social links payment icons policies localization country language currency">
+          <header class="section-heading"><span>04</span><div><p class="eyebrow">Closing navigation</p><h2>Footer</h2></div></header>
+          <p>The Footer supports up to four menu blocks plus text blocks. Select a Shopify menu for each menu block and use text blocks for concise brand or service information.</p>
+          <ul class="check-list">
+            <li><strong>Newsletter:</strong> Enable the built-in Shopify customer newsletter form and edit its heading.</li>
+            <li><strong>Social links:</strong> Enable the footer toggle and add social URLs under Theme settings → Social media.</li>
+            <li><strong>Payment icons:</strong> Icons reflect payment methods enabled for the store; the theme does not create payment methods.</li>
+            <li><strong>Localization:</strong> Country/currency and language selectors appear only when the store has multiple corresponding options available.</li>
+            <li><strong>Policies:</strong> Published Shopify store policies are listed automatically with the copyright and Shopify attribution.</li>
+          </ul>
+        </section>
+
+        <section id="homepage" class="doc-section" data-search="homepage sections editorial hero before after blog breadcrumb collection comparison contact countdown FAQ featured collection featured product image banner image text kinetic rail logo list lookbook marquee columns newsletter recommendations rich text story testimonials video">
+          <header class="section-heading"><span>05</span><div><p class="eyebrow">Editorial system</p><h2>Homepage sections</h2></div></header>
+          <p>Use <strong>Add section</strong> in the homepage template to assemble your storefront. VEYLORA includes the following merchant-addable sections:</p>
+          <div class="section-catalog">
+            <article><h3>Editorial hero</h3><p>Desktop/mobile imagery or hosted video, overlay, positioning, responsive height, text, and two calls to action.</p></article>
+            <article><h3>Editorial product story</h3><p>Image or video storytelling with up to four positioned product hotspots.</p></article>
+            <article><h3>Kinetic collection rail</h3><p>Horizontally browsable products with adjustable card width, count, card style, and optional progress indicator.</p></article>
+            <article><h3>Split commerce story</h3><p>Image/video, editorial copy, featured product, reversible layout, call to action, and color scheme.</p></article>
+            <article><h3>Product lookbook mosaic</h3><p>A 12-block mosaic mixing images, products, collections, and editorial text in standard, wide, or tall tiles.</p></article>
+            <article><h3>Shop the story</h3><p>Connect a supporting image and narrative to as many as six selected products.</p></article>
+            <article><h3>Featured collection</h3><p>Show 2–12 products with adjustable columns, spacing, card style, heading, and collection link.</p></article>
+            <article><h3>Featured product</h3><p>Feature a selected product and add app or Custom Liquid blocks.</p></article>
+            <article><h3>Product recommendations</h3><p>Show Shopify-generated related products with adjustable count and columns.</p></article>
+            <article><h3>Collection list</h3><p>Build a 2–4 column grid from selected collection blocks.</p></article>
+            <article><h3>Product comparison</h3><p>Compare up to four selected products using three merchant-written feature lines.</p></article>
+            <article><h3>Before and after</h3><p>A side-by-side comparison using before/after images and editable labels.</p></article>
+            <article><h3>Image banner</h3><p>Full-width image, overlay, copy, button, and adjustable height.</p></article>
+            <article><h3>Image with text</h3><p>Split image/copy composition with reversible image placement.</p></article>
+            <article><h3>Columns</h3><p>Two to four columns with image, heading, rich text, and optional link per block.</p></article>
+            <article><h3>Rich text</h3><p>Centered editorial copy with button style and color-scheme controls.</p></article>
+            <article><h3>Scrolling text</h3><p>Adjustable-speed marquee with default, dark, or accent color scheme.</p></article>
+            <article><h3>Countdown</h3><p>ISO-date countdown with expired message and color-scheme controls.</p></article>
+            <article><h3>Video</h3><p>Shopify-hosted video or YouTube/Vimeo URL with optional muted autoplay.</p></article>
+            <article><h3>Blog posts</h3><p>Display 2–6 articles from a selected blog.</p></article>
+            <article><h3>FAQ &amp; collapsible content</h3><p>Reusable question/answer or disclosure rows for structured supporting information.</p></article>
+            <article><h3>Testimonials</h3><p>Quote blocks with customer name, context, and color scheme.</p></article>
+            <article><h3>Logo list</h3><p>Linked logo blocks in a 2–6 column layout.</p></article>
+            <article><h3>Newsletter &amp; contact form</h3><p>Native Shopify customer signup and contact forms with editable introductory copy.</p></article>
+          </div>
+        </section>
+
+        <section id="product-pages" class="doc-section" data-search="product page gallery media images video model 3d variant picker dropdown buttons swatches quantity add cart dynamic checkout inventory sku vendor rating accordion popup size guide complementary app block sticky">
+          <header class="section-heading"><span>06</span><div><p class="eyebrow">Commerce</p><h2>Product pages</h2></div></header>
+          <p>Open the default product template in the Theme Editor and select <strong>Product information</strong>. Choose a Stacked or Editorial grid gallery, then arrange its blocks.</p>
+          <div class="two-column">
+            <div><h3>Product information blocks</h3><ul><li>Vendor, title, price, SKU, and inventory status</li><li>Variant picker: buttons, dropdowns, or swatches</li><li>Quantity selector and buy buttons</li><li>Optional dynamic checkout button</li><li>Description and reusable accordions</li><li>Page-backed popup, such as a size guide</li><li>Rating app mount point</li><li>Icon with text, complementary products, and Custom Liquid</li><li>Shopify app blocks</li></ul></div>
+            <div><h3>Product media</h3><ul><li>Images with responsive sizing</li><li>Shopify-hosted video</li><li>External video media</li><li>Shopify 3D model viewer</li><li>Thumbnail navigation when multiple media items exist</li><li>Variant media brought into view after selection</li></ul></div>
+          </div>
+          <p>Variant selection updates the hidden variant ID, price, URL, availability, sticky-cart label, and featured media. Inventory messaging uses the global low-stock threshold when Shopify inventory tracking is active.</p>
+          <aside class="callout note"><strong>Ratings require an app.</strong><p>VEYLORA provides standard review-badge mount points but does not create rating data. Install and configure a compatible reviews app if you want ratings to display.</p></aside>
+        </section>
+
+        <section id="product-cards" class="doc-section" data-search="product cards minimal editorial commerce vendor second image hover quick add swatches badge reviews">
+          <header class="section-heading"><span>07</span><div><p class="eyebrow">Product discovery</p><h2>Product cards</h2></div></header>
+          <p>Global product-card settings apply to collection, search, recommendation, and featured-product grids unless a section offers its own card-style selection.</p>
+          <ul class="check-list">
+            <li><strong>Styles:</strong> Minimal, Editorial, and Commerce.</li>
+            <li><strong>Quick add:</strong> Products with one default variant add directly; products requiring a choice link to their product page.</li>
+            <li><strong>Second image:</strong> Displays the second product media image on hover when available.</li>
+            <li><strong>Swatches:</strong> Shows up to five values from the first option whose name contains “color” or “colour.”</li>
+            <li><strong>Vendor and badges:</strong> Vendor is optional. Sale, sold-out, and optional <code>custom.badge</code> product metafield output are supported.</li>
+          </ul>
+        </section>
+
+        <section id="collections" class="doc-section" data-search="collections filters sorting product grid pagination collection image toolbar sidebar price range search discovery app Search & Discovery">
+          <header class="section-heading"><span>08</span><div><p class="eyebrow">Catalog</p><h2>Collections</h2></div></header>
+          <p>The collection template supports a collection image and description, 8–48 products per page, 2–5 columns, adjustable grid spacing, card style, filtering, sorting, active-filter removal, and pagination.</p>
+          <p>Desktop filter and sort changes update the product grid without a full page reload. A filter drawer provides the compact/mobile experience. List, boolean, and price-range filters are rendered when Shopify supplies them.</p>
+          <aside class="callout tip"><strong>Enable storefront filters in Shopify.</strong><p>If no filters appear, configure filters in Shopify’s Search &amp; Discovery app and confirm that products have the relevant option or metafield data.</p></aside>
+        </section>
+
+        <section id="cart" class="doc-section" data-search="cart drawer ajax quantity remove note checkout shipping progress threshold count standalone page">
+          <header class="section-heading"><span>09</span><div><p class="eyebrow">Checkout path</p><h2>Cart</h2></div></header>
+          <p>When the global cart-drawer setting is enabled, product forms add with AJAX, refresh the header count, render the updated drawer, and announce status messages to assistive technology. The drawer and standalone cart page support quantity changes and item removal.</p>
+          <ul class="check-list">
+            <li>Optional order notes in both cart experiences</li>
+            <li>Subtotal and currency-aware money output</li>
+            <li>Optional free-shipping progress in the drawer</li>
+            <li>Checkout submission through Shopify’s native cart route</li>
+            <li>Standalone cart fallback when the drawer is disabled</li>
+          </ul>
+          <p>Set the free-shipping threshold in currency subunits and keep it aligned with the actual shipping rate configured in Shopify admin. The theme displays progress; it does not create or enforce the shipping rate.</p>
+        </section>
+
+        <section id="search" class="doc-section" data-search="search predictive results products collections pages articles drawer two characters pagination">
+          <header class="section-heading"><span>10</span><div><p class="eyebrow">Findability</p><h2>Search</h2></div></header>
+          <p>The header opens a search drawer. Entering two or more characters requests up to six matching products, collections, pages, and articles. Product suggestions include image, title, and price. The Predictive search setting is exposed in 1.0.0, but the current drawer does not read that toggle and remains predictive.</p>
+          <p>The full search template handles products and other Shopify result types, supports 8–40 results per page, adjustable columns, and pagination.</p>
+        </section>
+
+        <section id="localization" class="doc-section" data-search="localization language country region currency markets selectors">
+          <header class="section-heading"><span>11</span><div><p class="eyebrow">Markets</p><h2>Localization</h2></div></header>
+          <p>VEYLORA can show country/currency and language selectors in the footer and mobile menu. A selector appears only when Shopify reports more than one available country or language.</p>
+          <p>Configure markets, domains, currencies, and published languages in Shopify admin first. The theme submits selections through Shopify’s native localization form.</p>
+        </section>
+
+        <section id="sections-blocks" class="doc-section" data-search="sections blocks editor reorder hide duplicate templates app custom liquid reusable">
+          <header class="section-heading"><span>12</span><div><p class="eyebrow">Composition</p><h2>Sections &amp; blocks</h2></div></header>
+          <p>Sections are the main editable page regions in Shopify’s Theme Editor. Add, remove, hide, and reorder supported sections from a JSON template. Blocks are repeatable items within a section—for example FAQ questions, testimonial quotes, footer menus, product hotspots, or product-information rows.</p>
+          <p>Header and footer use Shopify section groups, so their sections and blocks can be managed consistently across the storefront. Template-specific main sections—product, collection, cart, search, article, and blog—provide settings tailored to their resource type.</p>
+        </section>
+
+        <section id="apps" class="doc-section" data-search="apps app blocks compatibility product featured product reviews ratings install">
+          <header class="section-heading"><span>13</span><div><p class="eyebrow">Integrations</p><h2>Apps</h2></div></header>
+          <p>Shopify app blocks are supported inside the main Product information section and Featured product section. After installing a compatible theme app extension, open the relevant section, choose <strong>Add block</strong>, and select the app block.</p>
+          <p>VEYLORA also exposes review-badge mount points on product cards and product pages. Display depends on the installed app’s compatibility and configuration.</p>
+          <aside class="callout warning"><strong>Test app changes on a duplicate.</strong><p>Apps can inject scripts, blocks, or app embeds. Confirm product selection, cart, mobile layout, and performance before applying the same configuration to the published theme.</p></aside>
+        </section>
+
+        <section id="custom-liquid" class="doc-section" data-search="custom liquid code section block HTML Shopify duplicate warning">
+          <header class="section-heading"><span>14</span><div><p class="eyebrow">Advanced</p><h2>Custom Liquid</h2></div></header>
+          <p>VEYLORA includes a standalone Custom Liquid section plus Custom Liquid blocks in Product information and Featured product. Use these for small Shopify Liquid or HTML additions that do not require editing theme source files.</p>
+          <pre><code>{% assign message = 'Made with care' %}
+&lt;p&gt;{{ message }}&lt;/p&gt;</code></pre>
+          <aside class="callout warning"><strong>Custom code is your responsibility.</strong><p>Test Custom Liquid on a duplicate theme first. Invalid markup, expensive Liquid loops, or third-party scripts can affect layout, accessibility, security, and performance.</p></aside>
+        </section>
+
+        <section id="mobile" class="doc-section" data-search="mobile responsive navigation drawer touch layout breakpoint image responsive">
+          <header class="section-heading"><span>15</span><div><p class="eyebrow">Responsive design</p><h2>Mobile behavior</h2></div></header>
+          <p>VEYLORA switches desktop navigation to a drawer on smaller screens, presents filters in a drawer, adapts product grids, and supports a dedicated mobile hero image and height. Drawers trap keyboard focus, close with Escape, and restore focus to their trigger.</p>
+          <p>Preview both desktop and mobile in the Theme Editor. Test long menu titles, product names, variant labels, translations, and real imagery on a physical phone before publishing.</p>
+        </section>
+
+        <section id="accessibility" class="doc-section" data-search="accessibility keyboard focus skip link aria live region reduced motion labels semantic alt compliance WCAG ADA">
+          <header class="section-heading"><span>16</span><div><p class="eyebrow">Inclusive storefronts</p><h2>Accessibility</h2></div></header>
+          <p>Confirmed implementation includes a skip link, semantic navigation landmarks, visible labels or visually hidden labels for controls, live-region cart messaging, keyboard-operable drawers and modals, Escape handling, focus trapping/restoration, current-page states, and reduced-motion handling.</p>
+          <p>Merchants remain responsible for meaningful image alt text, readable color choices, descriptive links, video captions, heading order, app accessibility, and ongoing testing.</p>
+          <aside class="callout note"><strong>No legal compliance claim</strong><p>These features support accessible use, but they do not by themselves establish WCAG, ADA, or other legal compliance. Accessibility should be tested with your final content, apps, and configuration.</p></aside>
+        </section>
+
+        <section id="performance" class="doc-section" data-search="performance speed images video apps loading lighthouse responsive">
+          <header class="section-heading"><span>17</span><div><p class="eyebrow">Fast by practice</p><h2>Performance</h2></div></header>
+          <ul class="check-list">
+            <li>Upload images close to their displayed aspect ratio and avoid unnecessarily large originals.</li>
+            <li>Use video selectively, compress it before upload, and avoid several autoplay videos on one page.</li>
+            <li>Remove app embeds and scripts you no longer use.</li>
+            <li>Keep homepage section count intentional; every product rail, video, and app adds work.</li>
+            <li>Retest product, collection, and homepage performance after adding apps or campaign media.</li>
+          </ul>
+          <p>VEYLORA uses responsive Shopify images, lazy loading for non-priority media, deferred JavaScript, and on-demand recommendations. No specific Lighthouse score is promised because store content and apps materially affect results.</p>
+        </section>
+
+        <section id="troubleshooting" class="doc-section" data-search="troubleshooting product add cart count variant unavailable images menu filters predictive search social payment theme changes app block cache">
+          <header class="section-heading"><span>18</span><div><p class="eyebrow">Resolve common issues</p><h2>Troubleshooting</h2></div></header>
+          <div class="troubleshooting-list">
+            <details><summary>Product does not add to cart</summary><div><p>Confirm the selected variant is available and the quantity is valid. Test in a clean browser window, then temporarily disable recently added app embeds on a duplicate theme. If only one product fails, inspect its variants and sales-channel availability in Shopify admin.</p></div></details>
+            <details><summary>Cart count does not update</summary><div><p>Refresh the page and test another product. Confirm the cart drawer is enabled if you expect AJAX behavior. Browser extensions or an app that replaces product forms/cart markup can interrupt updates; test the duplicate theme without recent app changes.</p></div></details>
+            <details><summary>A variant shows as unavailable</summary><div><p>Check that the exact option combination exists, has inventory or overselling enabled, is available to the Online Store sales channel, and is published to the visitor’s market.</p></div></details>
+            <details><summary>Product or section images do not appear</summary><div><p>Assign media in the relevant product or section setting. Confirm the image is not still processing, preview the correct template, and replace the file if Shopify reports an upload error.</p></div></details>
+            <details><summary>The menu does not appear</summary><div><p>Open the Header section and select a menu that contains published links. For dropdowns, verify child links are nested beneath a top-level item in Content → Menus.</p></div></details>
+            <details><summary>Collection filters do not appear</summary><div><p>Configure filters in Shopify Search &amp; Discovery. Filters also need relevant product option, vendor, price, availability, or metafield data before Shopify returns them to the theme.</p></div></details>
+            <details><summary>Predictive search does not work</summary><div><p>Enter at least two characters, confirm relevant storefront resources are published, and test without browser extensions. The full search page remains available through the submitted search form.</p></div></details>
+            <details><summary>Social icons do not appear</summary><div><p>Add complete social URLs under Theme settings → Social media and enable Show social links in the Footer. Empty platforms are intentionally omitted.</p></div></details>
+            <details><summary>Payment icons do not appear</summary><div><p>Enable Show payment icons in the Footer and confirm payment methods are enabled in Shopify admin. VEYLORA only displays methods returned by Shopify.</p></div></details>
+            <details><summary>Theme changes are not visible</summary><div><p>Confirm you edited the template and theme you are previewing, save the Theme Editor, and refresh the preview. Check whether a section is hidden and whether you are viewing the published theme instead of an unpublished duplicate.</p></div></details>
+            <details><summary>An app block does not appear</summary><div><p>Confirm the app provides a theme app extension and supports the chosen template. Add it inside Product information or Featured product, enable any required app embed, and follow the app developer’s setup instructions.</p></div></details>
+          </div>
+          <div class="next-card"><div><p class="eyebrow">Still need help?</p><h3>Send a clear support request.</h3><p>Include your store URL, VEYLORA version, reproduction steps, and browser/device details—never passwords or private tokens.</p></div><a class="button" href="./support.html">Contact support</a></div>
+        </section>
+      </main>
+    </div>
+
+    <footer class="site-footer"><span>VEYLORA 1.0.0</span><span>Documentation for merchants</span><span>© <span data-year></span> VEYLORA</span></footer>
+  </body>
+</html>
