@@ -1,4 +1,4 @@
-/* NEXORA header — restrained editorial navigation. */
+/* VEYLORA header — restrained editorial navigation. */
 .nx-header-wrap { --nx-header-pad: max(var(--nx-gutter), calc((100vw - var(--nx-page)) / 2)); position: relative; z-index: 100; color: var(--nx-text); }
 .nx-header-wrap.is-sticky { position: sticky; inset-block-start: 0; }
 .nx-header { position: relative; display: grid; min-height: 78px; grid-template-columns: minmax(150px, 1fr) auto minmax(150px, 1fr); align-items: center; gap: clamp(1.25rem, 3vw, 3rem); padding-inline: var(--nx-header-pad); border-bottom: 1px solid var(--nx-line); background: color-mix(in srgb, var(--nx-bg) 97%, transparent); backdrop-filter: blur(14px); transition: min-height .25s var(--nx-ease), background-color .25s, box-shadow .25s, color .25s; }

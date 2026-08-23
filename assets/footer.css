@@ -1,4 +1,4 @@
-/* NEXORA footer — separated from navigation to prevent cascade conflicts. */
+/* VEYLORA footer — separated from navigation to prevent cascade conflicts. */
 .nx-footer { padding: 0; border-top: 1px solid var(--nx-line); background: color-mix(in srgb, var(--nx-bg) 94%, var(--nx-text) 6%); }
 .nx-footer__inner { padding-block: clamp(3.5rem, 7vw, 7rem) 1.5rem; }
 .nx-footer__grid { display: grid; grid-template-columns: minmax(280px, 1.55fr) repeat(3, minmax(140px, .7fr)); gap: clamp(2rem, 5vw, 5.5rem); }

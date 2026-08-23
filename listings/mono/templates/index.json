@@ -1,0 +1,58 @@
+{
+  "sections": {
+    "hero": {
+      "type": "editorial-hero",
+      "settings": {
+        "eyebrow": "Essential goods / New collection",
+        "heading": "Clear choices, made simple",
+        "text": "<p>A direct storefront for focused catalogs and everyday essentials.</p>",
+        "primary_label": "Shop new arrivals",
+        "primary_link": "",
+        "secondary_label": "",
+        "secondary_link": "",
+        "height": 65,
+        "mobile_height": 65,
+        "overlay": 35,
+        "horizontal": "center",
+        "vertical": "center",
+        "alignment": "center",
+        "text_color": "#ffffff"
+      }
+    },
+    "featured": {
+      "type": "featured-collection",
+      "settings": {
+        "eyebrow": "Just in",
+        "heading": "The latest essentials",
+        "collection": "",
+        "products_to_show": 8,
+        "columns": 4,
+        "gap": 12,
+        "card_style": "commerce",
+        "button_label": "Shop all"
+      }
+    },
+    "promise": {
+      "type": "rich-text",
+      "settings": {
+        "eyebrow": "The simple standard",
+        "heading": "Useful by design",
+        "text": "<p>Share a concise promise about quality, delivery, or the service behind your products.</p>",
+        "button_label": "Learn more",
+        "button_link": "",
+        "button_style": "outline",
+        "color_scheme": "accent"
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "eyebrow": "Stay informed",
+        "heading": "New products, without the noise",
+        "text": "<p>Get useful updates and early access to new releases.</p>",
+        "color_scheme": "dark"
+      }
+    }
+  },
+  "order": ["hero", "featured", "promise", "newsletter"]
+}

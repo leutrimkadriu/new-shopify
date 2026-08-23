@@ -29,7 +29,7 @@
     "enable_animations": true
   },
   "presets": {
-    "NEXORA": {
+    "VEYLORA": {
       "color_background": "#f7f5ef",
       "color_text": "#171714",
       "color_muted": "#6f6c65",

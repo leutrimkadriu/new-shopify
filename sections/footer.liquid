@@ -6,7 +6,7 @@
           {% if settings.logo %}
             {{ settings.logo | image_url: width: settings.logo_width | image_tag: widths: '100, 140, 180, 240, 320, 440', width: settings.logo_width, alt: shop.name }}
           {% else %}
-            <span>{{ shop.name | default: 'NEXORA' | escape }}</span>
+            <span>{{ shop.name | default: 'VEYLORA' | escape }}</span>
           {% endif %}
         </a>
         {% if section.settings.show_newsletter %}

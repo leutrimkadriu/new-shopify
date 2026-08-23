@@ -1,4 +1,4 @@
-/* NEXORA foundation — reset, tokens, typography, layout and form primitives. */
+/* VEYLORA foundation — reset, tokens, typography, layout and form primitives. */
 :root {
   --nx-surface: color-mix(in srgb, var(--nx-bg) 96%, var(--nx-text) 4%);
   --nx-surface-strong: color-mix(in srgb, var(--nx-bg) 91%, var(--nx-text) 9%);

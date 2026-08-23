@@ -1,25 +1,357 @@
 [
-  {"name":"theme_info","theme_name":"NEXORA","theme_version":"1.0.0","theme_author":"NEXORA","theme_documentation_url":"https://shopify.dev/docs/storefronts/themes","theme_support_url":"https://help.shopify.com/"},
-  {"name":"Logo","settings":[{"type":"image_picker","id":"logo","label":"Logo"},{"type":"image_picker","id":"logo_inverse","label":"Inverse logo"},{"type":"range","id":"logo_width","min":60,"max":260,"step":10,"unit":"px","label":"Logo width","default":140},{"type":"image_picker","id":"favicon","label":"Favicon"}]},
-  {"name":"Colors","settings":[{"type":"color","id":"color_background","label":"Background","default":"#f7f5ef"},{"type":"color","id":"color_text","label":"Text","default":"#171714"},{"type":"color","id":"color_muted","label":"Secondary text","default":"#6f6c65"},{"type":"color","id":"color_accent","label":"Accent","default":"#805c3b"},{"type":"color","id":"color_accent_text","label":"Accent text","default":"#ffffff"},{"type":"color","id":"color_border","label":"Borders","default":"#d8d3ca"},{"type":"range","id":"border_strength","min":10,"max":100,"step":10,"unit":"%","label":"Border strength","default":60}]},
-  {"name":"Typography","settings":[{"type":"font_picker","id":"type_heading_font","label":"Heading font","default":"assistant_n4"},{"type":"font_picker","id":"type_body_font","label":"Body font","default":"assistant_n4"},{"type":"range","id":"heading_scale","min":80,"max":140,"step":5,"unit":"%","label":"Heading scale","default":110}]},
-  {"name":"Layout","settings":[{"type":"range","id":"page_width","min":1000,"max":1800,"step":40,"unit":"px","label":"Page width","default":1440},{"type":"range","id":"section_spacing","min":40,"max":140,"step":10,"unit":"px","label":"Section spacing","default":100},{"type":"range","id":"media_radius","min":0,"max":30,"step":2,"unit":"px","label":"Media corner radius","default":0},{"type":"range","id":"card_radius","min":0,"max":30,"step":2,"unit":"px","label":"Card corner radius","default":0}]},
-  {"name":"Buttons","settings":[{"type":"range","id":"button_radius","min":0,"max":30,"step":2,"unit":"px","label":"Button corner radius","default":0}]},
-  {"name":"Product cards","settings":[{"type":"select","id":"card_style","label":"Card style","options":[{"value":"minimal","label":"Minimal"},{"value":"editorial","label":"Editorial"},{"value":"commerce","label":"Commerce"}],"default":"editorial"},{"type":"checkbox","id":"show_vendor","label":"Show vendor","default":false},{"type":"checkbox","id":"show_second_image","label":"Show second image on hover","default":true},{"type":"checkbox","id":"enable_quick_add","label":"Enable quick add","default":true},{"type":"checkbox","id":"show_swatches","label":"Show color swatches","default":true}]},
-  {"name":"Product pages","settings":[{"type":"checkbox","id":"enable_sticky_cart","label":"Enable sticky add to cart","default":true},{"type":"range","id":"low_stock_threshold","min":1,"max":20,"step":1,"label":"Low stock threshold","default":5}]},
-  {"name":"Collection pages","settings":[{"type":"range","id":"collection_columns","min":2,"max":5,"step":1,"label":"Desktop columns","default":4},{"type":"select","id":"filter_layout","label":"Filter layout","options":[{"value":"toolbar","label":"Toolbar"},{"value":"sidebar","label":"Sidebar"}],"default":"toolbar"}]},
-  {"name":"Cart","settings":[{"type":"checkbox","id":"cart_drawer","label":"Enable cart drawer","default":true},{"type":"checkbox","id":"cart_note","label":"Enable cart note","default":true},{"type":"checkbox","id":"shipping_progress","label":"Enable free shipping progress","default":false},
- {
-  "type": "range",
-  "id": "shipping_threshold",
-  "min": 500,
-  "max": 9500,
-  "step": 500,
-  "unit": "¢",
-  "label": "Free shipping threshold in shop currency subunits",
-  "default": 5000
-}]},
-  {"name":"Search","settings":[{"type":"checkbox","id":"predictive_search","label":"Enable predictive search","default":true}]},
-  {"name":"Animations","settings":[{"type":"checkbox","id":"enable_animations","label":"Enable reveal animations","default":true}]},
-  {"name":"Social media","settings":[{"type":"url","id":"social_instagram","label":"Instagram URL"},{"type":"url","id":"social_tiktok","label":"TikTok URL"},{"type":"url","id":"social_pinterest","label":"Pinterest URL"},{"type":"url","id":"social_youtube","label":"YouTube URL"}]}
+  {
+    "name": "theme_info",
+    "theme_name": "VEYLORA",
+    "theme_version": "1.0.0",
+    "theme_author": "VEYLORA",
+    "theme_documentation_url": "https://shopify.dev/docs/storefronts/themes",
+    "theme_support_url": "https://help.shopify.com/"
+  },
+  {
+    "name": "Logo",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo_inverse",
+        "label": "Inverse logo"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "min": 60,
+        "max": 260,
+        "step": 10,
+        "unit": "px",
+        "label": "Logo width",
+        "default": 140
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Background",
+        "default": "#f7f5ef"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Text",
+        "default": "#171714"
+      },
+      {
+        "type": "color",
+        "id": "color_muted",
+        "label": "Secondary text",
+        "default": "#6f6c65"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent",
+        "default": "#805c3b"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_text",
+        "label": "Accent text",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Borders",
+        "default": "#d8d3ca"
+      },
+      {
+        "type": "range",
+        "id": "border_strength",
+        "min": 10,
+        "max": 100,
+        "step": 10,
+        "unit": "%",
+        "label": "Border strength",
+        "default": 60
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "type_heading_font",
+        "label": "Heading font",
+        "default": "assistant_n4"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_body_font",
+        "label": "Body font",
+        "default": "assistant_n4"
+      },
+      {
+        "type": "range",
+        "id": "heading_scale",
+        "min": 80,
+        "max": 140,
+        "step": 5,
+        "unit": "%",
+        "label": "Heading scale",
+        "default": 110
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_width",
+        "min": 1000,
+        "max": 1800,
+        "step": 40,
+        "unit": "px",
+        "label": "Page width",
+        "default": 1440
+      },
+      {
+        "type": "range",
+        "id": "section_spacing",
+        "min": 40,
+        "max": 140,
+        "step": 10,
+        "unit": "px",
+        "label": "Section spacing",
+        "default": 100
+      },
+      {
+        "type": "range",
+        "id": "media_radius",
+        "min": 0,
+        "max": 30,
+        "step": 2,
+        "unit": "px",
+        "label": "Media corner radius",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "card_radius",
+        "min": 0,
+        "max": 30,
+        "step": 2,
+        "unit": "px",
+        "label": "Card corner radius",
+        "default": 0
+      }
+    ]
+  },
+  {
+    "name": "Buttons",
+    "settings": [
+      {
+        "type": "range",
+        "id": "button_radius",
+        "min": 0,
+        "max": 30,
+        "step": 2,
+        "unit": "px",
+        "label": "Button corner radius",
+        "default": 0
+      }
+    ]
+  },
+  {
+    "name": "Product cards",
+    "settings": [
+      {
+        "type": "select",
+        "id": "card_style",
+        "label": "Card style",
+        "options": [
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          },
+          {
+            "value": "editorial",
+            "label": "Editorial"
+          },
+          {
+            "value": "commerce",
+            "label": "Commerce"
+          }
+        ],
+        "default": "editorial"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_vendor",
+        "label": "Show vendor",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_second_image",
+        "label": "Show second image on hover",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_quick_add",
+        "label": "Enable quick add",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_swatches",
+        "label": "Show color swatches",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Product pages",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_sticky_cart",
+        "label": "Enable sticky add to cart",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "low_stock_threshold",
+        "min": 1,
+        "max": 20,
+        "step": 1,
+        "label": "Low stock threshold",
+        "default": 5
+      }
+    ]
+  },
+  {
+    "name": "Collection pages",
+    "settings": [
+      {
+        "type": "range",
+        "id": "collection_columns",
+        "min": 2,
+        "max": 5,
+        "step": 1,
+        "label": "Desktop columns",
+        "default": 4
+      },
+      {
+        "type": "select",
+        "id": "filter_layout",
+        "label": "Filter layout",
+        "options": [
+          {
+            "value": "toolbar",
+            "label": "Toolbar"
+          },
+          {
+            "value": "sidebar",
+            "label": "Sidebar"
+          }
+        ],
+        "default": "toolbar"
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "cart_drawer",
+        "label": "Enable cart drawer",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_note",
+        "label": "Enable cart note",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "shipping_progress",
+        "label": "Enable free shipping progress",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "shipping_threshold",
+        "min": 500,
+        "max": 9500,
+        "step": 500,
+        "unit": "¢",
+        "label": "Free shipping threshold in shop currency subunits",
+        "default": 5000
+      }
+    ]
+  },
+  {
+    "name": "Search",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "predictive_search",
+        "label": "Enable predictive search",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Animations",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_animations",
+        "label": "Enable reveal animations",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Social media",
+    "settings": [
+      {
+        "type": "url",
+        "id": "social_instagram",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "url",
+        "id": "social_tiktok",
+        "label": "TikTok URL"
+      },
+      {
+        "type": "url",
+        "id": "social_pinterest",
+        "label": "Pinterest URL"
+      },
+      {
+        "type": "url",
+        "id": "social_youtube",
+        "label": "YouTube URL"
+      }
+    ]
+  }
 ]

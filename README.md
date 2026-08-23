@@ -1,6 +1,6 @@
-# NEXORA
+# VEYLORA
 
-NEXORA is an original Shopify Online Store 2.0 theme built around an editorial commerce canvas: asymmetric storytelling, restrained typography, tactile product discovery, and native commerce interactions without third-party frontend dependencies.
+VEYLORA is an original Shopify Online Store 2.0 theme built around an editorial commerce canvas: asymmetric storytelling, restrained typography, tactile product discovery, and native commerce interactions without third-party frontend dependencies.
 
 ## Development
 
@@ -22,7 +22,7 @@ The uploadable theme directories are `assets`, `blocks`, `config`, `layout`, `lo
 - `snippets`: product cards, price, media, variants, cart items, responsive images, icons, localization, and metadata.
 - `templates`: JSON templates for required storefront routes plus FAQ and story page compositions.
 
-NEXORA uses the `nx-` prefix for CSS classes and custom elements. Its Ajax interactions publish internal `cart:changed` events through `window.NXTheme.events`.
+VEYLORA uses the `nx-` prefix for CSS classes and custom elements. Its Ajax interactions publish internal `cart:changed` events through `window.NXTheme.events`.
 
 ## Product data
 
