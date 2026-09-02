@@ -3,13 +3,12 @@
 {% assign image = section.settings.image %}
 {% assign button_text = section.settings.button_text %}
 {% assign button_link = section.settings.button_link %}
+{% assign selected_product = section.settings.product %}
 
 <section class="learning-section">
-  {% for block in section.blocks limit: 3 %}
+  {% for block in section.blocks %}
     <div class="learning-block" {{ block.shopify_attributes }}>
-      <span>{{ forloop.index }}</span>
       <span style="color:blue">{{ forloop.first }}</span>
-      <span style="color:red">{{ forloop.last }}</span>
       <h3>{{ block.settings.title }}</h3>
 
       <p>{{ block.settings.text }}</p>
@@ -28,52 +27,84 @@
       {{ button_text }}
     </a>
   {% endif %}
+
+  {% if selected_product != blank %}
+    <div class="learning-product">
+      {% if selected_product.featured_image %}
+        {{ selected_product.featured_image | image_url: width: 600 | image_tag: alt: selected_product.title }}
+      {% endif %}
+      <h3>{{ selected_product.title }}</h3>
+      <p>{{ selected_product.price | money }}</p>
+
+      <a href="{{ selected_product.url }}"> View product </a>
+    </div>
+  {% endif %}
 </section>
 
 <style>
-      .learning-section {
-        padding: {{ section.settings.section_padding }}px;
-        background: {{ section.settings.section_background }};
+        .learning-section {
+          padding: {{ section.settings.section_padding }}px;
+          background: {{ section.settings.section_background }};
 
-        text-align: center;
+          text-align: center;
+        }
+        .learning-section img{
+      width:100%;
+      max-width:600px;
+      height:auto;
+      margin-bottom: 20px;
       }
-      .learning-section img{
-    width:100%;
-    max-width:600px;
-    height:auto;
-    margin: bottom 20px;
-    }
-      .learning-section h2 {
-        font-size: 40px;
-        margin-bottom: 15px;
-      }
-      .learning-section p {
-        font-size: 18px;
-      }
-      .learning-button {
-        display: inline-block;
-        padding: 12px 14px;
-        background: {{  section.settings.button_color  }};
-        color: white;
-        text-decoration: none;
-        margin-top: 20px;
-      }
-      .learning-blocks {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    margin-top: 30px;
-  }
-
-  .learning-block {
+        .learning-section h2 {
+          font-size: 40px;
+          margin-bottom: 15px;
+        }
+        .learning-section p {
+          font-size: 18px;
+        }
+        .learning-product {
+    max-width: 300px;
+    margin: 40px auto 0;
     padding: 20px;
-    border: 1px solid #dddddd;
-    width: 250px;
+    border: 1px solid #ddd;
   }
 
-  .learning-block h3 {
-    margin-bottom: 10px;
+  .learning-product img {
+    width: 100%;
+    height: auto;
   }
+
+  .learning-product h3 {
+    margin-top: 15px;
+  }
+
+  .learning-product a {
+    display: inline-block;
+    margin-top: 10px;
+  }
+        .learning-button {
+          display: inline-block;
+          padding: 12px 14px;
+          background: {{  section.settings.button_color  }};
+          color: white;
+          text-decoration: none;
+          margin-top: 20px;
+        }
+        .learning-blocks {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .learning-block {
+      padding: 20px;
+      border: 1px solid #dddddd;
+      width: 250px;
+    }
+
+    .learning-block h3 {
+      margin-bottom: 10px;
+    }
 </style>
 
 {% schema %}
@@ -129,6 +160,11 @@
       "type": "image_picker",
       "id": "image",
       "label": "Image"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
     }
   ],
   "blocks": [
