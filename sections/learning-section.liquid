@@ -11,7 +11,7 @@
 
 <style>
   .learning-section {
-    padding: 40px;
+    padding: {{ section.settings.section_padding }};
     text-align: center;
   }
   .learning-section h2 {
@@ -24,7 +24,7 @@
   .learning-button {
     display: inline-block;
     padding: 12px 14px;
-    background: {{ section.settings.button_color }};
+    background: {{ section.settings.section_background }};
     color: white;
     text-decoration: none;
     margin-top: 20px;
@@ -63,6 +63,22 @@
       "id": "button_color",
       "label": "Button color",
       "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "section_background",
+      "label": "Section background",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
     }
   ],
   "presets": [
