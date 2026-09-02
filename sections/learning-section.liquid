@@ -279,9 +279,7 @@
   {% endif %}
 
 </section>
-{% if request.page_type == 'Contact' %}
-  <p>Jemi në Product Page</p>
-{% endif %}
+{{ request.path }}
 <style>
   #learning-section-{{ section.id }} {
     padding: {{ section.settings.section_padding }}px;
