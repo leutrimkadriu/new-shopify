@@ -279,6 +279,9 @@
   {% endif %}
 
 </section>
+{% if recommendations.performed %}
+  <p>Recommendations loaded</p>
+{% endif %}
 {% for product in recommendations.products %}
   <h3>{{ product.title }}</h3>
   <p>{{ product.price | money }}</p>
