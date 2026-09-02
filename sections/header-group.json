@@ -48,13 +48,33 @@
     },
     "learning_section_twLcCE": {
       "type": "learning-section",
+      "blocks": {
+        "item_EmakKM": {
+          "type": "item",
+          "settings": {
+            "title": "Block 2",
+            "text": "My block text"
+          }
+        },
+        "item_YD8CFH": {
+          "type": "item",
+          "settings": {
+            "title": "Block 1",
+            "text": "My block text"
+          }
+        }
+      },
+      "block_order": [
+        "item_EmakKM",
+        "item_YD8CFH"
+      ],
       "name": "Learning section",
       "settings": {
         "heading": "My first Shopify section",
         "text": "I am learning Shopify Liquid.",
         "button_text": "Shop now",
         "button_link": "",
-        "button_color": "#AD9E9E",
+        "button_color": "#ad9e9e",
         "section_background": "#994949",
         "section_padding": 60,
         "image": "shopify://shop_images/10_a8c9b496-3c10-459f-9dd3-15693a517b2b.jpg"
