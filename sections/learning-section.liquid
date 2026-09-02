@@ -279,18 +279,7 @@
   {% endif %}
 
 </section>
-{% if predictive_search.performed %}
 
-  {% for product in predictive_search.resources.products %}
-
-    <a href="{{ product.url }}">
-      {{ product.title }}
-      {{ product.price | money }}
-    </a>
-
-  {% endfor %}
-
-{% endif %}
 <style>
   #learning-section-{{ section.id }} {
     padding: {{ section.settings.section_padding }}px;
