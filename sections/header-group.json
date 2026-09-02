@@ -49,6 +49,13 @@
     "learning_section_twLcCE": {
       "type": "learning-section",
       "blocks": {
+        "item_8ejAx7": {
+          "type": "item",
+          "settings": {
+            "title": "Block 3",
+            "text": "My block text"
+          }
+        },
         "item_EmakKM": {
           "type": "item",
           "settings": {
@@ -65,6 +72,7 @@
         }
       },
       "block_order": [
+        "item_8ejAx7",
         "item_EmakKM",
         "item_YD8CFH"
       ],
