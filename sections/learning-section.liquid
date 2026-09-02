@@ -2,6 +2,9 @@
   <h2>{{ section.settings.heading }}</h2>
 
   <p>{{ section.settings.text }}</p>
+  <a href="{{ section.settings.button_link }}">
+    {{ section.settings.button_text }}
+  </a>
 </section>
 
 <style>
@@ -33,6 +36,17 @@
       "id": "text",
       "label": "Text",
       "default": "I am learning Shopify Liquid."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Shop now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
     }
   ],
   "presets": [
