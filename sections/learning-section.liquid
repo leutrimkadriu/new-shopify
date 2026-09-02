@@ -5,128 +5,436 @@
 {% assign button_link = section.settings.button_link %}
 {% assign selected_product = section.settings.product %}
 
-<section class="learning-section">
-  {% for block in section.blocks %}
-    <div class="learning-block" {{ block.shopify_attributes }}>
-      <span style="color:blue">{{ forloop.first }}</span>
-      <h3>{{ block.settings.title }}</h3>
+{% if selected_product != blank %}
+  {% assign current_variant = selected_product.selected_or_first_available_variant
+    | default: selected_product.variants.first
+  %}
+{% endif %}
 
-      <p>{{ block.settings.text }}</p>
+<section
+  id="learning-section-{{ section.id }}"
+  class="learning-section"
+>
+  {% comment %}
+    BLOCKS
+  {% endcomment %}
+
+  {% if section.blocks.size > 0 %}
+    <div class="learning-blocks">
+      {% for block in section.blocks %}
+        <div
+          class="learning-block"
+          {{ block.shopify_attributes }}
+        >
+          <span>Item {{ forloop.index }}</span>
+
+          {% if forloop.first %}
+            <strong>First item</strong>
+          {% endif %}
+
+          <h3>{{ block.settings.title }}</h3>
+
+          <p>{{ block.settings.text }}</p>
+        </div>
+      {% endfor %}
     </div>
-  {% endfor %}
+  {% endif %}
+
+  {% comment %}
+    SECTION IMAGE
+  {% endcomment %}
 
   {% if image != blank %}
-    {{ image | image_url: width: 800 | image_tag: alt: heading }}
+    {{ image | image_url: width: 800 | image_tag: alt: heading, loading: 'lazy' }}
   {% endif %}
-  <h2>{{ heading }}</h2>
 
-  <p>{{ text }}</p>
+  {% comment %}
+    HEADING
+  {% endcomment %}
 
-  {% if button_text != blank %}
-    <a class="learning-button" href="{{button_link }}">
+  {% if heading != blank %}
+    <h2>{{ heading }}</h2>
+  {% endif %}
+
+  {% comment %}
+    TEXT
+  {% endcomment %}
+
+  {% if text != blank %}
+    <p>{{ text }}</p>
+  {% endif %}
+
+  {% comment %}
+    BUTTON
+  {% endcomment %}
+
+  {% if button_text != blank and button_link != blank %}
+    <a
+      class="learning-button"
+      href="{{ button_link }}"
+    >
       {{ button_text }}
     </a>
   {% endif %}
 
+  {% comment %}
+    PRODUCT
+  {% endcomment %}
+
   {% if selected_product != blank %}
     <div class="learning-product">
       {% if selected_product.featured_image %}
-        {{ selected_product.featured_image | image_url: width: 600 | image_tag: alt: selected_product.title }}
+        {{
+          selected_product.featured_image
+          | image_url: width: 600
+          | image_tag: alt: selected_product.title, loading: 'lazy'
+        }}
       {% endif %}
-      <h3>{{ selected_product.title }}</h3>
-      {% if selected_product.compare_at_price > selected_product.price %}
-        <p>Sale</p>
-      {% endif %}
-      {% assign discount_amount = selected_product.compare_at_price | minus: selected_product.price %}
 
-      {% assign discount_percent = discount_amount | times: 100 | divided_by: selected_product.compare_at_price %}
-      <p>-{{ discount_percent }}%</p>
+      {% comment %}
+        SALE
+      {% endcomment %}
+
+      {% if selected_product.compare_at_price > selected_product.price %}
+        {% assign discount_amount = selected_product.compare_at_price | minus: selected_product.price %}
+
+        {% assign discount_percent = discount_amount | times: 100 | divided_by: selected_product.compare_at_price %}
+
+        <p class="sale-badge">Sale -{{ discount_percent }}%</p>
+      {% endif %}
+
       {% unless selected_product.available %}
-        <p>Sold Out</p>
+        <p class="sold-out-badge">Sold Out</p>
       {% endunless %}
-      <p>{{ selected_product.price | money }}</p>
-      {% if selected_product.compare_at_price > selected_product.price %}
-        <s>{{ selected_product.compare_at_price | money }}</s>
-        <span>{{ selected_product.price | money }}</span>
 
-      {% else %}
-        <span>{{ selected_product.price | money }}</span>
-      {% endif %}
+      <h3>{{ selected_product.title }}</h3>
+
+      {% comment %}
+        PRICE
+      {% endcomment %}
+
+      <div class="learning-price">
+        {% if selected_product.compare_at_price > selected_product.price %}
+          <s>
+            {{ selected_product.compare_at_price | money }}
+          </s>
+
+          <span>
+            {{ selected_product.price | money }}
+          </span>
+
+        {% else %}
+          <span>
+            {{ selected_product.price | money }}
+          </span>
+        {% endif %}
+      </div>
 
       <a href="{{ selected_product.url }}"> View product </a>
     </div>
+
+    {% comment %}
+      PRODUCT FORM
+    {% endcomment %}
+
+    {% form 'product', selected_product, class: 'learning-product-form' %}
+      <label for="variant-select-{{ section.id }}"> Variant </label>
+
+      <select
+        id="variant-select-{{ section.id }}"
+        class="variant-select"
+      >
+        {% for variant in selected_product.variants %}
+          <option
+            value="{{ variant.id }}"
+
+            {% if variant.id == current_variant.id %}
+              selected
+            {% endif %}
+
+            {% unless variant.available %}
+              disabled
+            {% endunless %}
+          >
+            {{ variant.title }}
+            -
+            {{ variant.price | money }}
+
+            {% unless variant.available %}
+              - Sold out
+            {% endunless %}
+          </option>
+        {% endfor %}
+      </select>
+
+      <input
+        type="hidden"
+        name="id"
+        class="variant-id"
+        value="{{ current_variant.id }}"
+      >
+
+      <label for="quantity-{{ section.id }}"> Quantity </label>
+
+      <input
+        id="quantity-{{ section.id }}"
+        type="number"
+        name="quantity"
+        class="quantity"
+        value="1"
+        min="1"
+      >
+
+      <button
+        type="submit"
+        class="add-to-cart-button"
+
+        {% unless current_variant.available %}
+          disabled
+        {% endunless %}
+      >
+        {% if current_variant.available %}
+          Add to cart
+        {% else %}
+          Sold out
+        {% endif %}
+      </button>
+
+      <p class="cart-message"></p>
+    {% endform %}
+
+    {% comment %}
+      VARIANT INFORMATION
+      Vetëm për mësim.
+    {% endcomment %}
+
+    <div class="learning-variants">
+      <h3>Variants</h3>
+
+      {% for variant in selected_product.variants %}
+        <div class="learning-variant">
+          <p>
+            {{ variant.title }}
+          </p>
+
+          <p>
+            {{ variant.price | money }}
+          </p>
+
+          <small> Variant ID: {{ variant.id }} </small>
+
+          {% unless variant.available %}
+            <p>Sold out</p>
+          {% endunless %}
+        </div>
+      {% endfor %}
+    </div>
+
+    {% comment %}
+      CURRENT VARIANT
+    {% endcomment %}
+
+    {% if current_variant != blank %}
+      <div class="current-variant-info">
+        <p>
+          Selected variant:
+          {{ current_variant.title }}
+        </p>
+
+        <p>
+          Variant ID:
+          {{ current_variant.id }}
+        </p>
+
+        <p>
+          Price:
+          {{ current_variant.price | money }}
+        </p>
+      </div>
+    {% endif %}
   {% endif %}
 </section>
 
 <style>
-        .learning-section {
-          padding: {{ section.settings.section_padding }}px;
-          background: {{ section.settings.section_background }};
-
-          text-align: center;
-        }
-        .learning-section img{
-      width:100%;
-      max-width:600px;
-      height:auto;
-      margin-bottom: 20px;
-      }
-        .learning-section h2 {
-          font-size: 40px;
-          margin-bottom: 15px;
-        }
-        .learning-section p {
-          font-size: 18px;
-        }
-        .learning-product {
-    max-width: 300px;
-    margin: 40px auto 0;
-    padding: 20px;
-    border: 1px solid #ddd;
+  #learning-section-{{ section.id }} {
+    padding: {{ section.settings.section_padding }}px;
+    background: {{ section.settings.section_background }};
+    text-align: center;
   }
+
+
+  #learning-section-{{ section.id }} > img {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    margin-bottom: 20px;
+  }
+
+
+  #learning-section-{{ section.id }} h2 {
+    font-size: 40px;
+    margin-bottom: 15px;
+  }
+
+
+  #learning-section-{{ section.id }} p {
+    font-size: 18px;
+  }
+
+
+  .learning-button {
+    display: inline-block;
+    padding: 12px 24px;
+    margin-top: 20px;
+
+    background: {{ section.settings.button_color }};
+
+    color: white;
+    text-decoration: none;
+  }
+
+
+  .learning-blocks {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+
+    margin-bottom: 30px;
+  }
+
+
+  .learning-block {
+    width: 250px;
+    padding: 20px;
+
+    border: 1px solid #dddddd;
+  }
+
+
+  .learning-block h3 {
+    margin-bottom: 10px;
+  }
+
+
+  .learning-product {
+    max-width: 300px;
+
+    margin: 40px auto 20px;
+    padding: 20px;
+
+    border: 1px solid #dddddd;
+  }
+
 
   .learning-product img {
     width: 100%;
     height: auto;
   }
 
+
   .learning-product h3 {
     margin-top: 15px;
   }
+
 
   .learning-product a {
     display: inline-block;
     margin-top: 10px;
   }
-        .learning-button {
-          display: inline-block;
-          padding: 12px 14px;
-          background: {{  section.settings.button_color  }};
-          color: white;
-          text-decoration: none;
-          margin-top: 20px;
-        }
-        .learning-blocks {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      margin-top: 30px;
-    }
 
-    .learning-block {
-      padding: 20px;
-      border: 1px solid #dddddd;
-      width: 250px;
-    }
 
-    .learning-block h3 {
-      margin-bottom: 10px;
-    }
+  .learning-price {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+
+    margin-top: 10px;
+  }
+
+
+  .sale-badge {
+    font-weight: bold;
+  }
+
+
+  .sold-out-badge {
+    font-weight: bold;
+  }
+
+
+  .learning-product-form {
+    max-width: 300px;
+
+    margin: 20px auto;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+
+  .learning-product-form select,
+  .learning-product-form input,
+  .learning-product-form button {
+    padding: 10px;
+  }
+
+
+  .learning-variants {
+    max-width: 600px;
+    margin: 40px auto;
+  }
+
+
+  .learning-variant {
+    padding: 15px;
+
+    border-bottom: 1px solid #dddddd;
+  }
 </style>
+
+<script>
+  const section = document.querySelector('#learning-section-{{ section.id }}');
+
+  if (section) {
+    const variantSelect = section.querySelector('.variant-select');
+    const variantInput = section.querySelector('.variant-id');
+    const form = section.querySelector('.learning-product-form');
+    const quantityInput = section.querySelector('.quantity');
+    const message = section.querySelector('.cart-message');
+
+    if (variantSelect && variantInput) {
+      variantSelect.addEventListener('change', function () {
+        variantInput.value = variantSelect.value;
+
+        console.log('Selected variant ID:', variantSelect.value);
+      });
+    }
+
+    if (form && variantInput && quantityInput) {
+      form.addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const data = {
+          items: [
+            {
+              id: Number(variantInput.value),
+              quantity: Number(quantityInput.value),
+            },
+          ],
+        };
+
+        console.log(data);
+      });
+    }
+  }
+</script>
 
 {% schema %}
 {
   "name": "Learning section",
+
   "settings": [
     {
       "type": "text",
@@ -184,10 +492,12 @@
       "label": "Product"
     }
   ],
+
   "blocks": [
     {
       "type": "item",
       "name": "Item",
+
       "settings": [
         {
           "type": "text",
@@ -204,6 +514,7 @@
       ]
     }
   ],
+
   "presets": [
     {
       "name": "Learning section"
