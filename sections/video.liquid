@@ -1,2 +1,15 @@
-<section class="nx-section nx-page-width"><header class="nx-section-heading"><h2>{{ section.settings.heading | escape }}</h2></header>{% if section.settings.video %}{{ section.settings.video | video_tag: controls: true, autoplay: section.settings.autoplay, loop: section.settings.autoplay, muted: section.settings.autoplay, image_size: '1800x' }}{% elsif section.settings.video_url %}<iframe width="100%" height="700" src="https://www.youtube.com/embed/{{ section.settings.video_url.id }}" title="{{ section.settings.heading | escape }}" loading="lazy" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>{% else %}<div class="nx-placeholder">{{ 'lifestyle-2' | placeholder_svg_tag }}</div>{% endif %}</section>
-{% schema %}{"name":"Video","settings":[{"type":"text","id":"heading","label":"Heading","default":"Watch the story"},{"type":"video","id":"video","label":"Shopify-hosted video"},{"type":"video_url","id":"video_url","accept":["youtube","vimeo"],"label":"Video URL","default":"https://www.youtube.com/watch?v=_9VUPq3SxOc"},{"type":"checkbox","id":"autoplay","label":"Autoplay muted video","default":false}],"presets":[{"name":"Video"}]}{% endschema %}
+<section class="nx-section nx-page-width">
+  {% if section.settings.heading != blank %}<header class="nx-section-heading"><h2>{{ section.settings.heading | escape }}</h2></header>{% endif %}
+  {% if section.settings.video %}
+    {{ section.settings.video | video_tag: controls: true, autoplay: section.settings.autoplay, loop: section.settings.autoplay, muted: section.settings.autoplay, image_size: '1800x' }}
+  {% elsif section.settings.video_url %}
+    <div class="nx-video-embed">
+      {{ section.settings.video_url | external_video_tag: title: section.settings.heading, loading: 'lazy' }}
+    </div>
+  {% elsif request.design_mode %}
+    <div class="nx-placeholder">{{ 'lifestyle-2' | placeholder_svg_tag }}</div>
+  {% endif %}
+</section>
+{% schema %}
+{"name":"Video","settings":[{"type":"text","id":"heading","label":"Heading","default":"Watch the story"},{"type":"video","id":"video","label":"Shopify-hosted video"},{"type":"video_url","id":"video_url","accept":["youtube","vimeo"],"label":"Video URL"},{"type":"checkbox","id":"autoplay","label":"Autoplay muted video","default":false}],"presets":[{"name":"Video"}]}
+{% endschema %}

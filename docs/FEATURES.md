@@ -1,4 +1,4 @@
-# VEYLORA features
+# VEYLUNE features
 
 - Three global product-card modes: minimal, editorial, and commerce.
 - Editorial hero, product story hotspots, kinetic product rail, split commerce story, lookbook mosaic, and sticky shop-the-story composition.

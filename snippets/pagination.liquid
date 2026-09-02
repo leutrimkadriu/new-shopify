@@ -1,1 +1,13 @@
-{% if paginate.pages > 1 %}<nav class="nx-pagination" aria-label="Pagination">{% if paginate.previous %}<a href="{{ paginate.previous.url }}" aria-label="{{ 'accessibility.previous' | t }}">&larr;</a>{% endif %}{% for part in paginate.parts %}{% if part.is_link %}<a href="{{ part.url }}">{{ part.title }}</a>{% else %}<span{% if part.title == paginate.current_page %} class="current" aria-current="page"{% endif %}>{{ part.title }}</span>{% endif %}{% endfor %}{% if paginate.next %}<a href="{{ paginate.next.url }}" aria-label="{{ 'accessibility.next' | t }}">&rarr;</a>{% endif %}</nav>{% endif %}
+{% if paginate.pages > 1 %}
+  <nav class="nx-pagination" aria-label="{{ 'accessibility.pagination' | t }}">
+    {% if paginate.previous %}<a href="{{ paginate.previous.url }}" aria-label="{{ 'accessibility.previous' | t }}">&larr;</a>{% endif %}
+    {% for part in paginate.parts %}
+      {% if part.is_link %}
+        <a href="{{ part.url }}">{{ part.title }}</a>
+      {% else %}
+        <span{% if part.title == paginate.current_page %} class="current" aria-current="page"{% endif %}>{{ part.title }}</span>
+      {% endif %}
+    {% endfor %}
+    {% if paginate.next %}<a href="{{ paginate.next.url }}" aria-label="{{ 'accessibility.next' | t }}">&rarr;</a>{% endif %}
+  </nav>
+{% endif %}

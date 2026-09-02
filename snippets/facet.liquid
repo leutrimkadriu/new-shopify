@@ -1,17 +1,52 @@
 <details class="nx-facet">
-  <summary>{{ filter.label | escape }}{% if filter.active_values.size > 0 %}<span>({{ filter.active_values.size }})</span>{% endif %}</summary>
+  <summary>
+    {{ filter.label | escape }}
+    {% if filter.active_values.size > 0 %}<span>({{ filter.active_values.size }})</span>{% endif %}
+  </summary>
   <div class="nx-facet__panel">
     {% case filter.type %}
       {% when 'boolean', 'list' %}
         <ul role="list">
           {% for value in filter.values %}
-            <li><label><input type="checkbox" name="{{ value.param_name }}" value="{{ value.value | escape }}"{% if value.active %} checked{% endif %}{% if value.count == 0 and value.active == false %} disabled{% endif %}> <span>{{ value.label | escape }}</span><small>{{ value.count }}</small></label></li>
+            <li>
+              <label>
+                <input
+                  type="checkbox"
+                  name="{{ value.param_name }}"
+                  value="{{ value.value | escape }}"
+                  {% if value.active %}checked{% endif %}
+                  {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                >
+                <span>{{ value.label | escape }}</span>
+                <small>{{ value.count }}</small>
+              </label>
+            </li>
           {% endfor %}
         </ul>
       {% when 'price_range' %}
         <div class="nx-price-filter">
-          <label>From<input name="{{ filter.min_value.param_name }}" type="number" min="0" max="{{ filter.range_max | money_without_currency | replace: ',', '' }}" value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"></label>
-          <label>To<input name="{{ filter.max_value.param_name }}" type="number" min="0" max="{{ filter.range_max | money_without_currency | replace: ',', '' }}" value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"></label>
+          <label>
+            {{ 'collections.general.from' | t }}
+            <input
+              name="{{ filter.min_value.param_name }}"
+              type="number"
+              inputmode="decimal"
+              min="0"
+              max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+              value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
+            >
+          </label>
+          <label>
+            {{ 'collections.general.to' | t }}
+            <input
+              name="{{ filter.max_value.param_name }}"
+              type="number"
+              inputmode="decimal"
+              min="0"
+              max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+              value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
+            >
+          </label>
         </div>
     {% endcase %}
   </div>

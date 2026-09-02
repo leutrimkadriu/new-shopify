@@ -1,7 +1,68 @@
-<nx-variant-selects data-section="{{ section.id }}" data-form="{{ form_id | default: 'nx-main-product-form' }}">
+<nx-variant-selects class="no-js-hidden" data-section="{{ section.id }}" data-form="{{ form_id }}" data-product-url="{{ product.url }}">
   {% for option in product.options_with_values %}
-    {% if block.settings.picker_type == 'dropdown' %}<label for="Option-{{ section.id }}-{{ forloop.index0 }}">{{ option.name }}</label><div class="nx-variant-select"><select id="Option-{{ section.id }}-{{ forloop.index0 }}">{% for value in option.values %}<option value="{{ value | escape }}"{% if option.selected_value == value %} selected{% endif %}>{{ value }}</option>{% endfor %}</select></div>
-    {% else %}<fieldset class="nx-variant-options{% if block.settings.picker_type == 'swatch' %} nx-variant-options--swatch{% endif %}"><legend>{{ option.name }}</legend>{% for value in option.values %}<div class="nx-option"><input type="radio" id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}" name="{{ option.name }}-{{ section.id }}" value="{{ value | escape }}"{% if option.selected_value == value %} checked{% endif %}><label for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"{% if block.settings.picker_type == 'swatch' and value.swatch.color %} style="--nx-swatch:{{ value.swatch.color }}"{% endif %}><span>{{ value }}</span></label></div>{% endfor %}</fieldset>{% endif %}
+    {% assign option_index = forloop.index0 %}
+    {% if block.settings.picker_type == 'dropdown' %}
+      <div class="nx-variant-select">
+        <label for="Option-{{ section.id }}-{{ option_index }}">{{ option.name | escape }}</label>
+        <select id="Option-{{ section.id }}-{{ option_index }}" data-option-position="{{ option.position }}">
+          {% for value in option.values %}
+            <option
+              value="{{ value | escape }}"
+              data-option-position="{{ option.position }}"
+              data-option-value-id="{{ value.id }}"
+              {% if value.product_url != blank %}data-product-url="{{ value.product_url | escape }}"{% endif %}
+              {% if value.selected %}selected{% endif %}
+              data-available="{{ value.available }}"
+            >
+              {{ value }}{% unless value.available %} — {{ 'products.product.unavailable' | t }}{% endunless %}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+    {% else %}
+      <fieldset class="nx-variant-options{% if block.settings.picker_type == 'swatch' %} nx-variant-options--swatch{% endif %}">
+        <legend>
+          <span>{{ option.name | escape }}</span>:
+          <strong data-selected-value="{{ option.position }}">{{ option.selected_value }}</strong>
+        </legend>
+        {% for value in option.values %}
+          {%- liquid
+            assign swatch_image = blank
+            if value.swatch.image
+              assign swatch_image = value.swatch.image | image_url: width: 96
+            endif
+          -%}
+          <div class="nx-option{% unless value.available or value.product_url != blank %} is-unavailable{% endunless %}">
+            <input
+              type="radio"
+              id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+              name="{{ option.name | escape }}-{{ section.id }}"
+              value="{{ value | escape }}"
+              data-option-position="{{ option.position }}"
+              data-option-value-id="{{ value.id }}"
+              {% if value.product_url != blank %}data-product-url="{{ value.product_url | escape }}"{% endif %}
+              {% if value.selected %}checked{% endif %}
+              data-available="{{ value.available }}"
+            >
+            <label
+              for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+              {% if block.settings.picker_type == 'swatch' %}
+                class="{% if swatch_image != blank or value.swatch.color != blank %}is-visual{% else %}is-fallback{% endif %}"
+                style="{% if swatch_image != blank %}--nx-swatch-image: url('{{ swatch_image }}');{% elsif value.swatch.color %}--nx-swatch: {{ value.swatch.color }};{% endif %}"
+                title="{{ value | escape }}"
+              {% endif %}
+            >
+              {% if block.settings.picker_type == 'swatch' and swatch_image == blank and value.swatch.color == blank %}
+                <span class="nx-swatch-fallback">{{ value }}</span>
+              {% else %}
+                <span{% if block.settings.picker_type == 'swatch' %} class="visually-hidden"{% endif %}>{{ value }}</span>
+              {% endif %}
+              {% unless value.available %}<span class="visually-hidden"> — {{ 'products.product.unavailable' | t }}</span>{% endunless %}
+            </label>
+          </div>
+        {% endfor %}
+      </fieldset>
+    {% endif %}
   {% endfor %}
-  <script type="application/json">{{ product.variants | json }}</script>
+  <script type="application/json" data-selected-variant>{{ product.selected_or_first_available_variant | json }}</script>
 </nx-variant-selects>

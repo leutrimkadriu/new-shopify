@@ -1,13 +1,13 @@
-# VEYLORA
+# VEYLUNE
 
-VEYLORA is an original Shopify Online Store 2.0 theme built around an editorial commerce canvas: asymmetric storytelling, restrained typography, tactile product discovery, and native commerce interactions without third-party frontend dependencies.
+VEYLUNE is an original Shopify Online Store 2.0 theme built around an editorial commerce canvas: asymmetric storytelling, restrained typography, tactile product discovery, and native commerce interactions without third-party frontend dependencies.
 
 ## Development
 
 Requirements: Shopify CLI and access to a development store.
 
 ```sh
-shopify theme dev --store your-store.myshopify.com
+shopify theme dev
 shopify theme check
 shopify theme push --unpublished
 ```
@@ -22,11 +22,11 @@ The uploadable theme directories are `assets`, `blocks`, `config`, `layout`, `lo
 - `snippets`: product cards, price, media, variants, cart items, responsive images, icons, localization, and metadata.
 - `templates`: JSON templates for required storefront routes plus FAQ and story page compositions.
 
-VEYLORA uses the `nx-` prefix for CSS classes and custom elements. Its Ajax interactions publish internal `cart:changed` events through `window.NXTheme.events`.
+VEYLUNE uses the `nx-` prefix for CSS classes and custom elements. Its Ajax interactions publish internal `cart:changed` events through `window.NXTheme.events`.
 
 ## Product data
 
-Optional product badge: create a product metafield with namespace and key `custom.badge`, using a single-line text type. The theme safely omits it when absent. Ratings expose the conventional `.shopify-product-reviews-badge` app mount point and never create rating data.
+Optional product badge: create a product metafield with namespace and key `custom.badge`, using a single-line text type. The theme safely omits it when absent. Product ratings use Shopify's standard `reviews.rating` and `reviews.rating_count` metafields and remain hidden when rating data is absent. Review apps can still render through app blocks.
 
 ## Testing
 

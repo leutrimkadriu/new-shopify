@@ -1,12 +1,211 @@
 {
-  "accessibility":{"skip_to_content":"Skip to content","close":"Close","menu":"Open menu","search":"Open search","cart":"Open cart","account":"Account","previous":"Previous","next":"Next","loading":"Loading"},
-  "general":{"pagination":{"page":"Page {{ number }}"},"breadcrumbs":{"home":"Home"},"continue_shopping":"Continue shopping","share":"Share","newsletter_success":"Thanks for subscribing.","newsletter_error":"Check your email address and try again."},
-  "products":{"product":{"add_to_cart":"Add to cart","sold_out":"Sold out","unavailable":"Unavailable","quantity":"Quantity","vendor":"Vendor","sku":"SKU","availability":"Availability","in_stock":"In stock","low_stock":"Low stock","out_of_stock":"Out of stock","choose_options":"Choose options","view_product":"View full details","sale":"Sale","zoom":"Open media","description":"Description"}},
-  "collections":{"general":{"products_count":"{{ count }} products","filter":"Filter","sort_by":"Sort by","clear":"Clear","clear_all":"Clear all","no_matches":"No products match these filters."}},
-  "cart":{"title":"Your bag","added":"Added to your bag","error":"Something went wrong. Please try again.","empty":"Your bag is currently empty.","subtotal":"Subtotal","checkout":"Checkout","remove":"Remove {{ title }}","remove_short":"Remove","note":"Order note","free_shipping_remaining":"You're {{ amount }} away from free shipping.","free_shipping_success":"Free shipping unlocked.","update":"Update cart"},
-  "search":{"title":"Search","placeholder":"Search products, stories, and collections","submit":"Search","results_for":"Results for “{{ terms }}”","no_results":"No results found. Try a different phrase.","predictive":"Suggestions","products":"Products","explore":"Explore","collection":"Collection","page":"Page","journal":"Journal"},
-  "blogs":{"article":{"by_author":"By {{ author }}","read_more":"Read story","back":"Back to {{ title }}"}},
-  "contact":{"title":"Contact","name":"Name","email":"Email","phone":"Phone","message":"Message","send":"Send message","success":"Thanks for contacting us. We'll get back to you soon."},
-  "gift_cards":{"issued":{"title":"Your gift card","subtext":"Use this gift card online or in store.","code":"Gift card code","remaining_html":"{{ balance }} remaining","add_to_apple_wallet":"Add to Apple Wallet","shop_link":"Start shopping","expired":"Expired"}},
-  "templates":{"404":{"title":"Page out of frame","subtext":"The page may have moved, but the next discovery is close.","button":"Explore the store"},"password":{"title":"Opening soon","subtext":"A new editorial commerce experience is taking shape.","enter":"Enter using password"}}
+  "date_formats": {
+    "abbreviated_date": "%b %d, %Y"
+  },
+  "accessibility": {
+    "skip_to_content": "Skip to content",
+    "close": "Close",
+    "menu": "Open menu",
+    "search": "Open search",
+    "cart": "Open cart",
+    "account": "Account",
+    "primary_navigation": "Primary navigation",
+    "pagination": "Pagination",
+    "breadcrumb": "Breadcrumb",
+    "previous": "Previous",
+    "next": "Next",
+    "loading": "Loading",
+    "pause_slideshow": "Pause slideshow",
+    "play_slideshow": "Play slideshow"
+  },
+  "general": {
+    "pagination": {
+      "page": "Page {{ number }}"
+    },
+    "breadcrumbs": {
+      "home": "Home"
+    },
+    "continue_shopping": "Continue shopping",
+    "view_all": "View all {{ title }}",
+    "share": "Share",
+    "email": "Email address",
+    "subscribe": "Subscribe",
+    "submit": "Submit",
+    "follow": "Follow",
+    "payment_methods": "Payment methods",
+    "rating": "Rated {{ rating }} out of {{ scale }}",
+    "testimonial_editor_empty": "Add a customer quote to preview this section.",
+    "faq_editor_empty": "Add a question and answer to preview this section.",
+    "collapsible_editor_empty": "Add a heading and content to preview a row.",
+    "newsletter_success": "Thanks for subscribing.",
+    "newsletter_error": "Check your email address and try again."
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to cart",
+      "sold_out": "Sold out",
+      "unavailable": "Unavailable",
+      "quantity": "Quantity",
+      "variant": "Variant",
+      "decrease_quantity": "Decrease quantity",
+      "increase_quantity": "Increase quantity",
+      "vendor": "Vendor",
+      "sku": "SKU",
+      "availability": "Availability",
+      "in_stock": "In stock",
+      "low_stock": "Low stock",
+      "out_of_stock": "Out of stock",
+      "choose_options": "Choose options",
+      "view_product": "View full details",
+      "sale": "Sale",
+      "zoom": "Open media",
+      "media_gallery": "Product media gallery",
+      "view_media": "View media {{ index }}",
+      "media_item": "Product {{ type }}",
+      "view_in_space": "View in your space",
+      "view_hotspot": "View featured product {{ index }}: {{ title }}",
+      "placeholder_title": "Curated piece {{ index }}",
+      "featured_placeholder": "Featured product",
+      "select_product": "Select a product to preview this section",
+      "taxes_included": "Tax included.",
+      "from_price_html": "From {{ price }}",
+      "description": "Description",
+      "pickup_availability": {
+        "heading": "Pickup availability",
+        "available": "Pickup available",
+        "unavailable": "Pickup currently unavailable",
+        "available_at_html": "Pickup available at <strong>{{ location_name }}</strong>",
+        "unavailable_at_html": "Pickup currently unavailable at <strong>{{ location_name }}</strong>",
+        "view_store_info": "View store information",
+        "check_other_stores": "Check availability at other stores",
+        "load_error": "Couldn't load pickup availability. Please refresh the page."
+      }
+    }
+  },
+  "collections": {
+    "general": {
+      "eyebrow": "Collection",
+      "products_count": {
+        "one": "{{ count }} product",
+        "other": "{{ count }} products"
+      },
+      "filter": "Filter",
+      "sort_by": "Sort by",
+      "clear": "Clear",
+      "clear_all": "Clear all",
+      "from": "From",
+      "to": "To",
+      "no_matches": "No products match these filters."
+    }
+  },
+  "cart": {
+    "title": "Your bag",
+    "added": "Added to your bag",
+    "error": "Something went wrong. Please try again.",
+    "empty": "Your bag is currently empty.",
+    "subtotal": "Subtotal",
+    "discounts": "Discounts",
+    "checkout": "Checkout",
+    "remove": "Remove {{ title }}",
+    "remove_short": "Remove",
+    "note": "Order note",
+    "free_shipping_remaining": "You're {{ amount }} away from free shipping.",
+    "free_shipping_success": "Free shipping unlocked.",
+    "update": "Update cart",
+    "taxes_included": "Taxes included. Shipping and discounts calculated at checkout.",
+    "selling_plan": "Purchase option",
+    "unit_price": "Unit price"
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search products, stories, and collections",
+    "submit": "Search",
+    "results_for": "Results for “{{ terms }}”",
+    "results_count": {
+      "one": "{{ count }} result",
+      "other": "{{ count }} results"
+    },
+    "no_results": "No results found. Try a different phrase.",
+    "predictive": "Suggestions",
+    "products": "Products",
+    "explore": "Explore",
+    "collection": "Collection",
+    "page": "Page",
+    "journal": "Journal"
+  },
+  "blogs": {
+    "article": {
+      "by_author": "By {{ author }}",
+      "read_more": "Read story",
+      "back": "Back to {{ title }}",
+      "share": "Share this article",
+      "placeholder_eyebrow": "Journal note",
+      "placeholder_title": "Story in focus {{ index }}",
+      "placeholder_text": "A place for the thinking, process, and people behind the collection."
+    },
+    "comments": {
+      "title": {
+        "one": "{{ count }} comment",
+        "other": "{{ count }} comments"
+      },
+      "form_title": "Leave a comment",
+      "name": "Name",
+      "email": "Email address",
+      "message": "Comment",
+      "error_heading": "Please correct the following:",
+      "moderated": "Comments are reviewed before they are published.",
+      "submit": "Post comment",
+      "success": "Your comment was posted.",
+      "success_moderated": "Your comment was submitted and will appear after it is approved."
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "message": "Message",
+    "send": "Send message",
+    "success": "Thanks for contacting us. We'll get back to you soon."
+  },
+  "gift_cards": {
+    "issued": {
+      "title": "Your gift card",
+      "subtext": "Use this gift card online or in store.",
+      "code": "Gift card code",
+      "remaining_html": "{{ balance }} remaining",
+      "add_to_apple_wallet": "Add to Apple Wallet",
+      "shop_link": "Start shopping",
+      "expired": "Expired",
+      "expires_on": "Expires {{ date }}",
+      "send_on": "Scheduled to send on {{ date }}",
+      "recipient": "For {{ name }}",
+      "qr_image_alt": "QR code to redeem this gift card",
+      "copy_code": "Copy gift card code",
+      "copy_success": "Gift card code copied."
+    }
+  },
+  "recipient": {
+    "form": {
+      "checkbox": "I want to send this as a gift",
+      "email_label": "Recipient email",
+      "name_label": "Recipient name (optional)",
+      "message_label": "Message (optional)",
+      "message_hint": "Up to 200 characters.",
+      "send_on_label": "Send on (optional)",
+      "send_on_hint": "Choose a date within the next 90 days, or leave blank to send immediately."
+    }
+  },
+  "templates": {
+    "404": {
+      "title": "Page out of frame",
+      "subtext": "The page may have moved, but the next discovery is close.",
+      "button": "Explore the store"
+    },
+    "password": {
+      "title": "Opening soon",
+      "subtext": "A new editorial commerce experience is taking shape.",
+      "enter": "Enter using password"
+    }
+  }
 }

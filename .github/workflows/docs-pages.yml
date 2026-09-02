@@ -1,4 +1,4 @@
-name: Deploy VEYLORA documentation to Pages
+name: Deploy VEYLUNE documentation to Pages
 
 on:
   push:

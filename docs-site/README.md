@@ -1,16 +1,16 @@
-# VEYLORA documentation site
+# VEYLUNE documentation site
 
-This directory is a standalone static documentation site for VEYLORA. It uses relative URLs, requires no build step, and works from a GitHub Pages project subpath.
+This directory is a standalone static documentation site for VEYLUNE. It uses relative URLs, requires no build step, and works from a GitHub Pages project subpath.
 
 ## Recommended deployment: GitHub Actions
 
 The repository already contains Shopify theme source at its root, so deploying only `docs-site/` with GitHub Actions is safer than moving the documentation into `/docs`. The included workflow uploads only this directory and does not alter the theme ZIP.
 
-1. Replace every `YOUR_SUPPORT_EMAIL` occurrence in `support.html`.
+1. Confirm the support email in `support.html` is current.
 2. Commit and push the site and `.github/workflows/docs-pages.yml` to the default branch.
 3. On GitHub, open **Settings → Pages**.
 4. Under **Build and deployment**, set **Source** to **GitHub Actions**.
-5. Open the repository’s **Actions** tab and run **Deploy VEYLORA documentation to Pages**, or push a change under `docs-site/`.
+5. Open the repository’s **Actions** tab and run **Deploy VEYLUNE documentation to Pages**, or push a change under `docs-site/`.
 6. When the workflow completes, open the URL shown in the deployment summary.
 
 For the current remote (`leutrimkadriu/new-shopify`), the expected URLs are:
@@ -29,7 +29,7 @@ From the repository root:
 python3 -m http.server 8080 --directory docs-site
 ```
 
-Then open `http://localhost:8080/`.
+Then open the local address printed by the server.
 
 ## Other deployment options
 

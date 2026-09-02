@@ -2,9 +2,10 @@
   assign target = product.selected_or_first_available_variant | default: product
   assign compare_at_price = target.compare_at_price
   assign price = target.price | default: 0
+  assign price_money = price | money_with_currency
 -%}
 <div class="nx-price"{% if section_id %} data-price-for="{{ section_id }}"{% endif %}>
-  <span{% if compare_at_price > price %} class="nx-price__sale"{% endif %}>{{ price | money_with_currency }}</span>
+  <span{% if compare_at_price > price %} class="nx-price__sale"{% endif %}>{% if product.price_varies %}{{ 'products.product.from_price_html' | t: price: price_money }}{% else %}{{ price_money }}{% endif %}</span>
   {% if compare_at_price > price %}<s>{{ compare_at_price | money_with_currency }}</s>{% endif %}
-  {% if target.unit_price_measurement %}<small>{{ target.unit_price | money }}/{{ target.unit_price_measurement.reference_value }}{{ target.unit_price_measurement.reference_unit }}</small>{% endif %}
+  {% if target.unit_price_measurement %}<small>{{ target.unit_price | unit_price_with_measurement: target.unit_price_measurement }}</small>{% endif %}
 </div>

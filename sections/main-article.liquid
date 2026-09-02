@@ -1,2 +1,117 @@
-{% render 'breadcrumbs' %}<article class="nx-article"><header class="nx-article__header"><div class="nx-eyebrow">{% if section.settings.show_date %}{{ article.published_at | date: '%B %d, %Y' }}{% endif %}{% if section.settings.show_author %} · {{ article.author | escape }}{% endif %}</div><h1>{{ article.title | escape }}</h1></header>{% if article.image %}<div class="nx-article__image">{% render 'responsive-image', image: article.image, loading: 'eager', fetchpriority: 'high', sizes: '860px' %}</div>{% endif %}<div class="nx-rte">{{ article.content }}</div>{% if section.settings.show_share %}<div><span>{{ 'general.share' | t }}:</span> <a href="https://www.facebook.com/sharer.php?u={{ canonical_url | url_encode }}">Facebook</a> <a href="https://pinterest.com/pin/create/button/?url={{ canonical_url | url_encode }}{% if article.image %}&media=https:{{ article.image | image_url: width: 1200 | url_encode }}{% endif %}">Pinterest</a></div>{% endif %}<a href="{{ blog.url }}">{{ 'blogs.article.back' | t: title: blog.title }}</a></article>
-{% schema %}{"name":"Article","settings":[{"type":"checkbox","id":"show_date","label":"Show date","default":true},{"type":"checkbox","id":"show_author","label":"Show author","default":true},{"type":"checkbox","id":"show_share","label":"Show sharing links","default":true}]}{% endschema %}
+{% render 'breadcrumbs' %}
+
+<article class="nx-article">
+  <header class="nx-article__header">
+    <div class="nx-eyebrow">
+      {% if section.settings.show_date %}{{ article.published_at | date: format: 'abbreviated_date' }}{% endif %}
+      {% if section.settings.show_author %} · {{ article.author | escape }}{% endif %}
+    </div>
+    <h1>{{ article.title | escape }}</h1>
+  </header>
+
+  {% if article.image %}
+    <div class="nx-article__image">
+      {% render 'responsive-image', image: article.image, loading: 'eager', fetchpriority: 'high', sizes: '860px' %}
+    </div>
+  {% endif %}
+
+  <div class="nx-rte">{{ article.content }}</div>
+
+  {% if section.settings.show_share %}
+    <div class="nx-article__share" aria-label="{{ 'blogs.article.share' | t }}">
+      <span>{{ 'general.share' | t }}:</span>
+      <a href="//www.facebook.com/sharer.php?u={{ canonical_url | url_encode }}">Facebook</a>
+      <a href="//pinterest.com/pin/create/button/?url={{ canonical_url | url_encode }}{% if article.image %}&media={{ article.image | image_url: width: 1200 | url_encode }}{% endif %}">Pinterest</a>
+    </div>
+  {% endif %}
+
+  {% if blog.comments_enabled? %}
+    <section class="nx-comments" aria-labelledby="CommentsHeading-{{ section.id }}">
+      <h2 id="CommentsHeading-{{ section.id }}">{{ 'blogs.comments.title' | t: count: article.comments_count }}</h2>
+
+      {% paginate article.comments by 20 %}
+        {% if article.comments_count > 0 %}
+          <ol class="nx-comments__list" role="list">
+            {% for comment in article.comments %}
+              <li id="Comment-{{ comment.id }}" class="nx-comment">
+                <div class="nx-comment__meta">
+                  <strong>{{ comment.author | escape }}</strong>
+                  <time datetime="{{ comment.created_at | date: '%Y-%m-%d' }}">{{ comment.created_at | date: format: 'abbreviated_date' }}</time>
+                </div>
+                <div class="nx-rte">{{ comment.content }}</div>
+              </li>
+            {% endfor %}
+          </ol>
+          {% render 'pagination', paginate: paginate %}
+        {% endif %}
+      {% endpaginate %}
+
+      {%- liquid
+        assign comment_form_id = 'CommentForm-' | append: section.id
+        assign comment_return_to = article.url | append: '#' | append: comment_form_id
+      -%}
+      {% form 'new_comment', article, id: comment_form_id, class: 'nx-comment-form', return_to: comment_return_to %}
+        <h3 id="CommentFormHeading-{{ section.id }}">{{ 'blogs.comments.form_title' | t }}</h3>
+        {% if form.posted_successfully? %}
+          <p class="nx-form-success" role="status" tabindex="-1">
+            {% if blog.moderated? %}{{ 'blogs.comments.success_moderated' | t }}{% else %}{{ 'blogs.comments.success' | t }}{% endif %}
+          </p>
+        {% endif %}
+        {% if form.errors %}
+          <div class="nx-form-errors" role="alert" tabindex="-1">
+            <p><strong>{{ 'blogs.comments.error_heading' | t }}</strong></p>
+            <ul>
+              {% for field in form.errors %}
+                {% liquid
+                  case field
+                    when 'author'
+                      assign error_target = 'CommentAuthor-' | append: section.id
+                    when 'email'
+                      assign error_target = 'CommentEmail-' | append: section.id
+                    when 'body'
+                      assign error_target = 'CommentBody-' | append: section.id
+                    else
+                      assign error_target = comment_form_id
+                  endcase
+                %}
+                <li><a href="#{{ error_target }}">{{ form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+        <div class="nx-comment-form__fields">
+          <div class="nx-field">
+            <label for="CommentAuthor-{{ section.id }}">{{ 'blogs.comments.name' | t }}</label>
+            <input id="CommentAuthor-{{ section.id }}" type="text" name="comment[author]" value="{{ form.author | escape }}" autocomplete="name" required{% if form.errors contains 'author' %} aria-invalid="true" aria-describedby="CommentAuthorError-{{ section.id }}"{% endif %}>
+            {% if form.errors contains 'author' %}<span id="CommentAuthorError-{{ section.id }}" class="nx-form-error">{{ form.errors.translated_fields.author | capitalize }} {{ form.errors.messages.author }}</span>{% endif %}
+          </div>
+          <div class="nx-field">
+            <label for="CommentEmail-{{ section.id }}">{{ 'blogs.comments.email' | t }}</label>
+            <input id="CommentEmail-{{ section.id }}" type="email" name="comment[email]" value="{{ form.email | escape }}" autocomplete="email" required{% if form.errors contains 'email' %} aria-invalid="true" aria-describedby="CommentEmailError-{{ section.id }}"{% endif %}>
+            {% if form.errors contains 'email' %}<span id="CommentEmailError-{{ section.id }}" class="nx-form-error">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</span>{% endif %}
+          </div>
+        </div>
+        <div class="nx-field">
+          <label for="CommentBody-{{ section.id }}">{{ 'blogs.comments.message' | t }}</label>
+          <textarea id="CommentBody-{{ section.id }}" name="comment[body]" rows="7" required{% if form.errors contains 'body' %} aria-invalid="true" aria-describedby="CommentBodyError-{{ section.id }}"{% endif %}>{{ form.body | escape }}</textarea>
+          {% if form.errors contains 'body' %}<span id="CommentBodyError-{{ section.id }}" class="nx-form-error">{{ form.errors.translated_fields.body | capitalize }} {{ form.errors.messages.body }}</span>{% endif %}
+        </div>
+        {% if blog.moderated? %}<p class="nx-muted">{{ 'blogs.comments.moderated' | t }}</p>{% endif %}
+        <button class="nx-button" type="submit">{{ 'blogs.comments.submit' | t }}</button>
+      {% endform %}
+    </section>
+  {% endif %}
+
+  <a class="nx-article__back" href="{{ blog.url }}">{{ 'blogs.article.back' | t: title: blog.title }}</a>
+</article>
+
+{% schema %}
+{
+  "name": "Article",
+  "settings": [
+    { "type": "checkbox", "id": "show_date", "label": "Show publication date", "default": true },
+    { "type": "checkbox", "id": "show_author", "label": "Show author", "default": true },
+    { "type": "checkbox", "id": "show_share", "label": "Show sharing links", "default": true }
+  ]
+}
+{% endschema %}

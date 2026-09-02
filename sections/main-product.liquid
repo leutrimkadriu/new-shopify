@@ -1,24 +1,303 @@
+{% assign product_form_id = 'ProductForm-' | append: section.id %}
+{% assign payment_terms_form_id = 'ProductPaymentTerms-' | append: section.id %}
+{% assign product_models = product.media | where: 'media_type', 'model' %}
+
 {% render 'breadcrumbs' %}
-<section class="nx-section nx-page-width"><div class="nx-featured-product">
-  <nx-media-gallery class="nx-product-gallery{% if section.settings.gallery == 'grid' %} nx-product-gallery--grid{% endif %}">{% if product.media.size > 1 %}<div class="nx-product-thumbnails" aria-label="Product media thumbnails">{% for media in product.media %}<button type="button" data-thumbnail="{{ media.id }}" aria-label="View media {{ forloop.index }}">{{ media.preview_image | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60,120', sizes: '56px', alt: media.alt }}</button>{% endfor %}</div>{% endif %}{% for media in product.media %}{% assign media_loading = 'lazy' %}{% assign media_priority = 'auto' %}{% if forloop.first %}{% assign media_loading = 'eager' %}{% assign media_priority = 'high' %}{% endif %}{% render 'product-media', media: media, loading: media_loading, fetchpriority: media_priority %}{% else %}<div class="nx-placeholder">{{ 'product-1' | placeholder_svg_tag }}</div>{% endfor %}</nx-media-gallery>
-  <div class="nx-product-info">{% for block in section.blocks %}<div {{ block.shopify_attributes }}>{% case block.type %}
-    {% when '@app' %}{% render block %}
-    {% when 'vendor' %}<div class="nx-eyebrow">{{ product.vendor | escape }}</div>
-    {% when 'title' %}<h1>{{ product.title | escape }}</h1>
-    {% when 'price' %}{% render 'price', product: product, section_id: section.id %}{% for variant in product.variants %}<template data-variant-price="{{ variant.id }}">{% render 'price', product: variant %}</template>{% endfor %}
-    {% when 'sku' %}<div>{{ 'products.product.sku' | t }}: <span data-sku>{{ product.selected_or_first_available_variant.sku | default: '—' | escape }}</span></div>
-    {% when 'inventory' %}{% assign current_variant = product.selected_or_first_available_variant %}<div>{% if current_variant.available %}{% if current_variant.inventory_management and current_variant.inventory_quantity <= settings.low_stock_threshold %}{{ 'products.product.low_stock' | t }}{% else %}{{ 'products.product.in_stock' | t }}{% endif %}{% else %}{{ 'products.product.out_of_stock' | t }}{% endif %}</div>
-    {% when 'variant_picker' %}{% unless product.has_only_default_variant %}{% render 'variant-picker', product: product, block: block, section: section, form_id: 'nx-main-product-form' %}{% endunless %}
-    {% when 'quantity' %}<label for="Quantity-{{ section.id }}">{{ 'products.product.quantity' | t }}</label><nx-quantity class="nx-quantity nx-quantity--product"><button type="button" data-quantity-minus aria-label="Decrease quantity">−</button><input id="Quantity-{{ section.id }}" type="number" name="quantity" value="1" min="1" step="1" inputmode="numeric" autocomplete="off" form="nx-main-product-form" data-product-quantity aria-label="{{ 'products.product.quantity' | t }}"><button type="button" data-quantity-plus aria-label="Increase quantity">+</button></nx-quantity>
-    {% when 'buy_buttons' %}{% render 'product-buy-buttons', product: product, block: block %}
-    {% when 'description' %}<div class="nx-rte">{{ product.description }}</div>
-    {% when 'accordion' %}<details class="nx-accordion"><summary>{{ block.settings.heading | escape }} {% render 'icon', icon: 'plus' %}</summary><div class="nx-accordion__content nx-rte">{{ block.settings.content }}{{ block.settings.page.content }}</div></details>
-    {% when 'popup' %}<button class="nx-button nx-button--text" type="button" data-open="Modal-{{ block.id }}">{{ block.settings.label | escape }}</button><nx-modal id="Modal-{{ block.id }}" class="nx-modal"><div class="nx-modal__content"><button class="nx-icon-button" type="button" data-close aria-label="{{ 'accessibility.close' | t }}">{% render 'icon', icon: 'close' %}</button><h2>{{ block.settings.page.title | escape }}</h2>{{ block.settings.page.content }}</div></nx-modal>
-    {% when 'rating' %}<div class="shopify-product-reviews-badge" data-id="{{ product.id }}"></div>
-    {% when 'icon_text' %}<div><strong>{{ block.settings.title | escape }}</strong><div>{{ block.settings.text }}</div></div>
-    {% when 'complementary' %}<product-recommendations data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ block.settings.limit }}&intent=complementary"{% if recommendations.performed %} data-loaded="true"{% endif %}><h3>{{ block.settings.heading | escape }}</h3>{% if recommendations.performed and recommendations.products_count > 0 %}<div class="nx-product-grid" style="--nx-cols:2">{% for recommendation in recommendations.products %}{% render 'product-card', card_product: recommendation, card_style: 'minimal' %}{% endfor %}</div>{% endif %}</product-recommendations>
-    {% when 'custom_liquid' %}{{ block.settings.custom_liquid }}
-  {% endcase %}</div>{% endfor %}</div>
-</div></section>
-{% if settings.enable_sticky_cart %}<nx-sticky-cart class="nx-sticky-atc" data-form="nx-main-product-form"><span>{{ product.title | escape }}</span><span data-variant-label="{{ section.id }}">{{ product.selected_or_first_available_variant.title | escape }}</span><span data-price-for="{{ section.id }}">{{ product.selected_or_first_available_variant.price | money }}</span><button class="nx-button" type="button" data-sticky-submit="{{ section.id }}"{% unless product.selected_or_first_available_variant.available %} disabled{% endunless %}>{{ 'products.product.add_to_cart' | t }}</button></nx-sticky-cart>{% endif %}
-{% schema %}{"name":"Product information","settings":[{"type":"select","id":"gallery","label":"Gallery layout","options":[{"value":"stacked","label":"Stacked"},{"value":"grid","label":"Editorial grid"}],"default":"grid"}],"blocks":[{"type":"@app"},{"type":"vendor","name":"Vendor","limit":1},{"type":"title","name":"Title","limit":1},{"type":"price","name":"Price","limit":1},{"type":"sku","name":"SKU","limit":1},{"type":"inventory","name":"Inventory status","limit":1},{"type":"variant_picker","name":"Variant picker","limit":1,"settings":[{"type":"select","id":"picker_type","label":"Picker type","options":[{"value":"button","label":"Buttons"},{"value":"dropdown","label":"Dropdown"},{"value":"swatch","label":"Swatches"}],"default":"button"}]},{"type":"quantity","name":"Quantity selector","limit":1},{"type":"buy_buttons","name":"Buy buttons","limit":1,"settings":[{"type":"checkbox","id":"dynamic_checkout","label":"Show dynamic checkout","default":true}]},{"type":"description","name":"Description","limit":1},{"type":"accordion","name":"Accordion","settings":[{"type":"text","id":"heading","label":"Heading","default":"Materials and care"},{"type":"richtext","id":"content","label":"Content"},{"type":"page","id":"page","label":"Page"}]},{"type":"popup","name":"Popup","settings":[{"type":"text","id":"label","label":"Link label","default":"Size guide"},{"type":"page","id":"page","label":"Page"}]},{"type":"rating","name":"Product rating","limit":1},{"type":"icon_text","name":"Icon with text","settings":[{"type":"text","id":"title","label":"Title","default":"Delivery and returns"},{"type":"richtext","id":"text","label":"Text","default":"<p>Add your delivery or returns policy.</p>"}]},{"type":"complementary","name":"Complementary products","limit":1,"settings":[{"type":"text","id":"heading","label":"Heading","default":"Pairs well with"},{"type":"range","id":"limit","min":2,"max":6,"step":1,"label":"Products to show","default":4}]},{"type":"custom_liquid","name":"Custom Liquid","settings":[{"type":"liquid","id":"custom_liquid","label":"Custom Liquid"}]}],"presets":[{"name":"Product information","blocks":[{"type":"vendor"},{"type":"title"},{"type":"price"},{"type":"rating"},{"type":"variant_picker"},{"type":"quantity"},{"type":"buy_buttons"},{"type":"description"},{"type":"accordion"}]}]}{% endschema %}
+<section class="nx-section nx-page-width nx-product-section" data-product-section="{{ section.id }}" data-product-url="{{ product.url }}" data-update-product-url>
+  <div class="nx-featured-product">
+    <nx-media-gallery class="nx-product-gallery{% if section.settings.gallery == 'grid' %} nx-product-gallery--grid{% endif %}">
+      {% if product.media.size > 1 %}
+        <div class="nx-product-thumbnails" aria-label="{{ 'products.product.media_gallery' | t }}">
+          {% for media in product.media %}
+            <button
+              type="button"
+              data-thumbnail="{{ media.id }}"
+              aria-label="{{ 'products.product.view_media' | t: index: forloop.index }}"
+              {% if forloop.first %}aria-current="true"{% endif %}
+            >
+              {{ media.preview_image | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60,120', sizes: '56px', alt: media.alt }}
+              {% if media.media_type == 'video' or media.media_type == 'external_video' %}<span class="nx-media-badge" aria-hidden="true">{% render 'icon', icon: 'play' %}</span>{% endif %}
+              {% if media.media_type == 'model' %}<span class="nx-media-badge" aria-hidden="true">3D</span>{% endif %}
+            </button>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% for media in product.media %}
+        {% assign media_loading = 'lazy' %}
+        {% assign media_priority = 'low' %}
+        {% if forloop.first %}
+          {% assign media_loading = 'eager' %}
+          {% assign media_priority = 'high' %}
+        {% endif %}
+        {% render 'product-media', media: media, loading: media_loading, fetchpriority: media_priority %}
+      {% else %}
+        <div class="nx-placeholder">{{ 'product-1' | placeholder_svg_tag }}</div>
+      {% endfor %}
+      {% if product_models.size > 0 %}
+        <button
+          class="nx-button nx-button--outline nx-product-xr"
+          type="button"
+          data-shopify-xr
+          data-shopify-model3d-id="{{ product_models.first.id }}"
+          data-shopify-title="{{ product.title | escape }}"
+          data-shopify-xr-hidden
+        >
+          {% render 'icon', icon: 'package' %} {{ 'products.product.view_in_space' | t }}
+        </button>
+        <script type="application/json" data-product-models>{{ product_models | json }}</script>
+      {% endif %}
+    </nx-media-gallery>
+
+    <div class="nx-product-info">
+      {% for block in section.blocks %}
+        <div class="nx-product-info__block nx-product-info__block--{{ block.type | handle }}" {{ block.shopify_attributes }}>
+          {% case block.type %}
+            {% when '@app' %}
+              {% render block %}
+            {% when 'vendor' %}
+              {% if product.vendor != blank %}<div class="nx-eyebrow">{{ product.vendor | escape }}</div>{% endif %}
+            {% when 'title' %}
+              <h1>{{ product.title | escape }}</h1>
+            {% when 'price' %}
+              {% render 'price', product: product, section_id: section.id %}
+              {% if cart.taxes_included %}<small class="nx-product-tax-note">{{ 'products.product.taxes_included' | t }}</small>{% endif %}
+              {% form 'product', product, id: payment_terms_form_id %}
+                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" data-payment-terms-variant>
+                {{ form | payment_terms }}
+              {% endform %}
+            {% when 'sku' %}
+              <div class="nx-product-meta">
+                <span>{{ 'products.product.sku' | t }}</span>
+                <span data-sku>{{ product.selected_or_first_available_variant.sku | default: '—' | escape }}</span>
+              </div>
+            {% when 'inventory' %}
+              {% assign current_variant = product.selected_or_first_available_variant %}
+              <div class="nx-inventory" data-inventory aria-live="polite">
+                {% if current_variant.available %}
+                  <span class="nx-inventory__dot"></span>
+                  {% if current_variant.inventory_management and current_variant.inventory_quantity <= settings.low_stock_threshold %}
+                    {{ 'products.product.low_stock' | t }}
+                  {% else %}
+                    {{ 'products.product.in_stock' | t }}
+                  {% endif %}
+                {% else %}
+                  {{ 'products.product.out_of_stock' | t }}
+                {% endif %}
+              </div>
+            {% when 'variant_picker' %}
+              {% unless product.has_only_default_variant %}
+                {% render 'variant-picker', product: product, block: block, section: section, form_id: product_form_id %}
+              {% endunless %}
+            {% when 'quantity' %}
+              <label for="Quantity-{{ section.id }}">{{ 'products.product.quantity' | t }}</label>
+              <nx-quantity class="nx-quantity nx-quantity--product">
+                <button type="button" data-quantity-minus aria-label="{{ 'products.product.decrease_quantity' | t }}">−</button>
+                <input id="Quantity-{{ section.id }}" type="number" name="quantity" value="1" min="1" step="1" inputmode="numeric" autocomplete="off" form="{{ product_form_id }}" data-product-quantity>
+                <button type="button" data-quantity-plus aria-label="{{ 'products.product.increase_quantity' | t }}">+</button>
+              </nx-quantity>
+            {% when 'buy_buttons' %}
+              {% render 'product-buy-buttons', product: product, block: block, form_id: product_form_id %}
+            {% when 'pickup_availability' %}
+              <nx-pickup-availability
+                class="nx-pickup"
+                data-form="{{ product_form_id }}"
+                data-root-url="{{ routes.root_url }}"
+                data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                data-error="{{ 'products.product.pickup_availability.load_error' | t | escape }}"
+                hidden
+              ></nx-pickup-availability>
+              <noscript>{% render 'pickup-availability-details', variant: product.selected_or_first_available_variant, no_script: true %}</noscript>
+            {% when 'description' %}
+              {% if product.description != blank %}<div class="nx-rte">{{ product.description }}</div>{% endif %}
+            {% when 'text' %}
+              {% if block.settings.text != blank %}<div class="nx-rte">{{ block.settings.text }}</div>{% endif %}
+            {% when 'accordion' %}
+              {% if block.settings.heading != blank and block.settings.content != blank or block.settings.page != blank %}
+                <details class="nx-accordion">
+                  <summary>{{ block.settings.heading | escape }} {% render 'icon', icon: 'plus' %}</summary>
+                  <div class="nx-accordion__content nx-rte">{{ block.settings.content }}{{ block.settings.page.content }}</div>
+                </details>
+              {% endif %}
+            {% when 'popup' %}
+              {% if block.settings.label != blank and block.settings.page != blank %}
+                <button class="nx-button nx-button--text" type="button" data-open="Modal-{{ block.id }}" aria-controls="Modal-{{ block.id }}">{{ block.settings.label | escape }}</button>
+                <nx-modal id="Modal-{{ block.id }}" class="nx-modal">
+                  <div class="nx-modal__content" data-panel tabindex="-1">
+                    <button class="nx-icon-button" type="button" data-close aria-label="{{ 'accessibility.close' | t }}">{% render 'icon', icon: 'close' %}</button>
+                    <h2>{{ block.settings.page.title | escape }}</h2>
+                    <div class="nx-rte">{{ block.settings.page.content }}</div>
+                  </div>
+                </nx-modal>
+              {% endif %}
+            {% when 'rating' %}
+              {% render 'product-rating', product: product %}
+            {% when 'icon_text' %}
+              {% if block.settings.title != blank and block.settings.text != blank %}
+                <div class="nx-product-promise">
+                  {% render 'icon', icon: block.settings.icon %}
+                  <div><strong>{{ block.settings.title | escape }}</strong>{% if block.settings.text != blank %}<div class="nx-rte">{{ block.settings.text }}</div>{% endif %}</div>
+                </div>
+              {% endif %}
+            {% when 'complementary' %}
+              <product-recommendations data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ block.settings.limit }}&intent=complementary"{% if recommendations.performed %} data-loaded="true"{% endif %}>
+                {% if block.settings.heading != blank %}<h3>{{ block.settings.heading | escape }}</h3>{% endif %}
+                {% if recommendations.performed and recommendations.products_count > 0 %}
+                  <div class="nx-product-grid" style="--nx-cols: 2">{% for recommendation in recommendations.products %}{% render 'product-card', card_product: recommendation, card_style: 'minimal' %}{% endfor %}</div>
+                {% endif %}
+              </product-recommendations>
+            {% when 'share' %}
+              <a class="nx-button nx-button--text" href="mailto:?subject={{ product.title | url_encode }}&body={{ canonical_url | url_encode }}">{{ 'general.share' | t }}</a>
+            {% when 'custom_liquid' %}
+              {{ block.settings.custom_liquid }}
+          {% endcase %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% if settings.enable_sticky_cart %}
+  <nx-sticky-cart class="nx-sticky-atc" data-form="{{ product_form_id }}">
+    <span>{{ product.title | escape }}</span>
+    <span data-variant-label="{{ section.id }}">{{ product.selected_or_first_available_variant.title | escape }}</span>
+    <span data-price-for="{{ section.id }}">{{ product.selected_or_first_available_variant.price | money_with_currency }}</span>
+    <button class="nx-button" type="button" data-sticky-submit="{{ section.id }}"{% unless product.selected_or_first_available_variant.available %} disabled{% endunless %}>
+      {% if product.selected_or_first_available_variant.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}
+    </button>
+  </nx-sticky-cart>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Product information",
+  "settings": [
+    {
+      "type": "select",
+      "id": "gallery",
+      "label": "Gallery layout",
+      "options": [
+        { "value": "stacked", "label": "Stacked" },
+        { "value": "grid", "label": "Editorial grid" }
+      ],
+      "default": "grid"
+    }
+  ],
+  "blocks": [
+    { "type": "@app" },
+    { "type": "vendor", "name": "Vendor", "limit": 1 },
+    { "type": "title", "name": "Product title", "limit": 1 },
+    { "type": "price", "name": "Price", "limit": 1 },
+    { "type": "sku", "name": "SKU", "limit": 1 },
+    { "type": "inventory", "name": "Inventory status", "limit": 1 },
+    {
+      "type": "variant_picker",
+      "name": "Variant picker",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "picker_type",
+          "label": "Picker type",
+          "options": [
+            { "value": "button", "label": "Buttons" },
+            { "value": "dropdown", "label": "Dropdown" },
+            { "value": "swatch", "label": "Swatches" }
+          ],
+          "default": "button"
+        }
+      ]
+    },
+    { "type": "quantity", "name": "Quantity selector", "limit": 1 },
+    {
+      "type": "buy_buttons",
+      "name": "Buy buttons",
+      "limit": 1,
+      "settings": [
+        { "type": "checkbox", "id": "dynamic_checkout", "label": "Show accelerated checkout buttons", "default": true }
+      ]
+    },
+    { "type": "pickup_availability", "name": "Pickup availability", "limit": 1 },
+    { "type": "description", "name": "Description", "limit": 1 },
+    {
+      "type": "text",
+      "name": "Body text",
+      "settings": [
+        { "type": "richtext", "id": "text", "label": "Body text" }
+      ]
+    },
+    {
+      "type": "accordion",
+      "name": "Collapsible row",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Materials and care" },
+        { "type": "richtext", "id": "content", "label": "Content" },
+        { "type": "page", "id": "page", "label": "Page" }
+      ]
+    },
+    {
+      "type": "popup",
+      "name": "Page popup",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Link label", "default": "Size guide" },
+        { "type": "page", "id": "page", "label": "Page" }
+      ]
+    },
+    { "type": "rating", "name": "Product rating", "limit": 1 },
+    {
+      "type": "icon_text",
+      "name": "Icon with text",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "package", "label": "Package" },
+            { "value": "check", "label": "Check" },
+            { "value": "heart", "label": "Heart" }
+          ],
+          "default": "package"
+        },
+        { "type": "text", "id": "title", "label": "Heading", "default": "Delivery and returns" },
+        { "type": "richtext", "id": "text", "label": "Body text" }
+      ]
+    },
+    {
+      "type": "complementary",
+      "name": "Complementary products",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Pairs well with" },
+        { "type": "range", "id": "limit", "min": 2, "max": 6, "step": 1, "label": "Products to show", "default": 4 }
+      ]
+    },
+    { "type": "share", "name": "Share", "limit": 1 },
+    {
+      "type": "custom_liquid",
+      "name": "Custom Liquid",
+      "settings": [
+        { "type": "liquid", "id": "custom_liquid", "label": "Custom Liquid" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product information",
+      "blocks": [
+        { "type": "vendor" },
+        { "type": "title" },
+        { "type": "price" },
+        { "type": "rating" },
+        { "type": "variant_picker" },
+        { "type": "inventory" },
+        { "type": "quantity" },
+        { "type": "buy_buttons" },
+        { "type": "pickup_availability" },
+        { "type": "description" },
+        { "type": "accordion" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -4,6 +4,7 @@
   const jsonHeaders = { Accept: 'application/json', 'X-Requested-With': 'XMLHttpRequest' };
   const jsonRoute = (route) => route.endsWith('.js') ? route : `${route}.js`;
   let mutationQueue = Promise.resolve();
+  let pendingMutations = 0;
 
   const request = async (url, options = {}) => {
     const response = await fetch(url, { ...options, headers: { ...jsonHeaders, ...options.headers } });
@@ -58,9 +59,14 @@
   };
 
   const enqueue = (operation) => {
-    const result = mutationQueue.catch(() => {}).then(operation);
+    pendingMutations += 1;
+    const result = mutationQueue.catch(() => {}).then(operation).finally(() => { pendingMutations -= 1; });
     mutationQueue = result;
     return result;
+  };
+
+  const whenCartIsIdle = async () => {
+    while (pendingMutations > 0) await mutationQueue;
   };
 
   const CartAPI = {
@@ -108,9 +114,38 @@
       const [cart] = await Promise.all([this.get().then((state) => publish(state, false)), fetchCartDrawer()]);
       return cart;
     },
+    whenIdle: whenCartIsIdle,
     renderDrawer: fetchCartDrawer
   };
   window.NXTheme.cart = CartAPI;
+
+  const continueCheckoutWhenCartIsIdle = (event) => {
+    if (event.submitter?.name !== 'checkout' || pendingMutations === 0) return;
+    event.preventDefault();
+    const owner = event.target.closest('nx-cart-page, nx-cart-drawer');
+    const ownerId = owner?.id;
+    const submitter = event.submitter;
+    submitter.disabled = true;
+    submitter.setAttribute('aria-busy', 'true');
+    CartAPI.whenIdle()
+      .then(() => {
+        const currentOwner = ownerId ? document.getElementById(ownerId) : null;
+        const currentSubmitter = currentOwner?.querySelector('button[name="checkout"]');
+        if (!currentSubmitter?.form) throw new Error(window.NX.strings.error);
+        currentSubmitter.disabled = false;
+        currentSubmitter.removeAttribute('aria-busy');
+        currentSubmitter.form.requestSubmit(currentSubmitter);
+      })
+      .catch((error) => {
+        live(error.message || window.NX.strings.error);
+        const currentOwner = ownerId ? document.getElementById(ownerId) : null;
+        const currentSubmitter = currentOwner?.querySelector('button[name="checkout"]');
+        if (currentSubmitter) {
+          currentSubmitter.disabled = false;
+          currentSubmitter.removeAttribute('aria-busy');
+        }
+      });
+  };
 
   class NxProductForm extends HTMLElement {
     connectedCallback() {
@@ -157,6 +192,7 @@
       this.setAttribute('aria-modal', 'true');
       if (this.cartInitialized) return;
       this.cartInitialized = true;
+      this.addEventListener('submit', continueCheckoutWhenCartIsIdle);
       this.addEventListener('change', (event) => {
         if (event.target.matches('[data-cart-quantity]')) {
           const quantity = Math.max(1, Math.round(Number(event.target.value) || 1));
@@ -218,7 +254,8 @@
         }
       });
       this.addEventListener('submit', (event) => {
-        if (event.submitter?.name === 'checkout') return;
+        if (event.submitter?.name === 'checkout') { continueCheckoutWhenCartIsIdle(event); return; }
+        if (event.submitter?.name !== 'update') return;
         event.preventDefault();
         this.update(new FormData(event.target));
       });

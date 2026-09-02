@@ -22,15 +22,15 @@
     "marquee": {
       "type": "marquee",
       "settings": {
-        "text": "Objects with intention",
-        "speed": 30,
+        "text": "Form / Material / Intention / Everyday ritual",
+        "speed": 34,
         "color_scheme": "default"
       }
     },
     "featured": {
       "type": "featured-collection",
       "settings": {
-        "eyebrow": "Curated selection",
+        "eyebrow": "Curated selection / 01",
         "heading": "New perspectives",
         "collection": "",
         "products_to_show": 4,
@@ -40,27 +40,84 @@
         "button_label": "View collection"
       }
     },
-    "statement": {
-      "type": "rich-text",
+    "object_study": {
+      "type": "editorial-product-story",
+      "blocks": {
+        "one": {
+          "type": "product",
+          "settings": { "product": "", "x": 32, "y": 40 }
+        },
+        "two": {
+          "type": "product",
+          "settings": { "product": "", "x": 68, "y": 62 }
+        }
+      },
+      "block_order": ["one", "two"],
       "settings": {
-        "eyebrow": "Our point of view",
-        "heading": "Objects worth keeping",
-        "text": "<p>Introduce the ideas, materials, and makers behind your collection.</p>",
-        "button_label": "Read our story",
+        "eyebrow": "Object study / 02",
+        "heading": "Form meets function",
+        "text": "<p>A tactile study of materials, proportion, and the details that last.</p>"
+      }
+    },
+    "campaign": {
+      "type": "split-commerce-story",
+      "settings": {
+        "eyebrow": "Material note / 03",
+        "heading": "A study in contrast",
+        "text": "<p>Bring a campaign, process, or point of view into the path to purchase.</p>",
+        "product": "",
+        "button_label": "Read the story",
         "button_link": "",
-        "button_style": "text",
+        "reverse": false,
         "color_scheme": "dark"
+      }
+    },
+    "lookbook": {
+      "type": "lookbook-mosaic",
+      "blocks": {
+        "image_one": {
+          "type": "image",
+          "settings": { "size": "wide" }
+        },
+        "statement": {
+          "type": "text",
+          "settings": {
+            "eyebrow": "Field note",
+            "heading": "Objects in context",
+            "text": "<p>A visual index built to reward attention.</p>",
+            "size": "standard"
+          }
+        },
+        "image_two": {
+          "type": "image",
+          "settings": { "size": "tall" }
+        }
+      },
+      "block_order": ["image_one", "statement", "image_two"],
+      "settings": {
+        "eyebrow": "Visual index / 04",
+        "heading": "The complete composition"
+      }
+    },
+    "journal": {
+      "type": "blog-posts",
+      "settings": {
+        "eyebrow": "Journal / Latest",
+        "heading": "Stories in context",
+        "blog": "",
+        "limit": 3,
+        "button_label": "View journal"
       }
     },
     "newsletter": {
       "type": "newsletter",
       "settings": {
-        "eyebrow": "Private access",
-        "heading": "Ideas, objects, and new arrivals",
-        "text": "<p>Receive considered releases and stories.</p>",
-        "color_scheme": "default"
+        "eyebrow": "Private edition",
+        "heading": "A quieter way to stay close",
+        "text": "<p>New arrivals, material stories, and considered notes—sent occasionally.</p>",
+        "color_scheme": "dark"
       }
     }
   },
-  "order": ["hero", "marquee", "featured", "statement", "newsletter"]
+  "order": ["hero", "marquee", "featured", "object_study", "campaign", "lookbook", "journal", "newsletter"]
 }

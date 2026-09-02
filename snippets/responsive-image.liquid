@@ -3,8 +3,10 @@
     assign image_loading = loading | default: 'lazy'
     assign image_sizes = sizes | default: '100vw'
     assign image_widths = widths | default: '320, 480, 640, 800, 1000, 1200, 1600, 2000'
+    assign image_focal_point = image.presentation.focal_point | default: '50% 50%'
+    assign image_style = 'object-position: ' | append: image_focal_point
   -%}
-  {{ image | image_url: width: 2000 | image_tag: widths: image_widths, sizes: image_sizes, loading: image_loading, fetchpriority: fetchpriority, class: class, alt: image.alt | escape }}
+  {{ image | image_url: width: 2000 | image_tag: widths: image_widths, sizes: image_sizes, loading: image_loading, fetchpriority: fetchpriority, class: class, style: image_style, alt: image.alt | escape }}
 {%- elsif placeholder != false -%}
   <div class="nx-placeholder">{{ 'lifestyle-1' | placeholder_svg_tag }}</div>
 {%- endif -%}

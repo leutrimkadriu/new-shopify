@@ -1,5 +1,5 @@
 {% if predictive_search.performed %}
-  <div id="predictive-search-results" role="listbox" aria-label="{{ 'search.predictive' | t }}">
+  <div role="listbox" aria-label="{{ 'search.predictive' | t }}">
     {% if predictive_search.resources.products.size > 0 %}
       <div class="nx-predictive-search__group">
         <h3>{{ 'search.products' | t }}</h3>

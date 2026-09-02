@@ -1,0 +1,18 @@
+{%- liquid
+  assign rating_metafield = product.metafields.reviews.rating
+  assign rating_count_metafield = product.metafields.reviews.rating_count
+  assign rating = rating_metafield.value
+  assign rating_count = rating_count_metafield.value
+-%}
+{% if rating != blank %}
+  {%- liquid
+    assign scale_max = rating.scale_max | default: 5
+    assign rating_value = rating.rating | default: rating
+    assign rating_percent = rating_value | times: 100.0 | divided_by: scale_max
+  -%}
+  <div class="nx-rating" aria-label="{{ 'general.rating' | t: rating: rating_value, scale: scale_max }}">
+    <span class="nx-rating__stars" style="--nx-rating: {{ rating_percent }}%" aria-hidden="true">★★★★★</span>
+    <span class="nx-rating__value">{{ rating_value }} / {{ scale_max }}</span>
+    {% if rating_count != blank %}<span class="nx-rating__count">({{ rating_count }})</span>{% endif %}
+  </div>
+{% endif %}

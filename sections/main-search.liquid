@@ -1,2 +1,93 @@
-<section class="nx-section nx-page-width"><header class="nx-search-hero"><h1>{% if search.performed %}{{ 'search.results_for' | t: terms: search.terms }}{% else %}{{ 'search.title' | t }}{% endif %}</h1><form class="nx-search-form" action="{{ routes.search_url }}" method="get" role="search"><label class="visually-hidden" for="SearchInput">{{ 'search.title' | t }}</label><input id="SearchInput" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'search.placeholder' | t }}"><button class="nx-icon-button" aria-label="{{ 'search.submit' | t }}">{% render 'icon', icon: 'search' %}</button></form></header>{% paginate search.results by section.settings.results_per_page %}<div class="nx-product-grid" style="--nx-cols:{{ section.settings.columns }}">{% for item in search.results %}{% if item.object_type == 'product' %}{% render 'product-card', card_product: item %}{% else %}<article><div class="nx-eyebrow">{{ item.object_type }}</div><h2><a href="{{ item.url }}">{{ item.title | escape }}</a></h2><p>{{ item.content | strip_html | truncate: 180 }}</p></article>{% endif %}{% else %}{% if search.performed %}<p>{{ 'search.no_results' | t }}</p>{% endif %}{% endfor %}</div>{% render 'pagination', paginate: paginate %}{% endpaginate %}</section>
-{% schema %}{"name":"Search results","settings":[{"type":"range","id":"results_per_page","min":8,"max":40,"step":4,"label":"Results per page","default":20},{"type":"range","id":"columns","min":2,"max":5,"step":1,"label":"Desktop columns","default":4}]}{% endschema %}
+<section class="nx-section nx-page-width">
+  <header class="nx-search-hero">
+    <h1>{% if search.performed %}{{ 'search.results_for' | t: terms: search.terms }}{% else %}{{ 'search.title' | t }}{% endif %}</h1>
+    <form class="nx-search-form" action="{{ routes.search_url }}" method="get" role="search">
+      <label class="visually-hidden" for="SearchInput">{{ 'search.title' | t }}</label>
+      <input id="SearchInput" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'search.placeholder' | t }}">
+      <input type="hidden" name="options[prefix]" value="last">
+      <button class="nx-icon-button" aria-label="{{ 'search.submit' | t }}">{% render 'icon', icon: 'search' %}</button>
+    </form>
+    {% if search.performed %}<p class="nx-muted">{{ 'search.results_count' | t: count: search.results_count }}</p>{% endif %}
+  </header>
+
+  {% paginate search.results by section.settings.results_per_page %}
+    {% if search.performed %}
+      <nx-facets id="NxFacets">
+        <div class="nx-filter-toolbar">
+          <button class="nx-button nx-button--outline nx-filter-trigger" type="button" data-open="NxSearchFilterDrawer" aria-controls="NxSearchFilterDrawer" aria-expanded="false">{{ 'collections.general.filter' | t }}</button>
+          <form class="nx-filter-desktop" method="get" action="{{ routes.search_url }}">
+            <input type="hidden" name="q" value="{{ search.terms | escape }}">
+            <input type="hidden" name="options[prefix]" value="last">
+            <div class="nx-facets__form">{% for filter in search.filters %}{% render 'facet', filter: filter %}{% endfor %}</div>
+            <label class="nx-sort">{{ 'collections.general.sort_by' | t }}
+              <select name="sort_by">
+                {% assign sort_by = search.sort_by | default: search.default_sort_by %}
+                {% for option in search.sort_options %}<option value="{{ option.value | escape }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name | escape }}</option>{% endfor %}
+              </select>
+            </label>
+          </form>
+
+          <div class="nx-active-filters">
+            {% assign has_active_filters = false %}
+            {% for filter in search.filters %}
+              {% for value in filter.active_values %}{% assign has_active_filters = true %}<a href="{{ value.url_to_remove }}">{{ value.label | escape }} <span aria-hidden="true">×</span></a>{% endfor %}
+              {% if filter.min_value.value != nil or filter.max_value.value != nil %}{% assign has_active_filters = true %}<a href="{{ filter.url_to_remove }}">{{ filter.label | escape }} <span aria-hidden="true">×</span></a>{% endif %}
+            {% endfor %}
+            {% if has_active_filters %}<a class="nx-active-filters__clear" href="{{ routes.search_url }}?q={{ search.terms | url_encode }}&options[prefix]=last&sort_by={{ sort_by | url_encode }}">{{ 'collections.general.clear_all' | t }}</a>{% endif %}
+          </div>
+        </div>
+
+        <nx-drawer id="NxSearchFilterDrawer" class="nx-drawer" role="dialog" aria-modal="true" aria-label="{{ 'collections.general.filter' | t }}">
+          <button class="nx-drawer__overlay" type="button" data-close aria-label="{{ 'accessibility.close' | t }}"></button>
+          <div class="nx-drawer__panel nx-filter-drawer" data-panel tabindex="-1">
+            <header class="nx-drawer__header"><h2>{{ 'collections.general.filter' | t }}</h2><button class="nx-icon-button" type="button" data-close aria-label="{{ 'accessibility.close' | t }}">{% render 'icon', icon: 'close' %}</button></header>
+            <form method="get" action="{{ routes.search_url }}">
+              <input type="hidden" name="q" value="{{ search.terms | escape }}">
+              <input type="hidden" name="options[prefix]" value="last">
+              {% for filter in search.filters %}{% render 'facet', filter: filter %}{% endfor %}
+              <label class="nx-sort">{{ 'collections.general.sort_by' | t }}
+                <select name="sort_by">{% for option in search.sort_options %}<option value="{{ option.value | escape }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name | escape }}</option>{% endfor %}</select>
+              </label>
+              <button class="nx-button" type="submit">{{ 'collections.general.filter' | t }}</button>
+            </form>
+          </div>
+        </nx-drawer>
+      </nx-facets>
+    {% endif %}
+
+    <div id="NxProductGrid">
+      {% if search.results_count > 0 %}
+        <div class="nx-product-grid" style="--nx-cols: {{ section.settings.columns }}">
+          {% for item in search.results %}
+            {% case item.object_type %}
+              {% when 'product' %}
+                {% render 'product-card', card_product: item %}
+              {% else %}
+                <article>
+                  <div class="nx-eyebrow">
+                    {% case item.object_type %}
+                      {% when 'article' %}{{ 'search.journal' | t }}
+                      {% when 'page' %}{{ 'search.page' | t }}
+                      {% when 'collection' %}{{ 'search.collection' | t }}
+                      {% else %}{{ item.object_type | escape }}
+                    {% endcase %}
+                  </div>
+                  <h2><a href="{{ item.url }}">{{ item.title | escape }}</a></h2>
+                  <p>{{ item.content | strip_html | truncate: 180 }}</p>
+                </article>
+            {% endcase %}
+          {% endfor %}
+        </div>
+        {% render 'pagination', paginate: paginate %}
+      {% elsif search.performed %}
+        <div class="nx-search-empty nx-text-center">
+          <p>{{ 'search.no_results' | t }}</p>
+          {% if has_active_filters %}<a class="nx-button" href="{{ routes.search_url }}?q={{ search.terms | url_encode }}&options[prefix]=last">{{ 'collections.general.clear_all' | t }}</a>{% else %}<a class="nx-button" href="{{ routes.all_products_collection_url }}">{{ 'general.continue_shopping' | t }}</a>{% endif %}
+        </div>
+      {% endif %}
+    </div>
+  {% endpaginate %}
+</section>
+{% schema %}
+{"name":"Search results","settings":[{"type":"range","id":"results_per_page","min":8,"max":40,"step":4,"label":"Results per page","default":20},{"type":"range","id":"columns","min":2,"max":5,"step":1,"label":"Desktop columns","default":4}]}
+{% endschema %}

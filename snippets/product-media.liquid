@@ -1,3 +1,18 @@
-<div class="nx-product-gallery__item" data-media-id="{{ media.id }}">
-  {% case media.media_type %}{% when 'image' %}{% render 'responsive-image', image: media.preview_image, sizes: '(min-width: 990px) 55vw, 100vw', loading: loading, fetchpriority: fetchpriority %}{% when 'video' %}{{ media | media_tag: image_size: '1200x', controls: true }}{% when 'external_video' %}{{ media | external_video_tag }}{% when 'model' %}{{ media | model_viewer_tag: image_size: '1200x', reveal: 'interaction', toggleable: true }}{% endcase %}
+{%- liquid
+  assign media_label = media.alt
+  if media_label == blank
+    assign media_label = 'products.product.media_item' | t: type: media.media_type
+  endif
+-%}
+<div class="nx-product-gallery__item nx-product-gallery__item--{{ media.media_type }}" data-media-id="{{ media.id }}" data-media-type="{{ media.media_type }}" role="group" aria-label="{{ media_label | escape }}">
+  {% case media.media_type %}
+    {% when 'image' %}
+      {% render 'responsive-image', image: media.preview_image, sizes: '(min-width: 990px) 55vw, calc(100vw - 72px)', loading: loading, fetchpriority: fetchpriority %}
+    {% when 'video' %}
+      {{ media | media_tag: image_size: '1200x', controls: true, preload: 'metadata', aria-label: media_label }}
+    {% when 'external_video' %}
+      {{ media | external_video_tag: loading: loading, title: media_label }}
+    {% when 'model' %}
+      {{ media | model_viewer_tag: image_size: '1200x', reveal: 'interaction', toggleable: true, aria-label: media_label }}
+  {% endcase %}
 </div>

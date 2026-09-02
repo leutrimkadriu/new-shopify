@@ -1,0 +1,57 @@
+{%- assign pickup_availabilities = variant.store_availabilities | where: 'pick_up_enabled', true -%}
+<div data-pickup-content{% if pickup_availabilities.size == 0 %} hidden{% endif %}>
+  {%- if pickup_availabilities.size > 0 -%}
+    {%- assign closest_location = pickup_availabilities.first -%}
+    {%- capture pickup_locations -%}
+      <ul class="nx-pickup__locations" role="list">
+        {%- for availability in pickup_availabilities -%}
+          <li>
+            <h3>{{ availability.location.name | escape }}</h3>
+            <p>
+              {% if availability.available %}{{ 'products.product.pickup_availability.available' | t }} — {{ availability.pick_up_time }}{% else %}{{ 'products.product.pickup_availability.unavailable' | t }}{% endif %}
+            </p>
+            <address>{{ availability.location.address | format_address }}{% if availability.location.address.phone != blank %}<p>{{ availability.location.address.phone }}</p>{% endif %}</address>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endcapture -%}
+
+    <div class="nx-pickup__summary">
+      <span class="nx-pickup__status{% if closest_location.available %} is-available{% endif %}" aria-hidden="true"></span>
+      <div>
+        <p>
+          {%- if closest_location.available -%}
+            {{ 'products.product.pickup_availability.available_at_html' | t: location_name: closest_location.location.name }}
+          {%- else -%}
+            {{ 'products.product.pickup_availability.unavailable_at_html' | t: location_name: closest_location.location.name }}
+          {%- endif -%}
+        </p>
+        {% if closest_location.available %}<small>{{ closest_location.pick_up_time }}</small>{% endif %}
+        {% if no_script %}
+          <details class="nx-pickup__no-script">
+            <summary>{% if pickup_availabilities.size == 1 %}{{ 'products.product.pickup_availability.view_store_info' | t }}{% else %}{{ 'products.product.pickup_availability.check_other_stores' | t }}{% endif %}</summary>
+            <p class="nx-muted">{{ variant.product.title | escape }}{% unless variant.product.has_only_default_variant %} — {{ variant.title | escape }}{% endunless %}</p>
+            {{ pickup_locations }}
+          </details>
+        {% elsif pickup_availabilities.size > 1 or closest_location.available %}
+          <button type="button" class="nx-button nx-button--text" data-pickup-open>
+            {% if pickup_availabilities.size == 1 %}{{ 'products.product.pickup_availability.view_store_info' | t }}{% else %}{{ 'products.product.pickup_availability.check_other_stores' | t }}{% endif %}
+          </button>
+        {% endif %}
+      </div>
+    </div>
+
+    {% unless no_script %}
+      <dialog class="nx-pickup__dialog" data-pickup-dialog aria-labelledby="PickupHeading-{{ variant.id }}">
+        <div class="nx-pickup__dialog-inner">
+          <div class="nx-pickup__header">
+            <h2 id="PickupHeading-{{ variant.id }}">{{ 'products.product.pickup_availability.heading' | t }}</h2>
+            <button type="button" class="nx-icon-button" data-pickup-close aria-label="{{ 'accessibility.close' | t }}">{% render 'icon', icon: 'close' %}</button>
+          </div>
+          <p class="nx-muted">{{ variant.product.title | escape }}{% unless variant.product.has_only_default_variant %} — {{ variant.title | escape }}{% endunless %}</p>
+          {{ pickup_locations }}
+        </div>
+      </dialog>
+    {% endunless %}
+  {%- endif -%}
+</div>

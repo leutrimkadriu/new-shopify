@@ -1,1 +1,17 @@
-<nx-drawer id="NxSearchDrawer" class="nx-drawer" aria-label="{{ 'search.title' | t }}"><button class="nx-drawer__overlay" type="button" data-close aria-label="{{ 'accessibility.close' | t }}"></button><div class="nx-drawer__panel" data-panel><header class="nx-drawer__header"><h2>{{ 'search.title' | t }}</h2><button class="nx-icon-button" type="button" data-close aria-label="{{ 'accessibility.close' | t }}">{% render 'icon', icon: 'close' %}</button></header><nx-predictive-search><form class="nx-search-form" action="{{ routes.search_url }}" method="get" role="search"><label class="visually-hidden" for="DrawerSearch">{{ 'search.title' | t }}</label><input id="DrawerSearch" type="search" name="q" placeholder="{{ 'search.placeholder' | t }}" autocomplete="off"><button class="nx-icon-button" aria-label="{{ 'search.submit' | t }}">{% render 'icon', icon: 'search' %}</button></form><div data-results></div></nx-predictive-search><script src="{{ 'search.js' | asset_url }}" defer></script></div></nx-drawer>
+<nx-drawer id="NxSearchDrawer" class="nx-drawer" role="dialog" aria-modal="true" aria-label="{{ 'search.title' | t }}">
+  <button class="nx-drawer__overlay" type="button" data-close aria-label="{{ 'accessibility.close' | t }}"></button>
+  <div class="nx-drawer__panel" data-panel tabindex="-1">
+    <header class="nx-drawer__header">
+      <h2>{{ 'search.title' | t }}</h2>
+      <button class="nx-icon-button" type="button" data-close aria-label="{{ 'accessibility.close' | t }}">{% render 'icon', icon: 'close' %}</button>
+    </header>
+    <nx-predictive-search data-enabled="{{ settings.predictive_search }}" data-deferred-script="{{ 'search.js' | asset_url }}">
+      <form class="nx-search-form" action="{{ routes.search_url }}" method="get" role="search">
+        <label class="visually-hidden" for="DrawerSearch">{{ 'search.title' | t }}</label>
+        <input id="DrawerSearch" type="search" name="q" placeholder="{{ 'search.placeholder' | t }}" autocomplete="off">
+        <button class="nx-icon-button" aria-label="{{ 'search.submit' | t }}">{% render 'icon', icon: 'search' %}</button>
+      </form>
+      <div id="predictive-search-results" data-results></div>
+    </nx-predictive-search>
+  </div>
+</nx-drawer>

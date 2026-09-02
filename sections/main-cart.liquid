@@ -5,13 +5,22 @@
       <p>{{ 'cart.empty' | t }}</p>
       <a class="nx-button" href="{{ routes.all_products_collection_url }}">{{ 'general.continue_shopping' | t }}</a>
     {% else %}
-      <form action="{{ routes.cart_url }}" method="post">
+      {% form 'cart', cart %}
         {% for item in cart.items %}{% render 'cart-item', item: item, line: forloop.index %}{% endfor %}
         {% if section.settings.cart_note %}<div class="nx-field"><label for="CartNote">{{ 'cart.note' | t }}</label><textarea id="CartNote" name="note">{{ cart.note }}</textarea></div>{% endif %}
+        {% for discount_application in cart.cart_level_discount_applications %}
+          <p class="nx-cart-discount"><span>{{ discount_application.title | escape }}</span><strong>−{{ discount_application.total_allocated_amount | money_with_currency }}</strong></p>
+        {% endfor %}
+        {% if cart.total_discount > 0 %}<p class="nx-cart-discount"><span>{{ 'cart.discounts' | t }}</span><strong>−{{ cart.total_discount | money_with_currency }}</strong></p>{% endif %}
         <p><strong>{{ 'cart.subtotal' | t }}: <span data-cart-subtotal>{{ cart.total_price | money_with_currency }}</span></strong></p>
+        {{ form | payment_terms }}
+        {% if cart.taxes_included %}<small class="nx-muted">{{ 'cart.taxes_included' | t }}</small>{% endif %}
         <button class="nx-button nx-button--outline" type="submit" name="update">{{ 'cart.update' | t }}</button>
         <button class="nx-button" type="submit" name="checkout">{{ 'cart.checkout' | t }}</button>
-      </form>
+        {% if additional_checkout_buttons %}
+          <div class="nx-additional-checkout-buttons additional-checkout-buttons--vertical">{{ content_for_additional_checkout_buttons }}</div>
+        {% endif %}
+      {% endform %}
     {% endif %}
   </section>
 </nx-cart-page>

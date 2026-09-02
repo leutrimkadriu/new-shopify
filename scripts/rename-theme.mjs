@@ -56,6 +56,6 @@ if (oldListing !== newListing) {
   renameSync(oldListing, newListing);
 }
 
-console.log(`Renamed parent theme and preset: ${oldName} -> ${requestedName}`);
-console.log(`Renamed listing slug: ${toSlug(oldName)} -> ${toSlug(requestedName)}`);
-console.log('Review theme_author and merchant-facing brand copy separately; they are intentionally unchanged.');
+process.stdout.write(`Renamed parent theme and preset: ${oldName} -> ${requestedName}\n`);
+process.stdout.write(`Renamed listing slug: ${toSlug(oldName)} -> ${toSlug(requestedName)}\n`);
+process.stdout.write('Review theme_author and merchant-facing brand copy separately; they are intentionally unchanged.\n');

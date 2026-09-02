@@ -1,11 +1,11 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "VEYLORA",
-    "theme_version": "1.0.0",
-    "theme_author": "VEYLORA",
-    "theme_documentation_url": "https://shopify.dev/docs/storefronts/themes",
-    "theme_support_url": "https://help.shopify.com/"
+    "theme_name": "Veylune",
+    "theme_version": "2.0.5",
+    "theme_author": "Veylune",
+    "theme_documentation_url": "https://leutrimkadriu.github.io/new-shopify/",
+    "theme_support_url": "https://leutrimkadriu.github.io/new-shopify/support.html"
   },
   {
     "name": "Logo",
@@ -14,11 +14,6 @@
         "type": "image_picker",
         "id": "logo",
         "label": "Logo"
-      },
-      {
-        "type": "image_picker",
-        "id": "logo_inverse",
-        "label": "Inverse logo"
       },
       {
         "type": "range",
@@ -74,7 +69,25 @@
         "type": "color",
         "id": "color_border",
         "label": "Borders",
-        "default": "#d8d3ca"
+        "default": "#45433f"
+      },
+      {
+        "type": "color",
+        "id": "color_surface",
+        "label": "Muted surface",
+        "default": "#eeebe3"
+      },
+      {
+        "type": "color",
+        "id": "color_dark_background",
+        "label": "Dark scheme background",
+        "default": "#171714"
+      },
+      {
+        "type": "color",
+        "id": "color_dark_text",
+        "label": "Dark scheme text",
+        "default": "#f7f5ef"
       },
       {
         "type": "range",
@@ -112,6 +125,16 @@
         "unit": "%",
         "label": "Heading scale",
         "default": 110
+      },
+      {
+        "type": "range",
+        "id": "body_scale",
+        "min": 90,
+        "max": 115,
+        "step": 5,
+        "unit": "%",
+        "label": "Body scale",
+        "default": 100
       }
     ]
   },
@@ -172,6 +195,16 @@
         "unit": "px",
         "label": "Button corner radius",
         "default": 0
+      },
+      {
+        "type": "range",
+        "id": "button_border_width",
+        "min": 1,
+        "max": 3,
+        "step": 1,
+        "unit": "px",
+        "label": "Border width",
+        "default": 1
       }
     ]
   },
@@ -221,6 +254,27 @@
         "id": "show_swatches",
         "label": "Show color swatches",
         "default": true
+      },
+      {
+        "type": "select",
+        "id": "card_image_ratio",
+        "label": "Image ratio",
+        "options": [
+          { "value": "portrait", "label": "Portrait" },
+          { "value": "square", "label": "Square" },
+          { "value": "adapt", "label": "Adapt to image" }
+        ],
+        "default": "portrait"
+      },
+      {
+        "type": "select",
+        "id": "mobile_product_columns",
+        "label": "Mobile columns",
+        "options": [
+          { "value": "1", "label": "One" },
+          { "value": "2", "label": "Two" }
+        ],
+        "default": "2"
       }
     ]
   },
@@ -245,36 +299,6 @@
     ]
   },
   {
-    "name": "Collection pages",
-    "settings": [
-      {
-        "type": "range",
-        "id": "collection_columns",
-        "min": 2,
-        "max": 5,
-        "step": 1,
-        "label": "Desktop columns",
-        "default": 4
-      },
-      {
-        "type": "select",
-        "id": "filter_layout",
-        "label": "Filter layout",
-        "options": [
-          {
-            "value": "toolbar",
-            "label": "Toolbar"
-          },
-          {
-            "value": "sidebar",
-            "label": "Sidebar"
-          }
-        ],
-        "default": "toolbar"
-      }
-    ]
-  },
-  {
     "name": "Cart",
     "settings": [
       {
@@ -286,7 +310,7 @@
       {
         "type": "checkbox",
         "id": "cart_note",
-        "label": "Enable cart note",
+        "label": "Show cart note",
         "default": true
       },
       {

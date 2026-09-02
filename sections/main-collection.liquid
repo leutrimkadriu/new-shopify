@@ -2,7 +2,7 @@
 <section class="nx-section nx-page-width">
   <header class="nx-collection-hero">
     <div>
-      <div class="nx-eyebrow">Collection / {{ collection.products_count }}</div>
+      <div class="nx-eyebrow">{{ 'collections.general.eyebrow' | t }} / {{ collection.products_count }}</div>
       <h1>{{ collection.title | escape }}</h1>
       {% if collection.description != blank %}<div class="nx-rte">{{ collection.description }}</div>{% endif %}
     </div>
@@ -12,7 +12,7 @@
   {% paginate collection.products by section.settings.products_per_page %}
     <nx-facets id="NxFacets">
       <div class="nx-filter-toolbar">
-        <button class="nx-button nx-button--outline nx-filter-trigger" type="button" data-open="NxFilterDrawer">{{ 'collections.general.filter' | t }}</button>
+        <button class="nx-button nx-button--outline nx-filter-trigger" type="button" data-open="NxFilterDrawer" aria-controls="NxFilterDrawer" aria-expanded="false">{{ 'collections.general.filter' | t }}</button>
         <form class="nx-filter-desktop" method="get">
           <div class="nx-facets__form">{% for filter in collection.filters %}{% render 'facet', filter: filter %}{% endfor %}</div>
           <label class="nx-sort">{{ 'collections.general.sort_by' | t }}<select name="sort_by">{% assign sort_by = collection.sort_by | default: collection.default_sort_by %}{% for option in collection.sort_options %}<option value="{{ option.value | escape }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name | escape }}</option>{% endfor %}</select></label>
@@ -28,9 +28,9 @@
         </div>
       </div>
 
-      <nx-drawer id="NxFilterDrawer" class="nx-drawer" aria-label="{{ 'collections.general.filter' | t }}">
+      <nx-drawer id="NxFilterDrawer" class="nx-drawer" role="dialog" aria-modal="true" aria-label="{{ 'collections.general.filter' | t }}">
         <button class="nx-drawer__overlay" type="button" data-close aria-label="{{ 'accessibility.close' | t }}"></button>
-        <div class="nx-drawer__panel nx-filter-drawer" data-panel>
+        <div class="nx-drawer__panel nx-filter-drawer" data-panel tabindex="-1">
           <header class="nx-drawer__header"><h2>{{ 'collections.general.filter' | t }}</h2><button class="nx-icon-button" type="button" data-close aria-label="{{ 'accessibility.close' | t }}">{% render 'icon', icon: 'close' %}</button></header>
           <form method="get">
             {% for filter in collection.filters %}{% render 'facet', filter: filter %}{% endfor %}
@@ -44,7 +44,19 @@
     <div id="NxProductGrid">
       <p class="nx-muted">{{ 'collections.general.products_count' | t: count: collection.products_count }}</p>
       <div class="nx-product-grid" style="--nx-cols:{{ section.settings.columns }};--nx-grid-gap:{{ section.settings.gap }}px">
-        {% for product in collection.products %}{% render 'product-card', card_product: product, card_style: section.settings.card_style %}{% else %}<p>{{ 'collections.general.no_matches' | t }}</p>{% endfor %}
+        {% for product in collection.products %}
+          {%- liquid
+            assign card_loading = 'lazy'
+            assign card_priority = 'auto'
+            if forloop.first
+              assign card_loading = 'eager'
+              assign card_priority = 'high'
+            endif
+          -%}
+          {% render 'product-card', card_product: product, card_style: section.settings.card_style, image_loading: card_loading, image_fetchpriority: card_priority %}
+        {% else %}
+          <p>{{ 'collections.general.no_matches' | t }}</p>
+        {% endfor %}
       </div>
       {% render 'pagination', paginate: paginate %}
     </div>

@@ -1,2 +1,24 @@
-<section class="nx-section nx-page-width"><header class="nx-section-heading nx-reveal"><div><div class="nx-eyebrow">{{ section.settings.eyebrow | escape }}</div><h2>{{ section.settings.heading | default: section.settings.collection.title | escape }}</h2></div>{% if section.settings.collection %}{% render 'button', label: section.settings.button_label, url: section.settings.collection.url, style: 'text', show_arrow: true %}{% endif %}</header><div class="nx-product-grid" style="--nx-cols:{{ section.settings.columns }};--nx-grid-gap:{{ section.settings.gap }}px">{% for product in section.settings.collection.products limit: section.settings.products_to_show %}<div class="nx-reveal">{% render 'product-card', card_product: product, card_style: section.settings.card_style %}</div>{% else %}{% for i in (1..4) %}<article class="nx-product-card"><div class="nx-product-card__media"><div class="nx-placeholder">{{ 'product-' | append: i | placeholder_svg_tag }}</div></div><h3 class="nx-product-card__title">Product title</h3><span>{{ 10000 | money }}</span></article>{% endfor %}{% endfor %}</div></section>
-{% schema %}{"name":"Featured collection","settings":[{"type":"text","id":"eyebrow","label":"Eyebrow","default":"Curated selection"},{"type":"text","id":"heading","label":"Heading","default":"New perspectives"},{"type":"collection","id":"collection","label":"Collection"},{"type":"range","id":"products_to_show","min":2,"max":12,"step":1,"label":"Products to show","default":4},{"type":"range","id":"columns","min":2,"max":5,"step":1,"label":"Desktop columns","default":4},{"type":"range","id":"gap","min":8,"max":40,"step":4,"unit":"px","label":"Grid spacing","default":20},{"type":"select","id":"card_style","label":"Card style","options":[{"value":"minimal","label":"Minimal"},{"value":"editorial","label":"Editorial"},{"value":"commerce","label":"Commerce"}],"default":"editorial"},{"type":"text","id":"button_label","label":"Button label","default":"View collection"}],"presets":[{"name":"Featured collection"}]}{% endschema %}
+<section class="nx-section nx-page-width">
+  <header class="nx-section-heading nx-reveal">
+    <div>
+      {% if section.settings.eyebrow != blank %}<div class="nx-eyebrow">{{ section.settings.eyebrow | escape }}</div>{% endif %}
+      <h2>{{ section.settings.heading | default: section.settings.collection.title | escape }}</h2>
+    </div>
+    {% if section.settings.collection %}{% render 'button', label: section.settings.button_label, url: section.settings.collection.url, style: 'text', show_arrow: true %}{% endif %}
+  </header>
+  <div class="nx-product-grid" style="--nx-cols: {{ section.settings.columns }}; --nx-grid-gap: {{ section.settings.gap }}px">
+    {% for product in section.settings.collection.products limit: section.settings.products_to_show %}
+      <div class="nx-reveal">{% render 'product-card', card_product: product, card_style: section.settings.card_style %}</div>
+    {% else %}
+      {% for i in (1..4) %}
+        <article class="nx-product-card">
+          <div class="nx-product-card__media"><div class="nx-placeholder">{{ 'product-' | append: i | placeholder_svg_tag }}</div></div>
+          <h3 class="nx-product-card__title">{{ 'products.product.placeholder_title' | t: index: i }}</h3>
+        </article>
+      {% endfor %}
+    {% endfor %}
+  </div>
+</section>
+{% schema %}
+{"name":"Featured collection","settings":[{"type":"text","id":"eyebrow","label":"Eyebrow","default":"Curated selection"},{"type":"text","id":"heading","label":"Heading","default":"New perspectives"},{"type":"collection","id":"collection","label":"Collection"},{"type":"range","id":"products_to_show","min":2,"max":12,"step":1,"label":"Products to show","default":4},{"type":"range","id":"columns","min":2,"max":5,"step":1,"label":"Desktop columns","default":4},{"type":"range","id":"gap","min":8,"max":40,"step":4,"unit":"px","label":"Grid spacing","default":20},{"type":"select","id":"card_style","label":"Card style","options":[{"value":"minimal","label":"Minimal"},{"value":"editorial","label":"Editorial"},{"value":"commerce","label":"Commerce"}],"default":"editorial"},{"type":"text","id":"button_label","label":"Button label","default":"View collection"}],"presets":[{"name":"Featured collection"}]}
+{% endschema %}

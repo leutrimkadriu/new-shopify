@@ -1,6 +1,9 @@
-<nx-product-form class="nx-buy-buttons">
-  {% form 'product', product, id: 'nx-main-product-form' %}
+{% assign product_form_id = form_id | default: 'nx-main-product-form' %}
+{% assign no_js_form_id = product_form_id | append: '-NoScript' %}
+<nx-product-form class="nx-buy-buttons no-js-hidden">
+  {% form 'product', product, id: product_form_id %}
     <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+    {% if product.gift_card? %}{% render 'gift-card-recipient-form', product: product, form: form, section: section, form_id: product_form_id %}{% endif %}
     <button
       class="nx-button"
       type="submit"
@@ -15,6 +18,19 @@
       {% if product.selected_or_first_available_variant.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}
     </button>
     <span class="visually-hidden" data-error aria-live="polite"></span>
-    {% if block.settings.dynamic_checkout %}<div class="nx-dynamic-checkout">{{ form | payment_button }}</div>{% endif %}
+    {% if block.settings.dynamic_checkout and product.gift_card? == false %}<div class="nx-dynamic-checkout">{{ form | payment_button }}</div>{% endif %}
   {% endform %}
 </nx-product-form>
+<noscript>
+  {% form 'product', product, id: no_js_form_id, class: 'nx-buy-buttons' %}
+    {% if product.gift_card? %}{% render 'gift-card-recipient-form', product: product, form: form, section: section, form_id: no_js_form_id, noscript: true %}{% endif %}
+    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+    <div class="nx-field">
+      <label for="NoScriptQuantity-{{ section.id }}">{{ 'products.product.quantity' | t }}</label>
+      <input id="NoScriptQuantity-{{ section.id }}" type="number" name="quantity" value="1" min="1">
+    </div>
+    <button class="nx-button" type="submit" name="add"{% unless product.selected_or_first_available_variant.available %} disabled{% endunless %}>
+      {% if product.selected_or_first_available_variant.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}
+    </button>
+  {% endform %}
+</noscript>
