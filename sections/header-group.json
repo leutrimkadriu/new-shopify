@@ -1,1 +1,63 @@
-{"type":"header","name":"Header group","sections":{"announcement":{"type":"announcement-bar","blocks":{"message":{"type":"message","settings":{"text":"Complimentary shipping on selected orders","link":""}}},"block_order":["message"],"settings":{"rotate":true,"speed":6,"dismissible":true,"background":"#171714","text_color":"#ffffff"}},"header":{"type":"header","settings":{"layout":"logo_left","menu":"main-menu","sticky":true,"logo_height":34,"show_account":true,"show_localization":true}}},"order":["announcement","header"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "announcement": {
+      "type": "announcement-bar",
+      "blocks": {
+        "message": {
+          "type": "message",
+          "settings": {
+            "text": "Complimentary shipping on selected orders",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "message"
+      ],
+      "settings": {
+        "rotate": true,
+        "speed": 6,
+        "dismissible": true,
+        "background": "#171714",
+        "text_color": "#ffffff"
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "layout": "logo_left",
+        "menu": "main-menu",
+        "sticky": true,
+        "transparent_home": false,
+        "logo_height": 34,
+        "show_account": true,
+        "customer_account_menu": "customer-account-main-menu",
+        "show_localization": true
+      }
+    },
+    "learning_section_Cp6hLB": {
+      "type": "learning-section",
+      "name": "Learning section",
+      "settings": {
+        "heading": "My first Shopify section",
+        "text": "I am learning Shopify Liquid."
+      }
+    }
+  },
+  "order": [
+    "announcement",
+    "header",
+    "learning_section_Cp6hLB"
+  ]
+}

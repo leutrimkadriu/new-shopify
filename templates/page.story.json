@@ -1,1 +1,73 @@
-{"sections":{"intro":{"type":"rich-text","settings":{"eyebrow":"Our point of view","heading":"Built around what matters","text":"<p>Every enduring object begins with a clear idea and a reason to exist.</p>","button_label":"","color_scheme":"default"}},"image_text":{"type":"image-with-text","settings":{"eyebrow":"The beginning","heading":"An idea with purpose","text":"<p>Bring the origin of the brand into focus through material, place, and perspective.</p>","button_label":"","reverse":false}},"values":{"type":"multicolumn","blocks":{"a":{"type":"column","settings":{"heading":"Material","text":"<p>A closer look at what each piece is made from.</p>"}},"b":{"type":"column","settings":{"heading":"Process","text":"<p>The thinking and craft behind the finished form.</p>"}},"c":{"type":"column","settings":{"heading":"Future","text":"<p>The principles guiding what comes next.</p>"}}},"block_order":["a","b","c"],"settings":{"heading":"The principles","columns":3}}},"order":["intro","image_text","values"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "intro": {
+      "type": "rich-text",
+      "settings": {
+        "eyebrow": "Our point of view",
+        "heading": "Built around what matters",
+        "text": "<p>Every enduring object begins with a clear idea and a reason to exist.</p>",
+        "button_label": "",
+        "color_scheme": "default"
+      }
+    },
+    "image_text": {
+      "type": "image-with-text",
+      "settings": {
+        "eyebrow": "The beginning",
+        "heading": "An idea with purpose",
+        "text": "<p>Bring the origin of the brand into focus through material, place, and perspective.</p>",
+        "button_label": "",
+        "reverse": false
+      }
+    },
+    "values": {
+      "type": "multicolumn",
+      "blocks": {
+        "a": {
+          "type": "column",
+          "settings": {
+            "heading": "Material",
+            "text": "<p>A closer look at what each piece is made from.</p>"
+          }
+        },
+        "b": {
+          "type": "column",
+          "settings": {
+            "heading": "Process",
+            "text": "<p>The thinking and craft behind the finished form.</p>"
+          }
+        },
+        "c": {
+          "type": "column",
+          "settings": {
+            "heading": "Future",
+            "text": "<p>The principles guiding what comes next.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "a",
+        "b",
+        "c"
+      ],
+      "settings": {
+        "heading": "The principles",
+        "columns": 3
+      }
+    }
+  },
+  "order": [
+    "intro",
+    "image_text",
+    "values"
+  ]
+}

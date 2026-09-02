@@ -1,1 +1,57 @@
-{"type":"footer","name":"Footer group","sections":{"newsletter":{"type":"newsletter","settings":{"eyebrow":"Private access","heading":"Ideas, objects, and new arrivals","text":"<p>Join the VEYLUNE edit for considered releases and stories.</p>","color_scheme":"dark"}},"footer":{"type":"footer","blocks":{"menu1":{"type":"menu","settings":{"heading":"Explore","menu":"footer"}},"text":{"type":"text","settings":{"heading":"VEYLUNE","text":"<p>Editorial commerce for objects worth keeping.</p>"}}},"block_order":["menu1","text"],"settings":{"show_newsletter":false,"show_social":true,"show_follow_on_shop":true,"show_payments":true,"show_localization":true}}},"order":["newsletter","footer"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "eyebrow": "Private access",
+        "heading": "Ideas, objects, and new arrivals",
+        "text": "<p>Join the VEYLUNE edit for considered releases and stories.</p>",
+        "color_scheme": "dark"
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "menu1": {
+          "type": "menu",
+          "settings": {
+            "heading": "Explore",
+            "menu": "footer"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "heading": "VEYLUNE",
+            "text": "<p>Editorial commerce for objects worth keeping.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "menu1",
+        "text"
+      ],
+      "settings": {
+        "show_newsletter": false,
+        "show_social": true,
+        "show_payments": true,
+        "show_localization": true
+      }
+    }
+  },
+  "order": [
+    "newsletter",
+    "footer"
+  ]
+}

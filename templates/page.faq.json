@@ -1,1 +1,52 @@
-{"sections":{"main":{"type":"faq","blocks":{"q1":{"type":"question","settings":{"question":"Where can I find product details?","answer":"<p>Materials, dimensions, and care information can be shared on each product page.</p>"}},"q2":{"type":"question","settings":{"question":"Where can I review store policies?","answer":"<p>Shipping, returns, privacy, and terms are available through the policy links in the footer.</p>"}},"q3":{"type":"question","settings":{"question":"How can I ask another question?","answer":"<p>Use the contact page to send a note directly to the store team.</p>"}}},"block_order":["q1","q2","q3"],"settings":{"eyebrow":"Questions, answered","heading":"Good to know","text":"<p>Clear information for confident decisions.</p>"}}},"order":["main"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "faq",
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "Where can I find product details?",
+            "answer": "<p>Materials, dimensions, and care information can be shared on each product page.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "Where can I review store policies?",
+            "answer": "<p>Shipping, returns, privacy, and terms are available through the policy links in the footer.</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "How can I ask another question?",
+            "answer": "<p>Use the contact page to send a note directly to the store team.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "settings": {
+        "eyebrow": "Questions, answered",
+        "heading": "Good to know",
+        "text": "<p>Clear information for confident decisions.</p>"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
