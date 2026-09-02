@@ -279,8 +279,10 @@
   {% endif %}
 
 </section>
-{{ product.options_by_name }}
-<style>
+{% for product in recommendations.products %}
+  <h3>{{ product.title }}</h3>
+  <p>{{ product.price | money }}</p>
+{% endfor %}<style>
   #learning-section-{{ section.id }} {
     padding: {{ section.settings.section_padding }}px;
     background: {{ section.settings.section_background }};
