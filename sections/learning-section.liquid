@@ -277,6 +277,27 @@
       </div>
     {% endif %}
   {% endif %}
+
+
+  {% for media in product.media %}
+
+  {% case media.media_type %}
+
+    {% when 'image' %}
+      {{ media | image_url: width: 800 | image_tag }}
+
+    {% when 'video' %}
+      {{ media | video_tag: controls: true }}
+
+    {% when 'external_video' %}
+      {{ media | external_video_tag }}
+
+    {% when 'model' %}
+      {{ media | model_viewer_tag }}
+
+  {% endcase %}
+
+{% endfor %}
 </section>
 
 <style>
