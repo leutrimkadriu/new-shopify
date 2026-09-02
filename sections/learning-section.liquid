@@ -280,8 +280,11 @@
 
 </section>
 {% if request.design_mode %}
-  <p>This is visible in Theme Editor.</p>
-{% endif %}<style>
+  <h2>Jam në Theme Editor</h2>
+{% else %}
+  <h2>Jam në Store normal</h2>
+{% endif %}
+<style>
   #learning-section-{{ section.id }} {
     padding: {{ section.settings.section_padding }}px;
     background: {{ section.settings.section_background }};
