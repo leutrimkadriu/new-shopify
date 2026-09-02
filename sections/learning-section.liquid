@@ -37,6 +37,10 @@
       {% if selected_product.compare_at_price > selected_product.price %}
         <p>Sale</p>
       {% endif %}
+      {% assign discount_amount = selected_product.compare_at_price | minus: selected_product.price %}
+
+      {% assign discount_percent = discount_amount | times: 100 | divided_by: selected_product.compare_at_price %}
+      <p>-{{ discount_percent }}%</p>
       {% unless selected_product.available %}
         <p>Sold Out</p>
       {% endunless %}
