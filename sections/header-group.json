@@ -59,11 +59,17 @@
         "section_padding": 60,
         "product": "mallow-sandal"
       }
+    },
+    "custom_search_xGPMhY": {
+      "type": "custom-search",
+      "name": "Custom search",
+      "settings": {}
     }
   },
   "order": [
     "announcement",
     "header",
-    "learning_section_twLcCE"
+    "learning_section_twLcCE",
+    "custom_search_xGPMhY"
   ]
 }
