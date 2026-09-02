@@ -34,7 +34,20 @@
         {{ selected_product.featured_image | image_url: width: 600 | image_tag: alt: selected_product.title }}
       {% endif %}
       <h3>{{ selected_product.title }}</h3>
+      {% if selected_product.compare_at_price > selected_product.price %}
+        <p>Sale</p>
+      {% endif %}
+      {% unless selected_product.available %}
+        <p>Sold Out</p>
+      {% endunless %}
       <p>{{ selected_product.price | money }}</p>
+      {% if selected_product.compare_at_price > selected_product.price %}
+        <s>{{ selected_product.compare_at_price | money }}</s>
+        <span>{{ selected_product.price | money }}</span>
+
+      {% else %}
+        <span>{{ selected_product.price | money }}</span>
+      {% endif %}
 
       <a href="{{ selected_product.url }}"> View product </a>
     </div>
