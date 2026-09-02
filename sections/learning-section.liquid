@@ -278,9 +278,11 @@
     {% endif %}
   {% endif %}
 
-</section>
-<p>design_mode: {{ request.design_mode }}</p>
-<p>visual_preview_mode: {{ request.visual_preview_mode }}</p>
+</section>{% if request.design_mode == true %}
+  <h2>JAM NË THEME EDITOR</h2>
+{% else %}
+  <h2>JAM NË STORE NORMAL</h2>
+{% endif %}
 <style>
   #learning-section-{{ section.id }} {
     padding: {{ section.settings.section_padding }}px;
