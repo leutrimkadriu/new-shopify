@@ -2,9 +2,11 @@
   <h2>{{ section.settings.heading }}</h2>
 
   <p>{{ section.settings.text }}</p>
-  <a href="{{ section.settings.button_link }}">
-    {{ section.settings.button_text }}
-  </a>
+  {% if section.settings.button_text != blank %}
+    <a class="learning-button" href="{{ section.settings.button_link }}">
+      {{ section.settings.button_text }}
+    </a>
+  {% endif %}
 </section>
 
 <style>
@@ -18,6 +20,14 @@
   }
   .learning-section p {
     font-size: 18px;
+  }
+  .learning-button {
+    display: inline-block;
+    padding: 12px 14px;
+    background: black;
+    color: white;
+    text-decoration: none;
+    margin-top: 20px;
   }
 </style>
 
