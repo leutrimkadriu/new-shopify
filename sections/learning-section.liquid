@@ -279,13 +279,10 @@
   {% endif %}
 
 </section>
-{% if recommendations.performed %}
-  <p>Recommendations loaded</p>
+{% if request.page_type == 'product' %}
+  <p>Jemi në Product Page</p>
 {% endif %}
-{% for product in recommendations.products %}
-  <h3>{{ product.title }}</h3>
-  <p>{{ product.price | money }}</p>
-{% endfor %}<style>
+<style>
   #learning-section-{{ section.id }} {
     padding: {{ section.settings.section_padding }}px;
     background: {{ section.settings.section_background }};
