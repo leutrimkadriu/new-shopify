@@ -279,7 +279,9 @@
   {% endif %}
 
 </section>
-{{ request.locale.iso_code }}<style>
+{% if request.design_mode %}
+  <p>This is visible in Theme Editor.</p>
+{% endif %}<style>
   #learning-section-{{ section.id }} {
     padding: {{ section.settings.section_padding }}px;
     background: {{ section.settings.section_background }};
