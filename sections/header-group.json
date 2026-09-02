@@ -51,7 +51,10 @@
       "name": "Learning section",
       "settings": {
         "heading": "My first Shopify section",
-        "text": "I am learning Shopify Liquid."
+        "text": "I am learning Shopify Liquid.",
+        "button_text": "Shop now",
+        "button_link": "",
+        "button_color": "#CFB3B3"
       }
     }
   },
