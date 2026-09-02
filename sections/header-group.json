@@ -54,9 +54,10 @@
         "text": "I am learning Shopify Liquid.",
         "button_text": "Shop now",
         "button_link": "",
-        "button_color": "#201E1E",
+        "button_color": "#AD9E9E",
         "section_background": "#994949",
-        "section_padding": 35
+        "section_padding": 60,
+        "image": "shopify://shop_images/10_a8c9b496-3c10-459f-9dd3-15693a517b2b.jpg"
       }
     }
   },
