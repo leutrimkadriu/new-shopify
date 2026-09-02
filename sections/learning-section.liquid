@@ -1,7 +1,11 @@
 <section class="learning-section">
+  {% if section.settings.image != blank %}
+    {{ section.settings.image | image_url: width: 800 | image_tag: alt: section.settings.heading }}
+  {% endif %}
   <h2>{{ section.settings.heading }}</h2>
 
   <p>{{ section.settings.text }}</p>
+
   {% if section.settings.button_text != blank %}
     <a class="learning-button" href="{{ section.settings.button_link }}">
       {{ section.settings.button_text }}
@@ -12,8 +16,16 @@
 <style>
   .learning-section {
     padding: {{ section.settings.section_padding }}px;
+    background: {{ section.settings.section_background }};
+
     text-align: center;
   }
+  .learning-section img{
+width:100%;
+max-width:600px;
+height:auto;
+margin: bottom 20px;
+}
   .learning-section h2 {
     font-size: 40px;
     margin-bottom: 15px;
@@ -24,8 +36,8 @@
   .learning-button {
     display: inline-block;
     padding: 12px 14px;
-    background: {{ section.settings.section_background }};
-    color: {{  section.settings.button_color }};
+    background: {{  section.settings.button_color  }};
+    color: white;
     text-decoration: none;
     margin-top: 20px;
   }
@@ -79,6 +91,11 @@
       "step": 5,
       "unit": "px",
       "default": 40
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
     }
   ],
   "presets": [
