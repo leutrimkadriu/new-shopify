@@ -279,11 +279,8 @@
   {% endif %}
 
 </section>
-{% if request.design_mode %}
-  <h2>Jam në Theme Editor</h2>
-{% else %}
-  <h2>Jam në Store normal</h2>
-{% endif %}
+<p>design_mode: {{ request.design_mode }}</p>
+<p>visual_preview_mode: {{ request.visual_preview_mode }}</p>
 <style>
   #learning-section-{{ section.id }} {
     padding: {{ section.settings.section_padding }}px;
