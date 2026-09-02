@@ -24,7 +24,7 @@
   .learning-button {
     display: inline-block;
     padding: 12px 14px;
-    background: black;
+    background: {{ section.settings.button_color }};
     color: white;
     text-decoration: none;
     margin-top: 20px;
@@ -57,6 +57,12 @@
       "type": "url",
       "id": "button_link",
       "label": "Button link"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button color",
+      "default": "#000000"
     }
   ],
   "presets": [
