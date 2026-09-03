@@ -30,6 +30,15 @@
       </span>
 
     {% endif %}
+    {% if option_value.swatch.image %}
+
+  {{
+    option_value.swatch.image
+    | image_url: width: 100
+    | image_tag
+  }}
+
+{% endif %}
 
   {% endfor %}
 
