@@ -307,7 +307,16 @@
 
   {{ form | login_button }}
 
-{% endform %}</p>
+{% endform %}
+{% paginate collection.products by 12 %}
+
+  {% for product in collection.products %}
+    <h3>{{ product.title }}</h3>
+  {% endfor %}
+
+  {{ paginate | default_pagination }}
+
+{% endpaginate %}</p>
 
 <style>
   #learning-section-{{ section.id }} {
