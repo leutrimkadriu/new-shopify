@@ -3,6 +3,19 @@
 <p>{{ product.price }}</p>
 <img src="{{ product.images }}" />
 </div>
+{% for option in product.options_with_values %}
+
+  <h3>{{ option.name }}</h3>
+
+  {% for option_value in option.values %}
+
+    <p>
+      {{ option_value.name }}
+    </p>
+
+  {% endfor %}
+
+{% endfor %}
 {% schema %}
 {
     "name": "Img-color-produkt",
