@@ -289,7 +289,16 @@
     ✅
 </div>
 
-{{ product.type | link_to_type }}
+<div class="product-info">
+  <h1>{{ product.title }}</h1>
+
+  <p>
+    Category:
+    {{ product.type | link_to_type }}
+  </p>
+
+  <p>{{ product.price | money }}</p>
+</div>
 
 
 <style>
