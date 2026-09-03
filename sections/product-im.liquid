@@ -446,7 +446,9 @@
             {{ current_variant.id }}
           </strong>
         </p>
-
+{% for variant in product.variants %}
+  {{ variant.title }}
+{% endfor %}
       </div>
 
 
@@ -502,9 +504,7 @@
   <div class="empty-product">
     Select a product from the Theme Editor.
   </div>
-{% for variant in product.variants %}
-  {{ variant.title }}
-{% endfor %}
+
 {% endif %}
 
 
