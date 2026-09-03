@@ -27,6 +27,16 @@
         {% for option_value in option.values %}
 
           <div class="product-option">
+             <label class="product-option">
+
+          <input
+            type="radio"
+            name="option-{{ option.position }}"
+            value="{{ option_value.name }}"
+            {% if option_value.selected %}
+              checked
+            {% endif %}
+          >
 
             {% if option_value.swatch.image %}
 
