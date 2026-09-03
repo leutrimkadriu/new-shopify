@@ -3,58 +3,141 @@
 {% if selected_product != blank %}
 
   {% assign current_variant = selected_product.selected_or_first_available_variant %}
+  {% assign product_form_id = 'product-form-' | append: section.id %}
 
   <section
-    class="pammys-product"
+    class="custom-product"
     id="product-box-{{ section.id }}"
   >
 
-    <!-- =========================
-         LEFT: PRODUCT GALLERY
-    ========================== -->
+    <!-- =========================================
+         LEFT SIDE - PRODUCT IMAGE SLIDER
+    ========================================== -->
 
-    <div class="pammys-product__media">
+    <div class="product-media-column">
 
       <div
-        class="product-gallery"
-        id="product-gallery-{{ section.id }}"
+        class="product-slider"
+        id="product-slider-{{ section.id }}"
       >
 
-        {% for media in selected_product.media %}
+        <div class="product-slider__viewport">
 
-          {% if media.media_type == 'image' %}
+          <div class="product-slider__slides">
 
-            <div
-              class="gallery-item"
-              data-media-alt="{{ media.alt | default: '' | strip | downcase | escape }}"
-            >
+            {% for media in selected_product.media %}
 
-              {{
-                media.preview_image
-                | image_url: width: 1200
-                | image_tag:
-                  class: 'gallery-image',
-                  loading: 'lazy',
-                  widths: '400, 600, 800, 1000, 1200',
-                  alt: media.alt
-              }}
+              {% if media.media_type == 'image' %}
 
-            </div>
+                <div
+                  class="product-slide"
+                  data-media-id="{{ media.id }}"
+                  data-media-alt="{{ media.alt | default: '' | strip | downcase | escape }}"
+                >
 
-          {% endif %}
+                  {{
+                    media.preview_image
+                    | image_url: width: 1400
+                    | image_tag:
+                      class: 'product-slide__image',
+                      loading: 'lazy',
+                      widths: '400, 600, 800, 1000, 1200, 1400',
+                      alt: media.alt
+                  }}
 
-        {% endfor %}
+                </div>
+
+              {% endif %}
+
+            {% endfor %}
+
+          </div>
+
+
+          <!-- PREVIOUS -->
+
+          <button
+            type="button"
+            class="slider-arrow slider-arrow--prev"
+            aria-label="Previous image"
+          >
+            &#8592;
+          </button>
+
+
+          <!-- NEXT -->
+
+          <button
+            type="button"
+            class="slider-arrow slider-arrow--next"
+            aria-label="Next image"
+          >
+            &#8594;
+          </button>
+
+
+          <!-- COUNTER -->
+
+          <div class="slider-counter">
+
+            <span class="slider-current">
+              1
+            </span>
+
+            <span>/</span>
+
+            <span class="slider-total">
+              1
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- THUMBNAILS -->
+
+        <div class="product-thumbnails">
+
+          {% for media in selected_product.media %}
+
+            {% if media.media_type == 'image' %}
+
+              <button
+                type="button"
+                class="product-thumbnail"
+                data-media-id="{{ media.id }}"
+                data-media-alt="{{ media.alt | default: '' | strip | downcase | escape }}"
+                aria-label="View image {{ forloop.index }}"
+              >
+
+                {{
+                  media.preview_image
+                  | image_url: width: 180
+                  | image_tag:
+                    loading: 'lazy',
+                    class: 'product-thumbnail__image',
+                    alt: media.alt
+                }}
+
+              </button>
+
+            {% endif %}
+
+          {% endfor %}
+
+        </div>
 
       </div>
 
     </div>
 
 
-    <!-- =========================
-         RIGHT: PRODUCT INFO
-    ========================== -->
+    <!-- =========================================
+         RIGHT SIDE - PRODUCT INFORMATION
+    ========================================== -->
 
-    <div class="pammys-product__info">
+    <div class="product-info-column">
 
       <!-- SALE BADGE -->
 
@@ -125,7 +208,7 @@
       <!-- STOCK -->
 
       <div
-        class="stock-message"
+        class="stock-message {% unless current_variant.available %}is-sold-out{% endunless %}"
         id="stock-message-{{ section.id }}"
       >
 
@@ -155,9 +238,9 @@
       {% endif %}
 
 
-      <!-- =========================
+      <!-- =========================================
            PRODUCT OPTIONS
-      ========================== -->
+      ========================================== -->
 
       <div class="variant-options">
 
@@ -178,11 +261,15 @@
                 class="selected-option-value"
                 data-selected-option="{{ option.position }}"
               >
+
                 {% for option_value in option.values %}
+
                   {% if option_value.selected %}
                     {{ option_value.name }}
                   {% endif %}
+
                 {% endfor %}
+
               </strong>
 
             </div>
@@ -195,16 +282,7 @@
 
               {% for option_value in option.values %}
 
-                <label
-                  class="
-                    product-option
-                    {% if option_value.swatch.color or option_value.swatch.image %}
-                      product-option--swatch
-                    {% else %}
-                      product-option--text
-                    {% endif %}
-                  "
-                >
+                <label class="product-option">
 
                   <input
                     type="radio"
@@ -271,39 +349,65 @@
       </div>
 
 
-     {% assign product_form_id = 'product-form-' | append: section.id %}
+      <!-- =========================================
+           PRODUCT FORM
+      ========================================== -->
 
-{% form 'product', selected_product, id: product_form_id, class: 'product-form' %}
+      {% form 'product',
+        selected_product,
+        id: product_form_id,
+        class: 'product-form'
+      %}
 
-  <input
-    type="hidden"
-    name="id"
-    id="variant-input-{{ section.id }}"
-    value="{{ current_variant.id }}"
-  >
+        <input
+          type="hidden"
+          name="id"
+          id="variant-input-{{ section.id }}"
+          value="{{ current_variant.id }}"
+        >
 
-  <input
-    type="hidden"
-    name="quantity"
-    value="1"
-  >
+        <div class="quantity-wrapper">
 
-  <button
-    type="submit"
-    class="add-to-cart-button"
-    id="add-to-cart-{{ section.id }}"
-    {% unless current_variant.available %}
-      disabled
-    {% endunless %}
-  >
-    {% if current_variant.available %}
-      Add to cart
-    {% else %}
-      Sold out
-    {% endif %}
-  </button>
+          <label
+            for="quantity-{{ section.id }}"
+            class="quantity-label"
+          >
+            Quantity
+          </label>
 
-{% endform %}
+          <input
+            id="quantity-{{ section.id }}"
+            class="quantity-input"
+            type="number"
+            name="quantity"
+            value="1"
+            min="1"
+          >
+
+        </div>
+
+
+        <button
+          type="submit"
+          class="add-to-cart-button"
+          id="add-to-cart-{{ section.id }}"
+          {% unless current_variant.available %}
+            disabled
+          {% endunless %}
+        >
+
+          {% if current_variant.available %}
+            Add to cart
+          {% else %}
+            Sold out
+          {% endif %}
+
+        </button>
+
+      {% endform %}
+
+
+      <!-- BENEFITS -->
 
       <div class="product-benefits">
 
@@ -325,7 +429,7 @@
       </div>
 
 
-      <!-- DEBUG / LEARNING -->
+      <!-- LEARNING INFO -->
 
       <div class="variant-debug">
 
@@ -346,9 +450,9 @@
       </div>
 
 
-      <!-- =========================
+      <!-- =========================================
            VARIANT JSON
-      ========================== -->
+      ========================================== -->
 
       <script
         type="application/json"
@@ -356,6 +460,7 @@
       >
         [
           {% for variant in selected_product.variants %}
+
             {
               "id": {{ variant.id | json }},
               "title": {{ variant.title | json }},
@@ -363,12 +468,14 @@
               "available": {{ variant.available | json }},
               "price": {{ variant.price | json }},
               "priceFormatted": {{ variant.price | money | json }},
+
               "compareAtPrice":
                 {% if variant.compare_at_price %}
                   {{ variant.compare_at_price | json }}
                 {% else %}
                   null
                 {% endif %},
+
               "compareAtPriceFormatted":
                 {% if variant.compare_at_price %}
                   {{ variant.compare_at_price | money | json }}
@@ -376,7 +483,11 @@
                   null
                 {% endif %}
             }
-            {% unless forloop.last %},{% endunless %}
+
+            {% unless forloop.last %}
+              ,
+            {% endunless %}
+
           {% endfor %}
         ]
       </script>
@@ -389,71 +500,81 @@
 {% else %}
 
   <div class="empty-product">
-    Select a product in Theme Editor.
+    Select a product from the Theme Editor.
   </div>
 
 {% endif %}
 
 
+
 <style>
 
-  /* ==============================
-     PRODUCT LAYOUT
-  ============================== */
+  /* =========================================
+     MAIN PRODUCT LAYOUT
+  ========================================== */
 
   #product-box-{{ section.id }} {
-    max-width: 1440px;
+
+    max-width: 1450px;
+
     margin: 0 auto;
-    padding: 40px 24px 70px;
+
+    padding:
+      36px 24px
+      70px;
 
     display: grid;
+
     grid-template-columns:
       minmax(0, 1.15fr)
-      minmax(360px, 0.85fr);
+      minmax(380px, 0.85fr);
 
-    gap: 56px;
+    gap: 60px;
 
-    color: #161616;
+    color: #111;
   }
 
 
-  /* ==============================
-     GALLERY
-  ============================== */
+  /* =========================================
+     SLIDER
+  ========================================== */
 
   #product-box-{{ section.id }}
-  .product-gallery {
+  .product-slider {
 
-    display: grid;
-
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-
-    gap: 10px;
+    width: 100%;
   }
 
 
   #product-box-{{ section.id }}
-  .gallery-item {
+  .product-slider__viewport {
 
-    display: none;
+    position: relative;
 
     overflow: hidden;
 
-    background: #f5f5f3;
+    background: #f4f4f2;
 
-    border-radius: 4px;
+    border-radius: 6px;
   }
 
 
   #product-box-{{ section.id }}
-  .gallery-item.is-visible {
+  .product-slide {
+
+    display: none;
+  }
+
+
+  #product-box-{{ section.id }}
+  .product-slide.is-active {
+
     display: block;
   }
 
 
   #product-box-{{ section.id }}
-  .gallery-image {
+  .product-slide__image {
 
     display: block;
 
@@ -461,39 +582,233 @@
 
     height: auto;
 
-    aspect-ratio: 1 / 1.18;
+    aspect-ratio: 1 / 1.12;
 
     object-fit: cover;
+  }
+
+
+  /* =========================================
+     ARROWS
+  ========================================== */
+
+  #product-box-{{ section.id }}
+  .slider-arrow {
+
+    position: absolute;
+
+    top: 50%;
+
+    z-index: 5;
+
+    width: 46px;
+
+    height: 46px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 0;
+
+    border: 0;
+
+    border-radius: 50%;
+
+    background:
+      rgba(255,255,255,0.92);
+
+    color: #111;
+
+    font-size: 21px;
+
+    cursor: pointer;
+
+    transform:
+      translateY(-50%);
+
+    box-shadow:
+      0 2px 10px
+      rgba(0,0,0,0.08);
 
     transition:
-      transform 0.35s ease;
+      transform 0.2s ease,
+      opacity 0.2s ease;
   }
 
 
   #product-box-{{ section.id }}
-  .gallery-item:hover .gallery-image {
-    transform: scale(1.015);
+  .slider-arrow:hover {
+
+    transform:
+      translateY(-50%)
+      scale(1.07);
   }
 
 
-  /* ==============================
+  #product-box-{{ section.id }}
+  .slider-arrow--prev {
+
+    left: 15px;
+  }
+
+
+  #product-box-{{ section.id }}
+  .slider-arrow--next {
+
+    right: 15px;
+  }
+
+
+  #product-box-{{ section.id }}
+  .slider-arrow:disabled {
+
+    opacity: 0;
+
+    pointer-events: none;
+  }
+
+
+  /* =========================================
+     COUNTER
+  ========================================== */
+
+  #product-box-{{ section.id }}
+  .slider-counter {
+
+    position: absolute;
+
+    right: 15px;
+
+    bottom: 15px;
+
+    z-index: 5;
+
+    padding:
+      7px 12px;
+
+    border-radius: 30px;
+
+    background:
+      rgba(255,255,255,0.92);
+
+    font-size: 12px;
+
+    font-weight: 600;
+  }
+
+
+  /* =========================================
+     THUMBNAILS
+  ========================================== */
+
+  #product-box-{{ section.id }}
+  .product-thumbnails {
+
+    display: flex;
+
+    gap: 8px;
+
+    margin-top: 10px;
+
+    overflow-x: auto;
+
+    scrollbar-width: none;
+  }
+
+
+  #product-box-{{ section.id }}
+  .product-thumbnails::-webkit-scrollbar {
+
+    display: none;
+  }
+
+
+  #product-box-{{ section.id }}
+  .product-thumbnail {
+
+    display: none;
+
+    flex:
+      0 0 72px;
+
+    width: 72px;
+
+    height: 82px;
+
+    padding: 0;
+
+    overflow: hidden;
+
+    border:
+      1px solid #d8d8d8;
+
+    border-radius: 3px;
+
+    background: #f5f5f5;
+
+    cursor: pointer;
+
+    opacity: 0.65;
+
+    transition:
+      opacity 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+
+  #product-box-{{ section.id }}
+  .product-thumbnail.is-visible {
+
+    display: block;
+  }
+
+
+  #product-box-{{ section.id }}
+  .product-thumbnail.is-active {
+
+    opacity: 1;
+
+    border-color: #111;
+
+    box-shadow:
+      0 0 0 1px #111;
+  }
+
+
+  #product-box-{{ section.id }}
+  .product-thumbnail__image {
+
+    display: block;
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+  }
+
+
+  /* =========================================
      PRODUCT INFO
-  ============================== */
+  ========================================== */
 
   #product-box-{{ section.id }}
-  .pammys-product__info {
+  .product-info-column {
 
     position: sticky;
 
-    top: 20px;
+    top: 25px;
 
     align-self: start;
   }
 
 
-  /* ==============================
-     SALE
-  ============================== */
+  /* =========================================
+     SALE BADGE
+  ========================================== */
 
   #product-box-{{ section.id }}
   .sale-badge {
@@ -502,42 +817,46 @@
 
     align-items: center;
 
-    min-height: 28px;
+    margin-bottom: 14px;
 
-    padding: 5px 10px;
-
-    margin-bottom: 13px;
-
-    background: #edff68;
+    padding:
+      6px 11px;
 
     border-radius: 3px;
+
+    background: #ecff64;
 
     font-size: 12px;
 
     font-weight: 700;
 
     text-transform: uppercase;
-
-    letter-spacing: 0.03em;
   }
 
 
   #product-box-{{ section.id }}
   .sale-badge[hidden] {
+
     display: none;
   }
 
 
-  /* ==============================
-     TITLE
-  ============================== */
+  /* =========================================
+     PRODUCT TITLE
+  ========================================== */
 
   #product-box-{{ section.id }}
   .product-title {
 
-    margin: 0 0 12px;
+    margin:
+      0 0 13px;
 
-    font-size: clamp(28px, 3vw, 44px);
+    font-size:
+      clamp(
+        30px,
+        3vw,
+        46px
+      );
 
     line-height: 1.05;
 
@@ -547,9 +866,9 @@
   }
 
 
-  /* ==============================
+  /* =========================================
      PRICE
-  ============================== */
+  ========================================== */
 
   #product-box-{{ section.id }}
   .product-price-wrapper {
@@ -558,11 +877,9 @@
 
     align-items: center;
 
-    flex-wrap: wrap;
-
     gap: 10px;
 
-    margin-bottom: 5px;
+    flex-wrap: wrap;
   }
 
 
@@ -582,12 +899,14 @@
 
     color: #777;
 
-    text-decoration: line-through;
+    text-decoration:
+      line-through;
   }
 
 
   #product-box-{{ section.id }}
   .compare-price[hidden] {
+
     display: none;
   }
 
@@ -595,17 +914,18 @@
   #product-box-{{ section.id }}
   .tax-text {
 
-    margin: 0;
-
-    font-size: 12px;
+    margin:
+      5px 0 0;
 
     color: #777;
+
+    font-size: 12px;
   }
 
 
-  /* ==============================
+  /* =========================================
      STOCK
-  ============================== */
+  ========================================== */
 
   #product-box-{{ section.id }}
   .stock-message {
@@ -616,7 +936,8 @@
 
     gap: 8px;
 
-    margin: 18px 0 24px;
+    margin:
+      19px 0 25px;
 
     font-size: 13px;
 
@@ -631,11 +952,9 @@
 
     height: 8px;
 
-    flex: 0 0 8px;
-
     border-radius: 50%;
 
-    background: #2eaa54;
+    background: #2fa557;
   }
 
 
@@ -643,35 +962,35 @@
   .stock-message.is-sold-out
   .stock-dot {
 
-    background: #999;
+    background: #aaa;
   }
 
 
-  /* ==============================
+  /* =========================================
      DESCRIPTION
-  ============================== */
+  ========================================== */
 
   #product-box-{{ section.id }}
   .product-description {
 
     margin-bottom: 30px;
 
+    color: #454545;
+
     font-size: 14px;
 
-    line-height: 1.6;
-
-    color: #454545;
+    line-height: 1.65;
   }
 
 
-  /* ==============================
+  /* =========================================
      OPTIONS
-  ============================== */
+  ========================================== */
 
   #product-box-{{ section.id }}
   .variant-option-group {
 
-    margin-top: 28px;
+    margin-top: 27px;
   }
 
 
@@ -680,9 +999,9 @@
 
     display: flex;
 
-    align-items: center;
-
     gap: 5px;
+
+    align-items: center;
 
     margin-bottom: 12px;
 
@@ -692,12 +1011,14 @@
 
   #product-box-{{ section.id }}
   .option-name {
+
     font-weight: 500;
   }
 
 
   #product-box-{{ section.id }}
   .selected-option-value {
+
     font-weight: 700;
   }
 
@@ -734,17 +1055,19 @@
     height: 1px;
 
     opacity: 0;
-
-    pointer-events: none;
   }
 
 
-  /* ==============================
-     SWATCH
-  ============================== */
+  /* =========================================
+     COLOR / IMAGE SWATCH
+  ========================================== */
 
   #product-box-{{ section.id }}
   .swatch-shell {
+
+    width: 58px;
+
+    height: 58px;
 
     display: flex;
 
@@ -752,17 +1075,14 @@
 
     justify-content: center;
 
-    width: 58px;
-
-    height: 58px;
-
     padding: 3px;
 
-    background: #fff;
-
-    border: 1px solid #d9d9d9;
+    border:
+      1px solid #d6d6d6;
 
     border-radius: 4px;
+
+    background: #fff;
 
     transition:
       border-color 0.2s ease,
@@ -809,9 +1129,9 @@
   }
 
 
-  /* ==============================
-     SIZE / TEXT OPTIONS
-  ============================== */
+  /* =========================================
+     SIZE OPTIONS
+  ========================================== */
 
   #product-box-{{ section.id }}
   .option-text {
@@ -826,21 +1146,24 @@
 
     min-height: 44px;
 
-    padding: 8px 15px;
+    padding:
+      8px 15px;
 
-    background: #fff;
-
-    border: 1px solid #cfcfcf;
+    border:
+      1px solid #ccc;
 
     border-radius: 3px;
+
+    background: #fff;
 
     font-size: 13px;
 
     font-weight: 600;
 
     transition:
-      border-color 0.2s ease,
-      background 0.2s ease;
+      background 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease;
   }
 
 
@@ -848,17 +1171,60 @@
   .product-option input:checked
   + .option-text {
 
-    color: #fff;
+    border-color: #111;
 
     background: #111;
 
-    border-color: #111;
+    color: #fff;
   }
 
 
-  /* ==============================
+  /* =========================================
+     QUANTITY
+  ========================================== */
+
+  #product-box-{{ section.id }}
+  .quantity-wrapper {
+
+    margin-bottom: 12px;
+  }
+
+
+  #product-box-{{ section.id }}
+  .quantity-label {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+  }
+
+
+  #product-box-{{ section.id }}
+  .quantity-input {
+
+    width: 80px;
+
+    height: 44px;
+
+    padding:
+      0 10px;
+
+    border:
+      1px solid #ccc;
+
+    border-radius: 3px;
+
+    font: inherit;
+  }
+
+
+  /* =========================================
      ADD TO CART
-  ============================== */
+  ========================================== */
 
   #product-box-{{ section.id }}
   .product-form {
@@ -872,9 +1238,7 @@
 
     width: 100%;
 
-    min-height: 56px;
-
-    padding: 15px 20px;
+    min-height: 58px;
 
     border: 0;
 
@@ -909,15 +1273,16 @@
   #product-box-{{ section.id }}
   .add-to-cart-button:disabled {
 
-    cursor: not-allowed;
-
     opacity: 0.45;
+
+    cursor:
+      not-allowed;
   }
 
 
-  /* ==============================
+  /* =========================================
      BENEFITS
-  ============================== */
+  ========================================== */
 
   #product-box-{{ section.id }}
   .product-benefits {
@@ -930,11 +1295,12 @@
 
     padding-top: 18px;
 
-    border-top: 1px solid #e8e8e8;
-
-    font-size: 12px;
+    border-top:
+      1px solid #e5e5e5;
 
     color: #555;
+
+    font-size: 12px;
   }
 
 
@@ -949,44 +1315,47 @@
   }
 
 
-  /* DEBUG ONLY FOR LEARNING */
+  /* =========================================
+     DEBUG - LEARNING
+  ========================================== */
 
   #product-box-{{ section.id }}
   .variant-debug {
 
-    margin-top: 30px;
+    margin-top: 28px;
 
     padding: 12px;
 
-    background: #f6f6f6;
-
     border-radius: 4px;
 
-    font-size: 11px;
+    background: #f5f5f5;
 
     color: #777;
+
+    font-size: 11px;
   }
 
 
-  /* ==============================
-     MOBILE
-  ============================== */
+  /* =========================================
+     TABLET
+  ========================================== */
 
-  @media screen and (max-width: 900px) {
+  @media screen and (max-width: 950px) {
 
     #product-box-{{ section.id }} {
 
       grid-template-columns: 1fr;
 
-      gap: 30px;
+      gap: 35px;
 
       padding:
-        15px 15px 50px;
+        20px 16px
+        50px;
     }
 
 
     #product-box-{{ section.id }}
-    .pammys-product__info {
+    .product-info-column {
 
       position: static;
     }
@@ -994,37 +1363,70 @@
   }
 
 
+  /* =========================================
+     MOBILE
+  ========================================== */
+
   @media screen and (max-width: 600px) {
 
-    #product-box-{{ section.id }}
-    .product-gallery {
+    #product-box-{{ section.id }} {
 
-      display: flex;
-
-      overflow-x: auto;
-
-      scroll-snap-type: x mandatory;
-
-      gap: 6px;
-
-      scrollbar-width: none;
+      padding:
+        10px 12px
+        45px;
     }
 
 
     #product-box-{{ section.id }}
-    .product-gallery::-webkit-scrollbar {
-      display: none;
+    .product-slide__image {
+
+      aspect-ratio:
+        1 / 1.08;
     }
 
 
     #product-box-{{ section.id }}
-    .gallery-item.is-visible {
+    .slider-arrow {
 
-      display: block;
+      width: 39px;
 
-      flex: 0 0 88%;
+      height: 39px;
 
-      scroll-snap-align: start;
+      font-size: 18px;
+    }
+
+
+    #product-box-{{ section.id }}
+    .slider-arrow--prev {
+
+      left: 10px;
+    }
+
+
+    #product-box-{{ section.id }}
+    .slider-arrow--next {
+
+      right: 10px;
+    }
+
+
+    #product-box-{{ section.id }}
+    .slider-counter {
+
+      right: 10px;
+
+      bottom: 10px;
+    }
+
+
+    #product-box-{{ section.id }}
+    .product-thumbnail {
+
+      flex-basis: 60px;
+
+      width: 60px;
+
+      height: 68px;
     }
 
 
@@ -1039,6 +1441,7 @@
 </style>
 
 
+
 <script>
 
 (function() {
@@ -1049,8 +1452,14 @@
     );
 
 
-  if (!productBox) return;
+  if (!productBox) {
+    return;
+  }
 
+
+  /* =========================================
+     VARIANT DATA
+  ========================================== */
 
   const variantDataElement =
     document.getElementById(
@@ -1058,7 +1467,9 @@
     );
 
 
-  if (!variantDataElement) return;
+  if (!variantDataElement) {
+    return;
+  }
 
 
   const variants =
@@ -1066,6 +1477,10 @@
       variantDataElement.textContent
     );
 
+
+  /* =========================================
+     ELEMENTS
+  ========================================== */
 
   const optionGroups =
     productBox.querySelectorAll(
@@ -1079,9 +1494,49 @@
     );
 
 
-  const galleryItems =
-    productBox.querySelectorAll(
-      '.gallery-item'
+  const slides =
+    Array.from(
+      productBox.querySelectorAll(
+        '.product-slide'
+      )
+    );
+
+
+  const thumbnails =
+    Array.from(
+      productBox.querySelectorAll(
+        '.product-thumbnail'
+      )
+    );
+
+
+  const prevButton =
+    productBox.querySelector(
+      '.slider-arrow--prev'
+    );
+
+
+  const nextButton =
+    productBox.querySelector(
+      '.slider-arrow--next'
+    );
+
+
+  const currentCounter =
+    productBox.querySelector(
+      '.slider-current'
+    );
+
+
+  const totalCounter =
+    productBox.querySelector(
+      '.slider-total'
+    );
+
+
+  const sliderViewport =
+    productBox.querySelector(
+      '.product-slider__viewport'
     );
 
 
@@ -1110,9 +1565,11 @@
 
 
   const stockText =
-    stockMessage.querySelector(
-      '.stock-text'
-    );
+    stockMessage
+      ? stockMessage.querySelector(
+          '.stock-text'
+        )
+      : null;
 
 
   const variantTitle =
@@ -1139,185 +1596,39 @@
     );
 
 
-  /* ==============================
-     GET SELECTED OPTIONS
-  ============================== */
+  /* =========================================
+     SLIDER VARIABLES
+  ========================================== */
+
+  let visibleSlides = [];
+
+  let currentSlideIndex = 0;
+
+  let previousColor = null;
+
+
+  /* =========================================
+     SELECTED OPTIONS
+  ========================================== */
 
   function getSelectedOptions() {
 
-    const values = [];
+    const selectedOptions = [];
 
 
-    optionGroups.forEach(function(group) {
+    optionGroups.forEach(
+      function(group) {
 
-      const selected =
-        group.querySelector(
-          'input:checked'
-        );
-
-
-      if (selected) {
-
-        values.push(
-          selected.value
-        );
-
-      }
-
-    });
-
-
-    return values;
-
-  }
-
-
-  /* ==============================
-     UPDATE LABELS
-  ============================== */
-
-  function updateOptionLabels() {
-
-    optionGroups.forEach(function(group) {
-
-      const selected =
-        group.querySelector(
-          'input:checked'
-        );
-
-
-      if (!selected) return;
-
-
-      const position =
-        selected.dataset.optionPosition;
-
-
-      const label =
-        productBox.querySelector(
-          '[data-selected-option="' +
-          position +
-          '"]'
-        );
-
-
-      if (label) {
-
-        label.textContent =
-          selected.value;
-
-      }
-
-    });
-
-  }
-
-
-  /* ==============================
-     FIND COLOR
-  ============================== */
-
-  function getSelectedColor() {
-
-    let selectedColor = null;
-
-
-    inputs.forEach(function(input) {
-
-      const optionName =
-        input.dataset.optionName
-          .toLowerCase()
-          .trim();
-
-
-      if (
-        input.checked &&
-        optionName === 'color'
-      ) {
-
-        selectedColor =
-          input.value
-            .toLowerCase()
-            .trim();
-
-      }
-
-    });
-
-
-    return selectedColor;
-
-  }
-
-
-  /* ==============================
-     FILTER GALLERY
-  ============================== */
-
-  function updateGallery() {
-
-    const selectedColor =
-      getSelectedColor();
-
-
-    if (!selectedColor) {
-
-      galleryItems.forEach(
-        function(item) {
-
-          item.classList.add(
-            'is-visible'
-          );
-
-        }
-      );
-
-      return;
-
-    }
-
-
-    let matches = 0;
-
-
-    galleryItems.forEach(
-      function(item) {
-
-        const mediaAlt =
-          item.dataset.mediaAlt
-            .toLowerCase()
-            .trim();
-
-
-        /*
-          Punon me:
-
-          Bronze
-
-          ose:
-
-          Bronze / 45
-        */
-
-        const belongsToColor =
-          mediaAlt === selectedColor ||
-          mediaAlt.startsWith(
-            selectedColor + ' /'
+        const selected =
+          group.querySelector(
+            'input[type="radio"]:checked'
           );
 
 
-        if (belongsToColor) {
+        if (selected) {
 
-          item.classList.add(
-            'is-visible'
-          );
-
-          matches++;
-
-        } else {
-
-          item.classList.remove(
-            'is-visible'
+          selectedOptions.push(
+            selected.value
           );
 
         }
@@ -1326,32 +1637,563 @@
     );
 
 
-    /*
-      Fallback:
-      nëse ALT nuk është vendosur,
-      mos e lëmë gallery bosh.
-    */
+    return selectedOptions;
 
-    if (matches === 0) {
+  }
 
-      galleryItems.forEach(
-        function(item) {
 
-          item.classList.add(
-            'is-visible'
+  /* =========================================
+     SELECTED COLOR
+  ========================================== */
+
+  function getSelectedColor() {
+
+    let selectedColor = null;
+
+
+    inputs.forEach(
+      function(input) {
+
+        const optionName =
+          (
+            input.dataset.optionName || ''
+          )
+          .toLowerCase()
+          .trim();
+
+
+        if (
+          input.checked &&
+          optionName === 'color'
+        ) {
+
+          selectedColor =
+            input.value
+            .toLowerCase()
+            .trim();
+
+        }
+
+      }
+    );
+
+
+    return selectedColor;
+
+  }
+
+
+  /* =========================================
+     UPDATE OPTION NAME
+  ========================================== */
+
+  function updateOptionLabels() {
+
+    optionGroups.forEach(
+      function(group) {
+
+        const selected =
+          group.querySelector(
+            'input[type="radio"]:checked'
+          );
+
+
+        if (!selected) {
+          return;
+        }
+
+
+        const position =
+          selected.dataset.optionPosition;
+
+
+        const label =
+          productBox.querySelector(
+            '[data-selected-option="' +
+            position +
+            '"]'
+          );
+
+
+        if (label) {
+
+          label.textContent =
+            selected.value;
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /* =========================================
+     CHECK IF MEDIA BELONGS TO COLOR
+  ========================================== */
+
+  function mediaMatchesColor(
+    mediaAlt,
+    selectedColor
+  ) {
+
+    if (!selectedColor) {
+      return true;
+    }
+
+
+    mediaAlt =
+      (
+        mediaAlt || ''
+      )
+      .toLowerCase()
+      .trim();
+
+
+    return (
+      mediaAlt === selectedColor ||
+
+      mediaAlt.startsWith(
+        selectedColor + ' /'
+      ) ||
+
+      mediaAlt.startsWith(
+        selectedColor + ' -'
+      ) ||
+
+      mediaAlt.startsWith(
+        selectedColor + ' |'
+      )
+    );
+
+  }
+
+
+  /* =========================================
+     UPDATE GALLERY BY COLOR
+  ========================================== */
+
+  function updateGallery() {
+
+    const selectedColor =
+      getSelectedColor();
+
+
+    visibleSlides =
+      slides.filter(
+        function(slide) {
+
+          return mediaMatchesColor(
+            slide.dataset.mediaAlt,
+            selectedColor
           );
 
         }
       );
+
+
+    /*
+      FALLBACK
+
+      Nëse nuk kemi foto me ALT
+      Bronze / Black,
+      i shfaqim të gjitha.
+    */
+
+    if (
+      visibleSlides.length === 0
+    ) {
+
+      visibleSlides =
+        [...slides];
+
+    }
+
+
+    slides.forEach(
+      function(slide) {
+
+        slide.classList.remove(
+          'is-active'
+        );
+
+      }
+    );
+
+
+    thumbnails.forEach(
+      function(thumbnail) {
+
+        const visible =
+          visibleSlides.some(
+            function(slide) {
+
+              return (
+                slide.dataset.mediaId ===
+                thumbnail.dataset.mediaId
+              );
+
+            }
+          );
+
+
+        thumbnail.classList.toggle(
+          'is-visible',
+          visible
+        );
+
+
+        thumbnail.classList.remove(
+          'is-active'
+        );
+
+      }
+    );
+
+
+    /*
+      Kur ndryshon ngjyra:
+      slider kthehet te foto #1
+    */
+
+    if (
+      previousColor !== selectedColor
+    ) {
+
+      currentSlideIndex = 0;
+
+      previousColor =
+        selectedColor;
+
+    }
+
+
+    if (
+      currentSlideIndex >=
+      visibleSlides.length
+    ) {
+
+      currentSlideIndex = 0;
+
+    }
+
+
+    showCurrentSlide();
+
+  }
+
+
+  /* =========================================
+     SHOW CURRENT SLIDE
+  ========================================== */
+
+  function showCurrentSlide() {
+
+    if (
+      visibleSlides.length === 0
+    ) {
+
+      return;
+
+    }
+
+
+    slides.forEach(
+      function(slide) {
+
+        slide.classList.remove(
+          'is-active'
+        );
+
+      }
+    );
+
+
+    const currentSlide =
+      visibleSlides[
+        currentSlideIndex
+      ];
+
+
+    currentSlide.classList.add(
+      'is-active'
+    );
+
+
+    thumbnails.forEach(
+      function(thumbnail) {
+
+        const active =
+          thumbnail.dataset.mediaId ===
+          currentSlide.dataset.mediaId;
+
+
+        thumbnail.classList.toggle(
+          'is-active',
+          active
+        );
+
+
+        if (active) {
+
+          thumbnail.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'nearest'
+          });
+
+        }
+
+      }
+    );
+
+
+    if (currentCounter) {
+
+      currentCounter.textContent =
+        currentSlideIndex + 1;
+
+    }
+
+
+    if (totalCounter) {
+
+      totalCounter.textContent =
+        visibleSlides.length;
+
+    }
+
+
+    const disableArrows =
+      visibleSlides.length <= 1;
+
+
+    if (prevButton) {
+
+      prevButton.disabled =
+        disableArrows;
+
+    }
+
+
+    if (nextButton) {
+
+      nextButton.disabled =
+        disableArrows;
 
     }
 
   }
 
 
-  /* ==============================
+  /* =========================================
+     NEXT SLIDE
+  ========================================== */
+
+  function nextSlide() {
+
+    if (
+      visibleSlides.length <= 1
+    ) {
+
+      return;
+
+    }
+
+
+    currentSlideIndex++;
+
+
+    if (
+      currentSlideIndex >=
+      visibleSlides.length
+    ) {
+
+      currentSlideIndex = 0;
+
+    }
+
+
+    showCurrentSlide();
+
+  }
+
+
+  /* =========================================
+     PREVIOUS SLIDE
+  ========================================== */
+
+  function previousSlide() {
+
+    if (
+      visibleSlides.length <= 1
+    ) {
+
+      return;
+
+    }
+
+
+    currentSlideIndex--;
+
+
+    if (
+      currentSlideIndex < 0
+    ) {
+
+      currentSlideIndex =
+        visibleSlides.length - 1;
+
+    }
+
+
+    showCurrentSlide();
+
+  }
+
+
+  /* =========================================
+     ARROWS
+  ========================================== */
+
+  if (nextButton) {
+
+    nextButton.addEventListener(
+      'click',
+      nextSlide
+    );
+
+  }
+
+
+  if (prevButton) {
+
+    prevButton.addEventListener(
+      'click',
+      previousSlide
+    );
+
+  }
+
+
+  /* =========================================
+     THUMBNAILS
+  ========================================== */
+
+  thumbnails.forEach(
+    function(thumbnail) {
+
+      thumbnail.addEventListener(
+        'click',
+        function() {
+
+          const mediaId =
+            thumbnail.dataset.mediaId;
+
+
+          const index =
+            visibleSlides.findIndex(
+              function(slide) {
+
+                return (
+                  slide.dataset.mediaId ===
+                  mediaId
+                );
+
+              }
+            );
+
+
+          if (index === -1) {
+            return;
+          }
+
+
+          currentSlideIndex =
+            index;
+
+
+          showCurrentSlide();
+
+        }
+      );
+
+    }
+  );
+
+
+  /* =========================================
+     MOBILE SWIPE
+  ========================================== */
+
+  let touchStartX = 0;
+
+  let touchEndX = 0;
+
+
+  if (sliderViewport) {
+
+    sliderViewport.addEventListener(
+      'touchstart',
+      function(event) {
+
+        touchStartX =
+          event.changedTouches[0]
+          .clientX;
+
+      },
+      {
+        passive: true
+      }
+    );
+
+
+    sliderViewport.addEventListener(
+      'touchend',
+      function(event) {
+
+        touchEndX =
+          event.changedTouches[0]
+          .clientX;
+
+
+        const difference =
+          touchStartX -
+          touchEndX;
+
+
+        if (
+          Math.abs(difference) <
+          50
+        ) {
+
+          return;
+
+        }
+
+
+        if (difference > 0) {
+
+          nextSlide();
+
+        } else {
+
+          previousSlide();
+
+        }
+
+      },
+      {
+        passive: true
+      }
+    );
+
+  }
+
+
+  /* =========================================
      UPDATE VARIANT
-  ============================== */
+  ========================================== */
 
   function updateVariant() {
 
@@ -1385,47 +2227,89 @@
 
     if (!selectedVariant) {
 
-      variantTitle.textContent =
-        'Unavailable';
+      if (variantTitle) {
 
-      variantId.textContent =
-        '';
+        variantTitle.textContent =
+          'Unavailable';
 
-      variantInput.value =
-        '';
+      }
 
-      addButton.disabled =
-        true;
 
-      addButton.textContent =
-        'Unavailable';
+      if (variantId) {
+
+        variantId.textContent =
+          '';
+
+      }
+
+
+      if (variantInput) {
+
+        variantInput.value =
+          '';
+
+      }
+
+
+      if (addButton) {
+
+        addButton.disabled =
+          true;
+
+        addButton.textContent =
+          'Unavailable';
+
+      }
+
 
       return;
 
     }
 
 
-    /* VARIANT */
+    /* =========================================
+       VARIANT
+    ========================================== */
 
-    variantTitle.textContent =
-      selectedVariant.title;
+    if (variantTitle) {
 
+      variantTitle.textContent =
+        selectedVariant.title;
 
-    variantId.textContent =
-      selectedVariant.id;
-
-
-    variantInput.value =
-      selectedVariant.id;
+    }
 
 
-    /* PRICE */
+    if (variantId) {
 
-    price.textContent =
-      selectedVariant.priceFormatted;
+      variantId.textContent =
+        selectedVariant.id;
+
+    }
 
 
-    /* COMPARE PRICE + SALE */
+    if (variantInput) {
+
+      variantInput.value =
+        selectedVariant.id;
+
+    }
+
+
+    /* =========================================
+       PRICE
+    ========================================== */
+
+    if (price) {
+
+      price.textContent =
+        selectedVariant.priceFormatted;
+
+    }
+
+
+    /* =========================================
+       COMPARE PRICE + SALE
+    ========================================== */
 
     if (
       selectedVariant.compareAtPrice &&
@@ -1433,98 +2317,135 @@
       selectedVariant.price
     ) {
 
-      comparePrice.textContent =
-        selectedVariant
+      if (comparePrice) {
+
+        comparePrice.textContent =
+          selectedVariant
           .compareAtPriceFormatted;
 
+        comparePrice.hidden =
+          false;
 
-      comparePrice.hidden =
-        false;
+      }
 
 
       const discount =
         Math.round(
           (
             (
-              selectedVariant
-                .compareAtPrice -
+              selectedVariant.compareAtPrice -
               selectedVariant.price
             )
             /
-            selectedVariant
-              .compareAtPrice
+            selectedVariant.compareAtPrice
           )
-          * 100
+          *
+          100
         );
 
 
-      saleBadge.textContent =
-        'Save ' +
-        discount +
-        '%';
+      if (saleBadge) {
 
+        saleBadge.textContent =
+          'Save ' +
+          discount +
+          '%';
 
-      saleBadge.hidden =
-        false;
+        saleBadge.hidden =
+          false;
+
+      }
 
     } else {
 
-      comparePrice.hidden =
-        true;
+      if (comparePrice) {
 
-      saleBadge.hidden =
-        true;
+        comparePrice.hidden =
+          true;
+
+      }
+
+
+      if (saleBadge) {
+
+        saleBadge.hidden =
+          true;
+
+      }
 
     }
 
 
-    /* AVAILABILITY */
+    /* =========================================
+       AVAILABILITY
+    ========================================== */
 
-    if (selectedVariant.available) {
+    if (
+      selectedVariant.available
+    ) {
 
-      stockMessage.classList.remove(
-        'is-sold-out'
-      );
+      if (stockMessage) {
 
+        stockMessage.classList.remove(
+          'is-sold-out'
+        );
 
-      stockText.textContent =
-        'In stock';
-
-
-      addButton.disabled =
-        false;
+      }
 
 
-      addButton.textContent =
-        'Add to cart';
+      if (stockText) {
+
+        stockText.textContent =
+          'In stock';
+
+      }
+
+
+      if (addButton) {
+
+        addButton.disabled =
+          false;
+
+        addButton.textContent =
+          'Add to cart';
+
+      }
 
     } else {
 
-      stockMessage.classList.add(
-        'is-sold-out'
-      );
+      if (stockMessage) {
+
+        stockMessage.classList.add(
+          'is-sold-out'
+        );
+
+      }
 
 
-      stockText.textContent =
-        'Sold out';
+      if (stockText) {
+
+        stockText.textContent =
+          'Sold out';
+
+      }
 
 
-      addButton.disabled =
-        true;
+      if (addButton) {
 
+        addButton.disabled =
+          true;
 
-      addButton.textContent =
-        'Sold out';
+        addButton.textContent =
+          'Sold out';
+
+      }
 
     }
 
 
-    /*
-      URL UPDATE
-
-      p.sh:
-      ?variant=123456
-    */
+    /* =========================================
+       UPDATE URL
+    ========================================== */
 
     const url =
       new URL(
@@ -1553,9 +2474,9 @@
   }
 
 
-  /* ==============================
-     EVENTS
-  ============================== */
+  /* =========================================
+     OPTION EVENTS
+  ========================================== */
 
   inputs.forEach(
     function(input) {
@@ -1569,7 +2490,9 @@
   );
 
 
-  /* INITIAL RUN */
+  /* =========================================
+     INITIAL LOAD
+  ========================================== */
 
   updateVariant();
 
@@ -1580,7 +2503,7 @@
 
 {% schema %}
 {
-  "name": "Pammys product",
+  "name": "Product slider",
   "settings": [
     {
       "type": "product",
@@ -1590,7 +2513,7 @@
   ],
   "presets": [
     {
-      "name": "Pammys product"
+      "name": "Product slider"
     }
   ]
 }
