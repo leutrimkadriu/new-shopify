@@ -3,17 +3,46 @@
 {% if selected_product != blank %}
 
   <div
-    class="variant-picker"
+    class="product-box"
+    id="product-box-{{ section.id }}"
     data-product='{{ selected_product.variants | json }}'
   >
-    {% if selected_product.featured_image %}
-  {{
-    selected_product.featured_image
-    | image_url: width: 600
-    | image_tag: alt: selected_product.title
-  }}
-{% endif %}
 
+    <!-- PRODUCT TITLE -->
+    <h1>{{ selected_product.title }}</h1>
+
+
+    <!-- PRODUCT PRICE -->
+    <p id="product-price-{{ section.id }}">
+      {{ selected_product.selected_or_first_available_variant.price | money }}
+    </p>
+
+
+    <!-- MAIN PRODUCT IMAGE -->
+    {% assign current_variant = selected_product.selected_or_first_available_variant %}
+
+    {% if current_variant.featured_image %}
+      {{
+        current_variant.featured_image
+        | image_url: width: 800
+        | image_tag:
+          id: 'main-product-image',
+          class: 'main-product-image',
+          alt: selected_product.title
+      }}
+    {% elsif selected_product.featured_image %}
+      {{
+        selected_product.featured_image
+        | image_url: width: 800
+        | image_tag:
+          id: 'main-product-image',
+          class: 'main-product-image',
+          alt: selected_product.title
+      }}
+    {% endif %}
+
+
+    <!-- OPTIONS -->
     {% for option in selected_product.options_with_values %}
 
       <h3>{{ option.name }}</h3>
@@ -21,12 +50,12 @@
       <div class="product-options">
 
         {% for option_value in option.values %}
-            
 
-          <label>
+          <label class="product-option">
+
             <input
               type="radio"
-              name="option-{{ option.position }}"
+              name="option-{{ section.id }}-{{ option.position }}"
               value="{{ option_value.name | escape }}"
               {% if option_value.selected %}
                 checked
@@ -38,7 +67,9 @@
               {{
                 option_value.swatch.image
                 | image_url: width: 100
-                | image_tag: alt: option_value.name
+                | image_tag:
+                  class: 'swatch-image',
+                  alt: option_value.name
               }}
 
             {% elsif option_value.swatch.color %}
@@ -46,20 +77,19 @@
               <span
                 class="color-swatch"
                 style="
-                  display:inline-block;
-                  width:40px;
-                  height:40px;
-                  border-radius:50%;
-                  border:1px solid #ccc;
-                  background-color:rgb({{ option_value.swatch.color.rgb }});
+                  background-color:
+                  rgb({{ option_value.swatch.color.rgb }});
                 "
               ></span>
 
             {% else %}
 
-              <span>{{ option_value.name }}</span>
+              <span class="option-text">
+                {{ option_value.name }}
+              </span>
 
             {% endif %}
+
           </label>
 
         {% endfor %}
@@ -68,98 +98,203 @@
 
     {% endfor %}
 
+
+    <!-- VARIANT INFO -->
     <p>
-      Selected variant:
-      <strong id="variant-title"></strong>
+      Variant:
+      <strong id="variant-title-{{ section.id }}">
+        {{ current_variant.title }}
+      </strong>
     </p>
 
     <p>
       Variant ID:
-      <strong id="variant-id"></strong>
+      <strong id="variant-id-{{ section.id }}">
+        {{ current_variant.id }}
+      </strong>
     </p>
 
   </div>
 
+{% else %}
+
+  <p>Select a product in Theme Editor.</p>
+
 {% endif %}
+
 
 <style>
 
-.product-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
+  .main-product-image {
+    display: block;
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    margin-bottom: 20px;
+  }
 
-.product-option img {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 8px;
-}
+  .product-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
 
-.color-swatch {
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  border: 1px solid #ccc;
-  border-radius: 50%;
-}
+  .product-option {
+    cursor: pointer;
+  }
 
-.option-text {
-  display: inline-block;
-  padding: 8px 14px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
+  .product-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .color-swatch {
+    display: block;
+    width: 42px;
+    height: 42px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+  }
+
+  .swatch-image {
+    display: block;
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+  }
+
+  .option-text {
+    display: block;
+    padding: 10px 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .product-option input:checked + .color-swatch,
+  .product-option input:checked + .swatch-image,
+  .product-option input:checked + .option-text {
+    border: 3px solid #000;
+  }
 
 </style>
 
+
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function () {
 
-  const picker = document.querySelector('.variant-picker');
+  const productBox =
+    document.getElementById('product-box-{{ section.id }}');
 
-  if (!picker) return;
+  if (!productBox) return;
 
-  const variants = JSON.parse(picker.dataset.product);
 
-  const inputs = picker.querySelectorAll('input[type="radio"]');
+  // 1. Marrim variantet nga Liquid
+  const variants =
+    JSON.parse(productBox.dataset.product);
 
-  const variantTitle = document.getElementById('variant-title');
-  const variantId = document.getElementById('variant-id');
+
+  // 2. Marrim radio buttons
+  const inputs =
+    productBox.querySelectorAll('input[type="radio"]');
+
+
+  // 3. Marrim elementet që duam t'i ndryshojmë
+  const mainImage =
+    productBox.querySelector('.main-product-image');
+
+  const variantTitle =
+    document.getElementById('variant-title-{{ section.id }}');
+
+  const variantId =
+    document.getElementById('variant-id-{{ section.id }}');
+
+  const productPrice =
+    document.getElementById('product-price-{{ section.id }}');
+
 
   function updateVariant() {
 
+    // 4. Marrim options që ka zgjedhur klienti
     const selectedOptions = [];
 
-    inputs.forEach(input => {
+    inputs.forEach(function (input) {
+
       if (input.checked) {
         selectedOptions.push(input.value);
       }
+
     });
 
-    const variant = variants.find(variant => {
-      return variant.options.every((option, index) => {
+
+    console.log('Selected options:', selectedOptions);
+
+
+    // 5. Gjejmë variantin
+    const selectedVariant = variants.find(function (variant) {
+
+      return variant.options.every(function (option, index) {
+
         return option === selectedOptions[index];
+
       });
+
     });
 
-    if (!variant) {
-      variantTitle.textContent = 'Variant not found';
-      variantId.textContent = '';
+
+    if (!selectedVariant) {
+
+      console.log('Variant not found');
+
       return;
+
     }
 
-    variantTitle.textContent = variant.title;
-    variantId.textContent = variant.id;
 
-    console.log('Selected variant:', variant);
+    console.log('Selected variant:', selectedVariant);
+
+
+    // 6. Ndryshojmë variant title
+    variantTitle.textContent =
+      selectedVariant.title;
+
+
+    // 7. Ndryshojmë variant ID
+    variantId.textContent =
+      selectedVariant.id;
+
+
+    // 8. NDRYSHOJMË FOTOGRAFINË
+    if (
+      mainImage &&
+      selectedVariant.featured_image &&
+      selectedVariant.featured_image.src
+    ) {
+
+      mainImage.src =
+        selectedVariant.featured_image.src;
+
+    }
+
   }
 
-  inputs.forEach(input => {
-    input.addEventListener('change', updateVariant);
+
+  // Kur klienti klikon option
+  inputs.forEach(function (input) {
+
+    input.addEventListener('change', function () {
+
+      updateVariant();
+
+    });
+
   });
 
+
+  // Run njëherë në fillim
   updateVariant();
 
 });
