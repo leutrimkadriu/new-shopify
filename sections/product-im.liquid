@@ -7,13 +7,19 @@
 
   <h3>{{ option.name }}</h3>
 
-  {% for option_value in option.values %}
+ {% for option_value in option.values %}
 
-    <p>
-      {{ option_value.name }}
-    </p>
+  <p>
+    {{ option_value.name }}
 
-  {% endfor %}
+    {% if option_value.swatch %}
+      - KA SWATCH
+    {% else %}
+      - NUK KA SWATCH
+    {% endif %}
+  </p>
+
+{% endfor %}
 
 {% endfor %}
 {% schema %}
