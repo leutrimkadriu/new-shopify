@@ -2,21 +2,10 @@
 
 {% if selected_product != blank %}
 
-  <div class="product-card">
-
-    <h1>{{ selected_product.title }}</h1>
-
-    <p>
-      {{ selected_product.price | money }}
-    </p>
-
-    {% if selected_product.featured_image %}
-      {{
-        selected_product.featured_image
-        | image_url: width: 600
-        | image_tag: alt: selected_product.title
-      }}
-    {% endif %}
+  <div
+    class="variant-picker"
+    data-product='{{ selected_product.variants | json }}'
+  >
 
     {% for option in selected_product.options_with_values %}
 
@@ -26,17 +15,15 @@
 
         {% for option_value in option.values %}
 
-          <div class="product-option">
-             <label class="product-option">
-
-          <input
-            type="radio"
-            name="option-{{ option.position }}"
-            value="{{ option_value.name }}"
-            {% if option_value.selected %}
-              checked
-            {% endif %}
-          >
+          <label>
+            <input
+              type="radio"
+              name="option-{{ option.position }}"
+              value="{{ option_value.name | escape }}"
+              {% if option_value.selected %}
+                checked
+              {% endif %}
+            >
 
             {% if option_value.swatch.image %}
 
@@ -51,22 +38,21 @@
               <span
                 class="color-swatch"
                 style="
-                  background-color:
-                  rgb({{ option_value.swatch.color.rgb }});
+                  display:inline-block;
+                  width:40px;
+                  height:40px;
+                  border-radius:50%;
+                  border:1px solid #ccc;
+                  background-color:rgb({{ option_value.swatch.color.rgb }});
                 "
-                title="{{ option_value.name }}"
-              >
-              </span>
+              ></span>
 
             {% else %}
 
-              <span class="option-text">
-                {{ option_value.name }}
-              </span>
+              <span>{{ option_value.name }}</span>
 
             {% endif %}
-
-          </div>
+          </label>
 
         {% endfor %}
 
@@ -74,15 +60,19 @@
 
     {% endfor %}
 
+    <p>
+      Selected variant:
+      <strong id="variant-title"></strong>
+    </p>
+
+    <p>
+      Variant ID:
+      <strong id="variant-id"></strong>
+    </p>
+
   </div>
 
-{% else %}
-
-  <p>Please select a product from the Theme Editor.</p>
-
 {% endif %}
-
-
 <style>
 
 .product-options {
