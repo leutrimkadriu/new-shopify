@@ -289,17 +289,7 @@
     ✅
 </div>
 
-<div class="product-info">
-  <h1>{{ product.title }}</h1>
-
-  <p>
-    Category:
-    {{ product.type | link_to_vendor }}
-  </p>
-
-  <p>{{ product.price | money }}</p>
-</div>
-
+{{ 'Log in' | customer_login_link }}
 
 <style>
   #learning-section-{{ section.id }} {
