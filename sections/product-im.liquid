@@ -14,6 +14,13 @@
       <div class="product-options">
 
         {% for option_value in option.values %}
+            {% if selected_product.featured_image %}
+  {{
+    selected_product.featured_image
+    | image_url: width: 600
+    | image_tag: alt: selected_product.title
+  }}
+{% endif %}
 
           <label>
             <input
