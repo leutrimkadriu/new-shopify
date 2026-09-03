@@ -16,41 +16,56 @@
 
 
     {%- comment -%}
-      MAIN IMAGE
+      PRODUCT GALLERY
+      Alt text i fotos duhet të jetë:
+      Bronze, Black, etj.
     {%- endcomment -%}
 
-    {% if current_variant.featured_image %}
+    <div
+      class="product-gallery"
+      id="product-gallery-{{ section.id }}"
+    >
 
-      {{
-        current_variant.featured_image
-        | image_url: width: 800
-        | image_tag:
-          class: 'main-product-image',
-          alt: selected_product.title
-      }}
+      {% for media in selected_product.media %}
 
-    {% elsif selected_product.featured_image %}
+        {% if media.media_type == 'image' %}
 
-      {{
-        selected_product.featured_image
-        | image_url: width: 800
-        | image_tag:
-          class: 'main-product-image',
-          alt: selected_product.title
-      }}
+          <div
+            class="gallery-item"
+            data-color="{{ media.alt | strip | downcase | escape }}"
+          >
 
-    {% endif %}
+            {{
+              media.preview_image
+              | image_url: width: 900
+              | image_tag:
+                class: 'gallery-image',
+                loading: 'lazy',
+                alt: media.alt
+            }}
+
+          </div>
+
+        {% endif %}
+
+      {% endfor %}
+
+    </div>
 
 
     {%- comment -%}
-      OPTIONS
+      PRODUCT OPTIONS
     {%- endcomment -%}
 
     {% for option in selected_product.options_with_values %}
 
       <h3>{{ option.name }}</h3>
 
-      <div class="product-options">
+      <div
+        class="product-options"
+        data-option-position="{{ option.position }}"
+        data-option-name="{{ option.name | escape }}"
+      >
 
         {% for option_value in option.values %}
 
@@ -60,6 +75,7 @@
               type="radio"
               name="option-{{ section.id }}-{{ option.position }}"
               value="{{ option_value.name | escape }}"
+              data-option-name="{{ option.name | escape }}"
               {% if option_value.selected %}
                 checked
               {% endif %}
@@ -83,6 +99,7 @@
                   background-color:
                   rgb({{ option_value.swatch.color.rgb }});
                 "
+                title="{{ option_value.name }}"
               ></span>
 
             {% else %}
@@ -118,7 +135,7 @@
 
 
     {%- comment -%}
-      VARIANT DATA FOR JAVASCRIPT
+      VARIANT DATA
     {%- endcomment -%}
 
     <script
@@ -133,9 +150,10 @@
             "options": {{ variant.options | json }},
             "available": {{ variant.available | json }},
             "price": {{ variant.price | json }},
+            "priceFormatted": {{ variant.price | money | json }},
             "image":
               {% if variant.featured_image %}
-                {{ variant.featured_image | image_url: width: 800 | json }}
+                {{ variant.featured_image | image_url: width: 900 | json }}
               {% else %}
                 null
               {% endif %}
@@ -156,60 +174,109 @@
 
 <style>
 
-.main-product-image {
-  display: block;
-  width: 100%;
-  max-width: 500px;
-  height: auto;
-  margin-bottom: 20px;
-}
+  .product-box {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
 
-.product-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
-}
 
-.product-option {
-  cursor: pointer;
-}
+  /* GALLERY */
 
-.product-option input {
-  position: absolute;
-  opacity: 0;
-}
+  .product-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 30px;
+  }
 
-.color-swatch {
-  display: block;
-  width: 42px;
-  height: 42px;
-  border: 2px solid #ccc;
-  border-radius: 50%;
-}
+  .gallery-item {
+    display: none;
+  }
 
-.swatch-image {
-  display: block;
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border: 2px solid #ccc;
-  border-radius: 8px;
-}
+  .gallery-item.is-visible {
+    display: block;
+  }
 
-.option-text {
-  display: block;
-  padding: 10px 16px;
-  border: 2px solid #ccc;
-  border-radius: 6px;
-}
+  .gallery-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+  }
 
-.product-option input:checked + .color-swatch,
-.product-option input:checked + .swatch-image,
-.product-option input:checked + .option-text {
-  border-color: #000;
-  border-width: 3px;
-}
+
+  /* OPTIONS */
+
+  .product-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .product-option {
+    cursor: pointer;
+    position: relative;
+  }
+
+  .product-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+
+  /* COLOR SWATCH */
+
+  .color-swatch {
+    display: block;
+    width: 42px;
+    height: 42px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+  }
+
+
+  /* IMAGE SWATCH */
+
+  .swatch-image {
+    display: block;
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+  }
+
+
+  /* TEXT OPTION */
+
+  .option-text {
+    display: block;
+    padding: 10px 16px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+  }
+
+
+  /* SELECTED */
+
+  .product-option input:checked + .color-swatch,
+  .product-option input:checked + .swatch-image,
+  .product-option input:checked + .option-text {
+    border-color: #000;
+    border-width: 3px;
+  }
+
+
+  @media screen and (max-width: 749px) {
+
+    .product-gallery {
+      grid-template-columns: 1fr;
+    }
+
+  }
 
 </style>
 
@@ -234,32 +301,163 @@
 
 
   const inputs =
-    productBox.querySelectorAll('input[type="radio"]');
+    productBox.querySelectorAll(
+      'input[type="radio"]'
+    );
 
-  const mainImage =
-    productBox.querySelector('.main-product-image');
+
+  const galleryItems =
+    productBox.querySelectorAll(
+      '.gallery-item'
+    );
+
 
   const variantTitle =
-    document.getElementById('variant-title-{{ section.id }}');
+    document.getElementById(
+      'variant-title-{{ section.id }}'
+    );
+
 
   const variantId =
-    document.getElementById('variant-id-{{ section.id }}');
+    document.getElementById(
+      'variant-id-{{ section.id }}'
+    );
 
 
-  function updateVariant() {
+  const productPrice =
+    document.getElementById(
+      'product-price-{{ section.id }}'
+    );
+
+
+  function getSelectedOptions() {
 
     const selectedOptions = [];
 
 
-    inputs.forEach(function(input) {
+    const optionGroups =
+      productBox.querySelectorAll(
+        '.product-options'
+      );
 
-      if (input.checked) {
 
-        selectedOptions.push(input.value);
+    optionGroups.forEach(function(group) {
+
+      const checkedInput =
+        group.querySelector(
+          'input[type="radio"]:checked'
+        );
+
+
+      if (checkedInput) {
+
+        selectedOptions.push(
+          checkedInput.value
+        );
 
       }
 
     });
+
+
+    return selectedOptions;
+
+  }
+
+
+  function getSelectedColor() {
+
+    let selectedColor = null;
+
+
+    inputs.forEach(function(input) {
+
+      if (
+        input.checked &&
+        input.dataset.optionName.toLowerCase() === 'color'
+      ) {
+
+        selectedColor =
+          input.value.toLowerCase().trim();
+
+      }
+
+    });
+
+
+    return selectedColor;
+
+  }
+
+
+  function updateGallery() {
+
+    const selectedColor =
+      getSelectedColor();
+
+
+    if (!selectedColor) {
+
+      galleryItems.forEach(function(item) {
+
+        item.classList.add('is-visible');
+
+      });
+
+      return;
+
+    }
+
+
+    let foundImages = false;
+
+
+    galleryItems.forEach(function(item) {
+
+      const imageColor =
+        item.dataset.color
+          .toLowerCase()
+          .trim();
+
+
+      if (imageColor === selectedColor) {
+
+        item.classList.add('is-visible');
+
+        foundImages = true;
+
+      } else {
+
+        item.classList.remove('is-visible');
+
+      }
+
+    });
+
+
+    /*
+      Nëse nuk gjendet asnjë foto
+      me alt text të ngjyrës,
+      i shfaqim krejt fotot.
+    */
+
+    if (!foundImages) {
+
+      galleryItems.forEach(function(item) {
+
+        item.classList.add('is-visible');
+
+      });
+
+    }
+
+  }
+
+
+  function updateVariant() {
+
+    const selectedOptions =
+      getSelectedOptions();
 
 
     console.log(
@@ -274,7 +472,9 @@
         return variant.options.every(
           function(option, index) {
 
-            return option === selectedOptions[index];
+            return (
+              option === selectedOptions[index]
+            );
 
           }
         );
@@ -290,7 +490,11 @@
 
     if (!selectedVariant) {
 
-      console.log('Variant not found');
+      variantTitle.textContent =
+        'Variant not found';
+
+      variantId.textContent =
+        '';
 
       return;
 
@@ -305,38 +509,15 @@
       selectedVariant.id;
 
 
+    productPrice.textContent =
+      selectedVariant.priceFormatted;
+
+
     /*
-      NDRYSHIMI I FOTOS
+      NDRYSHO ALBUM FOTOSH
     */
 
-    if (
-      mainImage &&
-      selectedVariant.image
-    ) {
-
-      mainImage.src =
-        selectedVariant.image;
-
-      /*
-        image_tag mund të krijojë srcset.
-        E heqim që browser-i të mos vazhdojë
-        me fotografinë e vjetër.
-      */
-
-      mainImage.removeAttribute('srcset');
-
-      console.log(
-        'New image:',
-        selectedVariant.image
-      );
-
-    } else {
-
-      console.log(
-        'Ky variant nuk ka featured image'
-      );
-
-    }
+    updateGallery();
 
   }
 
@@ -345,11 +526,19 @@
 
     input.addEventListener(
       'change',
-      updateVariant
+      function() {
+
+        updateVariant();
+
+      }
     );
 
   });
 
+
+  /*
+    Kur hapet faqja
+  */
 
   updateVariant();
 
