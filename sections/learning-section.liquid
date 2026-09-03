@@ -286,22 +286,10 @@
   {% endif %}
 </div>
 <div>
-  {% assign variant = product.selected_or_first_available_variant %}
-
-{% for availability in variant.store_availabilities %}
-
-  <p>
-    {{ availability.location.name }}
-  </p>
-
-  {% if availability.available %}
-    <p>Available for pickup</p>
-  {% else %}
-    <p>Not available for pickup</p>
-  {% endif %}
-
-{% endfor %}  ✅
+    ✅
 </div>
+
+{{ product.type | link_to_type }}
 
 
 <style>
