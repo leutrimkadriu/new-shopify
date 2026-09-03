@@ -291,7 +291,23 @@
 
 {{ 'Log in' | customer_login_link }}
 {{ 'register' | customer_register_link }}
-<p>{{ 'button' | login_button }}</p>
+<p>{% form 'customer_login' %}
+
+  <input
+    type="email"
+    name="customer[email]"
+    placeholder="Email"
+  >
+
+  <input
+    type="password"
+    name="customer[password]"
+    placeholder="Password"
+  >
+
+  {{ form | login_button }}
+
+{% endform %}</p>
 
 <style>
   #learning-section-{{ section.id }} {
