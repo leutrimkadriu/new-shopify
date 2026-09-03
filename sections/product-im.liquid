@@ -1,48 +1,51 @@
 {% assign selected_product = section.settings.product %}
+{% assign current_variant = selected_product.selected_or_first_available_variant %}
 
 {% if selected_product != blank %}
 
   <div
     class="product-box"
     id="product-box-{{ section.id }}"
-    data-product='{{ selected_product.variants | json }}'
   >
 
-    <!-- PRODUCT TITLE -->
     <h1>{{ selected_product.title }}</h1>
 
-
-    <!-- PRODUCT PRICE -->
     <p id="product-price-{{ section.id }}">
-      {{ selected_product.selected_or_first_available_variant.price | money }}
+      {{ current_variant.price | money }}
     </p>
 
 
-    <!-- MAIN PRODUCT IMAGE -->
-    {% assign current_variant = selected_product.selected_or_first_available_variant %}
+    {%- comment -%}
+      MAIN IMAGE
+    {%- endcomment -%}
 
     {% if current_variant.featured_image %}
+
       {{
         current_variant.featured_image
         | image_url: width: 800
         | image_tag:
-          id: 'main-product-image',
           class: 'main-product-image',
           alt: selected_product.title
       }}
+
     {% elsif selected_product.featured_image %}
+
       {{
         selected_product.featured_image
         | image_url: width: 800
         | image_tag:
-          id: 'main-product-image',
           class: 'main-product-image',
           alt: selected_product.title
       }}
+
     {% endif %}
 
 
-    <!-- OPTIONS -->
+    {%- comment -%}
+      OPTIONS
+    {%- endcomment -%}
+
     {% for option in selected_product.options_with_values %}
 
       <h3>{{ option.name }}</h3>
@@ -99,7 +102,6 @@
     {% endfor %}
 
 
-    <!-- VARIANT INFO -->
     <p>
       Variant:
       <strong id="variant-title-{{ section.id }}">
@@ -114,6 +116,35 @@
       </strong>
     </p>
 
+
+    {%- comment -%}
+      VARIANT DATA FOR JAVASCRIPT
+    {%- endcomment -%}
+
+    <script
+      type="application/json"
+      id="variant-data-{{ section.id }}"
+    >
+      [
+        {% for variant in selected_product.variants %}
+          {
+            "id": {{ variant.id | json }},
+            "title": {{ variant.title | json }},
+            "options": {{ variant.options | json }},
+            "available": {{ variant.available | json }},
+            "price": {{ variant.price | json }},
+            "image":
+              {% if variant.featured_image %}
+                {{ variant.featured_image | image_url: width: 800 | json }}
+              {% else %}
+                null
+              {% endif %}
+          }
+          {% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      ]
+    </script>
+
   </div>
 
 {% else %}
@@ -125,66 +156,66 @@
 
 <style>
 
-  .main-product-image {
-    display: block;
-    width: 100%;
-    max-width: 500px;
-    height: auto;
-    margin-bottom: 20px;
-  }
+.main-product-image {
+  display: block;
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  margin-bottom: 20px;
+}
 
-  .product-options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
+.product-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
 
-  .product-option {
-    cursor: pointer;
-  }
+.product-option {
+  cursor: pointer;
+}
 
-  .product-option input {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-  }
+.product-option input {
+  position: absolute;
+  opacity: 0;
+}
 
-  .color-swatch {
-    display: block;
-    width: 42px;
-    height: 42px;
-    border: 2px solid #ccc;
-    border-radius: 50%;
-  }
+.color-swatch {
+  display: block;
+  width: 42px;
+  height: 42px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+}
 
-  .swatch-image {
-    display: block;
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-  }
+.swatch-image {
+  display: block;
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+}
 
-  .option-text {
-    display: block;
-    padding: 10px 16px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-  }
+.option-text {
+  display: block;
+  padding: 10px 16px;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+}
 
-  .product-option input:checked + .color-swatch,
-  .product-option input:checked + .swatch-image,
-  .product-option input:checked + .option-text {
-    border: 3px solid #000;
-  }
+.product-option input:checked + .color-swatch,
+.product-option input:checked + .swatch-image,
+.product-option input:checked + .option-text {
+  border-color: #000;
+  border-width: 3px;
+}
 
 </style>
 
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+(function() {
 
   const productBox =
     document.getElementById('product-box-{{ section.id }}');
@@ -192,17 +223,19 @@ document.addEventListener('DOMContentLoaded', function () {
   if (!productBox) return;
 
 
-  // 1. Marrim variantet nga Liquid
+  const variantData =
+    document.getElementById('variant-data-{{ section.id }}');
+
+  if (!variantData) return;
+
+
   const variants =
-    JSON.parse(productBox.dataset.product);
+    JSON.parse(variantData.textContent);
 
 
-  // 2. Marrim radio buttons
   const inputs =
     productBox.querySelectorAll('input[type="radio"]');
 
-
-  // 3. Marrim elementet që duam t'i ndryshojmë
   const mainImage =
     productBox.querySelector('.main-product-image');
 
@@ -212,37 +245,47 @@ document.addEventListener('DOMContentLoaded', function () {
   const variantId =
     document.getElementById('variant-id-{{ section.id }}');
 
-  const productPrice =
-    document.getElementById('product-price-{{ section.id }}');
-
 
   function updateVariant() {
 
-    // 4. Marrim options që ka zgjedhur klienti
     const selectedOptions = [];
 
-    inputs.forEach(function (input) {
+
+    inputs.forEach(function(input) {
 
       if (input.checked) {
+
         selectedOptions.push(input.value);
+
       }
 
     });
 
 
-    console.log('Selected options:', selectedOptions);
+    console.log(
+      'Selected options:',
+      selectedOptions
+    );
 
 
-    // 5. Gjejmë variantin
-    const selectedVariant = variants.find(function (variant) {
+    const selectedVariant =
+      variants.find(function(variant) {
 
-      return variant.options.every(function (option, index) {
+        return variant.options.every(
+          function(option, index) {
 
-        return option === selectedOptions[index];
+            return option === selectedOptions[index];
+
+          }
+        );
 
       });
 
-    });
+
+    console.log(
+      'Selected variant:',
+      selectedVariant
+    );
 
 
     if (!selectedVariant) {
@@ -254,50 +297,63 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    console.log('Selected variant:', selectedVariant);
-
-
-    // 6. Ndryshojmë variant title
     variantTitle.textContent =
       selectedVariant.title;
 
 
-    // 7. Ndryshojmë variant ID
     variantId.textContent =
       selectedVariant.id;
 
 
-    // 8. NDRYSHOJMË FOTOGRAFINË
+    /*
+      NDRYSHIMI I FOTOS
+    */
+
     if (
       mainImage &&
-      selectedVariant.featured_image &&
-      selectedVariant.featured_image.src
+      selectedVariant.image
     ) {
 
       mainImage.src =
-        selectedVariant.featured_image.src;
+        selectedVariant.image;
+
+      /*
+        image_tag mund të krijojë srcset.
+        E heqim që browser-i të mos vazhdojë
+        me fotografinë e vjetër.
+      */
+
+      mainImage.removeAttribute('srcset');
+
+      console.log(
+        'New image:',
+        selectedVariant.image
+      );
+
+    } else {
+
+      console.log(
+        'Ky variant nuk ka featured image'
+      );
 
     }
 
   }
 
 
-  // Kur klienti klikon option
-  inputs.forEach(function (input) {
+  inputs.forEach(function(input) {
 
-    input.addEventListener('change', function () {
-
-      updateVariant();
-
-    });
+    input.addEventListener(
+      'change',
+      updateVariant
+    );
 
   });
 
 
-  // Run njëherë në fillim
   updateVariant();
 
-});
+})();
 </script>
 
 
