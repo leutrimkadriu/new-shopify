@@ -73,6 +73,7 @@
   </div>
 
 {% endif %}
+
 <style>
 
 .product-options {
@@ -104,6 +105,57 @@
 }
 
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  const picker = document.querySelector('.variant-picker');
+
+  if (!picker) return;
+
+  const variants = JSON.parse(picker.dataset.product);
+
+  const inputs = picker.querySelectorAll('input[type="radio"]');
+
+  const variantTitle = document.getElementById('variant-title');
+  const variantId = document.getElementById('variant-id');
+
+  function updateVariant() {
+
+    const selectedOptions = [];
+
+    inputs.forEach(input => {
+      if (input.checked) {
+        selectedOptions.push(input.value);
+      }
+    });
+
+    const variant = variants.find(variant => {
+      return variant.options.every((option, index) => {
+        return option === selectedOptions[index];
+      });
+    });
+
+    if (!variant) {
+      variantTitle.textContent = 'Variant not found';
+      variantId.textContent = '';
+      return;
+    }
+
+    variantTitle.textContent = variant.title;
+    variantId.textContent = variant.id;
+
+    console.log('Selected variant:', variant);
+  }
+
+  inputs.forEach(input => {
+    input.addEventListener('change', updateVariant);
+  });
+
+  updateVariant();
+
+});
+</script>
 
 
 {% schema %}
