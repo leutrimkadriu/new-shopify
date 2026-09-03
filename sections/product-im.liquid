@@ -1,62 +1,125 @@
-<div>
-<h1>{{ product.title }}</h1>
-<p>{{ product.price }}</p>
-<img src="{{ product.images }}" />
-</div>
+{% assign selected_product = section.settings.product %}
 
-{% for option in product.options_with_values %}
+{% if selected_product != blank %}
 
-  <h3>{{ option.name }}</h3>
+  <div class="product-card">
 
-  {% for option_value in option.values %}
+    <h1>{{ selected_product.title }}</h1>
 
-    {% if option_value.swatch.color %}
+    <p>
+      {{ selected_product.price | money }}
+    </p>
 
-      <span
-        style="
-          display: inline-block;
-          width: 40px;
-          height: 40px;
-          border: 1px solid #ccc;
-          border-radius: 50%;
-          background-color: rgb({{ option_value.swatch.color.rgb }});
-        "
-      ></span>
-
-    {% else %}
-
-      <span>
-        {{ option_value.name }}
-      </span>
-
+    {% if selected_product.featured_image %}
+      {{
+        selected_product.featured_image
+        | image_url: width: 600
+        | image_tag: alt: selected_product.title
+      }}
     {% endif %}
-    {% if option_value.swatch.image %}
 
-  {{
-    option_value.swatch.image
-    | image_url: width: 100
-    | image_tag
-  }}
+    {% for option in selected_product.options_with_values %}
+
+      <h3>{{ option.name }}</h3>
+
+      <div class="product-options">
+
+        {% for option_value in option.values %}
+
+          <div class="product-option">
+
+            {% if option_value.swatch.image %}
+
+              {{
+                option_value.swatch.image
+                | image_url: width: 100
+                | image_tag: alt: option_value.name
+              }}
+
+            {% elsif option_value.swatch.color %}
+
+              <span
+                class="color-swatch"
+                style="
+                  background-color:
+                  rgb({{ option_value.swatch.color.rgb }});
+                "
+                title="{{ option_value.name }}"
+              >
+              </span>
+
+            {% else %}
+
+              <span class="option-text">
+                {{ option_value.name }}
+              </span>
+
+            {% endif %}
+
+          </div>
+
+        {% endfor %}
+
+      </div>
+
+    {% endfor %}
+
+  </div>
+
+{% else %}
+
+  <p>Please select a product from the Theme Editor.</p>
 
 {% endif %}
 
-  {% endfor %}
 
-{% endfor %}
+<style>
+
+.product-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.product-option img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.color-swatch {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+}
+
+.option-text {
+  display: inline-block;
+  padding: 8px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+</style>
+
 
 {% schema %}
 {
-    "name": "Img-color-produkt",
-    "settings": [{
-        "type": "product",
-        "id": "product",
-        "label": "product"
-    }],
-    "presets": [
-        {
-        "name": "Img-color-produkt"}
-    ]
+  "name": "Img-color-produkt",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Img-color-produkt"
+    }
+  ]
 }
-
-
 {% endschema %}
