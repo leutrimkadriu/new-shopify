@@ -286,7 +286,7 @@
   {% endif %}
 </div>
 <div>
-  {{ settings.type_body_font | font_face }}  ✅
+    ✅
 </div>
 
 {{ 'Log in' | customer_login_link }}
@@ -319,6 +319,11 @@
 {% endpaginate %}</p>
 
 <style>
+   {{ settings.type_body_font | font_face }}
+
+  body {
+    font-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+  }
   #learning-section-{{ section.id }} {
     padding: {{ section.settings.section_padding }}px;
     background: {{ section.settings.section_background }};
