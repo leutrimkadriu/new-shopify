@@ -3,32 +3,38 @@
 <p>{{ product.price }}</p>
 <img src="{{ product.images }}" />
 </div>
+
 {% for option in product.options_with_values %}
 
   <h3>{{ option.name }}</h3>
 
- {% for option_value in option.values %}
+  {% for option_value in option.values %}
 
-  <p>
-    {{ option_value.name }}
+    {% if option_value.swatch.color %}
 
-    {% if option_value.swatch %}
-      - KA SWATCH
+      <span
+        style="
+          display: inline-block;
+          width: 40px;
+          height: 40px;
+          border: 1px solid #ccc;
+          border-radius: 50%;
+          background-color: rgb({{ option_value.swatch.color.rgb }});
+        "
+      ></span>
+
     {% else %}
-      - NUK KA SWATCH
+
+      <span>
+        {{ option_value.name }}
+      </span>
+
     {% endif %}
-  </p>
+
+  {% endfor %}
 
 {% endfor %}
 
-{% endfor %}
-{% if option_value.swatch.image %}
-  IMAGE
-{% elsif option_value.swatch.color %}
-  COLOR
-{% else %}
-  TEXT
-{% endif %}
 {% schema %}
 {
     "name": "Img-color-produkt",
