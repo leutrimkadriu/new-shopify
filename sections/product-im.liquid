@@ -6,6 +6,13 @@
     class="variant-picker"
     data-product='{{ selected_product.variants | json }}'
   >
+    {% if selected_product.featured_image %}
+  {{
+    selected_product.featured_image
+    | image_url: width: 600
+    | image_tag: alt: selected_product.title
+  }}
+{% endif %}
 
     {% for option in selected_product.options_with_values %}
 
@@ -14,13 +21,7 @@
       <div class="product-options">
 
         {% for option_value in option.values %}
-            {% if selected_product.featured_image %}
-  {{
-    selected_product.featured_image
-    | image_url: width: 600
-    | image_tag: alt: selected_product.title
-  }}
-{% endif %}
+            
 
           <label>
             <input
