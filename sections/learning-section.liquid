@@ -286,7 +286,7 @@
   {% endif %}
 </div>
 <div>
-    ✅
+   {{ article.published_at | date: "%d/%m/%Y" }} ✅
 </div>
 
 {{ 'Log in' | customer_login_link }}
@@ -318,12 +318,9 @@
 
 {% endpaginate %}</p>
 
-<style>
-   {{ settings.type_body_font | font_face }}
 
-  body {
-    font-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
-  }
+<style>
+ 
   #learning-section-{{ section.id }} {
     padding: {{ section.settings.section_padding }}px;
     background: {{ section.settings.section_background }};
