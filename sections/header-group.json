@@ -64,12 +64,20 @@
       "type": "custom-search",
       "name": "Custom search",
       "settings": {}
+    },
+    "product_im_pgQrgU": {
+      "type": "product-im",
+      "name": "Img-color-produkt",
+      "settings": {
+        "product": "court-sneaker"
+      }
     }
   },
   "order": [
     "announcement",
     "header",
     "learning_section_twLcCE",
-    "custom_search_xGPMhY"
+    "custom_search_xGPMhY",
+    "product_im_pgQrgU"
   ]
 }
