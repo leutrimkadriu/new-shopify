@@ -40,17 +40,46 @@
   "name": "Learning locales",
   "settings": [],
   "blocks": [
-    {
-        "type": "heading",
-      "name": "Heading",
-      "settings": [
-        {
-          "type": "text",
-          "id": "heading_text",
-          "label": "Heading",
-          "default": "Hello, world!"
-        }]
-    }],
+  {
+    "type": "title",
+    "name": "Title",
+    "settings": []
+  },
+  {
+    "type": "price",
+    "name": "Price",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_compare_price",
+        "label": "Show compare-at price",
+        "default": true
+      }
+    ]
+  },
+  {
+    "type": "description",
+    "name": "Description",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "collapsible",
+        "label": "Collapsible description",
+        "default": false
+      }
+    ]
+  },
+  {
+    "type": "variant_picker",
+    "name": "Variant picker",
+    "settings": []
+  },
+  {
+    "type": "buy_buttons",
+    "name": "Buy buttons",
+    "settings": []
+  }
+],
   "presets": [
     {
       "name": "Learning locales"
