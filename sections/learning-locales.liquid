@@ -1,39 +1,55 @@
-<section class="learning-locales">
 {% for block in section.blocks %}
+
+  <div {{ block.shopify_attributes }}>
 
     {% case block.type %}
 
-      {% when 'heading' %}
-        <h1
-          style="color:red"
-          {{ block.shopify_attributes }}
-        >
-          {{ block.settings.heading_text }}
+      {% when 'title' %}
+        <h1>
+          {{ product.title }}
         </h1>
+
+      {% when 'price' %}
+        <p>
+          {{ product.selected_or_first_available_variant.price | money }}
+        </p>
+
+        {% if block.settings.show_compare_price %}
+          {% if product.selected_or_first_available_variant.compare_at_price
+            > product.selected_or_first_available_variant.price
+          %}
+            <s>
+              {{ product.selected_or_first_available_variant.compare_at_price | money }}
+            </s>
+          {% endif %}
+        {% endif %}
+
+      {% when 'description' %}
+        <div class="product-description">
+          {{ product.description }}
+        </div>
+
+      {% when 'variant_picker' %}
+        {% for option in product.options_with_values %}
+          <p>{{ option.name }}</p>
+
+          {% for value in option.values %}
+            <button type="button">
+              {{ value }}
+            </button>
+          {% endfor %}
+        {% endfor %}
+
+      {% when 'buy_buttons' %}
+        <button type="submit">
+          {{ 'products.product.add_to_cart' | t }}
+        </button>
 
     {% endcase %}
 
-  {% endfor %}
+  </div>
 
-  <button class="btn-shop-now">
-
-  {{ 'general.view_all' | t: title: collection.title }}
- </button>
-
-</section>
-
-<style>
-    .btn-shop-now{
-        background:red;
-        color:blue;
-        border:none;
-        border-radius:5px;
-        padding:20px;
-        font-size:30px;
-
-    
-    }
-</style>
+{% endfor %}
 
 {% schema %}
 {
