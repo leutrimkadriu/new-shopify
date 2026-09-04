@@ -58,7 +58,8 @@
         "section_background": "#994949",
         "section_padding": 60,
         "product": "mallow-sandal",
-        "type_body_font": "serif"
+        "type_body_font": "serif",
+        "article": ""
       }
     },
     "custom_search_xGPMhY": {
@@ -72,6 +73,11 @@
       "settings": {
         "product": "mallow-sandal"
       }
+    },
+    "learning_locales_N48QBk": {
+      "type": "learning-locales",
+      "name": "Learning locales",
+      "settings": {}
     }
   },
   "order": [
@@ -79,6 +85,7 @@
     "header",
     "learning_section_twLcCE",
     "custom_search_xGPMhY",
-    "product_im_pgQrgU"
+    "product_im_pgQrgU",
+    "learning_locales_N48QBk"
   ]
 }
