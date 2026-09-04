@@ -77,6 +77,12 @@
     "learning_locales_N48QBk": {
       "type": "learning-locales",
       "blocks": {
+        "heading_WNkPmm": {
+          "type": "heading",
+          "settings": {
+            "heading_text": "Blocks i 2"
+          }
+        },
         "heading_acL7bb": {
           "type": "heading",
           "settings": {
@@ -85,6 +91,7 @@
         }
       },
       "block_order": [
+        "heading_WNkPmm",
         "heading_acL7bb"
       ],
       "name": "Learning locales",
