@@ -1,5 +1,19 @@
 <section class="learning-locales">
-    <h1 style="color:red">{{ settings.blocks.heading_text }}</h1>
+{% for block in section.blocks %}
+
+    {% case block.type %}
+
+      {% when 'heading' %}
+        <h1
+          style="color:red"
+          {{ block.shopify_attributes }}
+        >
+          {{ block.settings.heading_text }}
+        </h1>
+
+    {% endcase %}
+
+  {% endfor %}
 
   <button class="btn-shop-now">
 
