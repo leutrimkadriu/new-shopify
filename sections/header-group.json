@@ -77,22 +77,37 @@
     "learning_locales_N48QBk": {
       "type": "learning-locales",
       "blocks": {
-        "heading_WNkPmm": {
-          "type": "heading",
+        "buy_buttons_tNyxEk": {
+          "type": "buy_buttons",
+          "settings": {}
+        },
+        "variant_picker_hx7XWR": {
+          "type": "variant_picker",
+          "settings": {}
+        },
+        "description_rtybAb": {
+          "type": "description",
           "settings": {
-            "heading_text": "Blocks i 2"
+            "collapsible": false
           }
         },
-        "heading_acL7bb": {
-          "type": "heading",
+        "price_xLreHq": {
+          "type": "price",
           "settings": {
-            "heading_text": "Block i pare"
+            "show_compare_price": true
           }
+        },
+        "title_WJV8Nq": {
+          "type": "title",
+          "settings": {}
         }
       },
       "block_order": [
-        "heading_WNkPmm",
-        "heading_acL7bb"
+        "buy_buttons_tNyxEk",
+        "variant_picker_hx7XWR",
+        "description_rtybAb",
+        "price_xLreHq",
+        "title_WJV8Nq"
       ],
       "name": "Learning locales",
       "settings": {}
