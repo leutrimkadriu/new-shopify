@@ -76,6 +76,17 @@
     },
     "learning_locales_N48QBk": {
       "type": "learning-locales",
+      "blocks": {
+        "heading_acL7bb": {
+          "type": "heading",
+          "settings": {
+            "heading": "View All Button"
+          }
+        }
+      },
+      "block_order": [
+        "heading_acL7bb"
+      ],
       "name": "Learning locales",
       "settings": {}
     }
