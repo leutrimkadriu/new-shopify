@@ -89,7 +89,9 @@
         },
         "buy_buttons_tNyxEk": {
           "type": "buy_buttons",
-          "settings": {}
+          "settings": {
+            "heading_font": "serif"
+          }
         },
         "description_rtybAb": {
           "type": "description",
