@@ -77,24 +77,24 @@
     "learning_locales_N48QBk": {
       "type": "learning-locales",
       "blocks": {
-        "buy_buttons_tNyxEk": {
-          "type": "buy_buttons",
-          "settings": {}
-        },
         "variant_picker_hx7XWR": {
           "type": "variant_picker",
           "settings": {}
-        },
-        "description_rtybAb": {
-          "type": "description",
-          "settings": {
-            "collapsible": false
-          }
         },
         "price_xLreHq": {
           "type": "price",
           "settings": {
             "show_compare_price": true
+          }
+        },
+        "buy_buttons_tNyxEk": {
+          "type": "buy_buttons",
+          "settings": {}
+        },
+        "description_rtybAb": {
+          "type": "description",
+          "settings": {
+            "collapsible": true
           }
         },
         "title_WJV8Nq": {
@@ -103,10 +103,10 @@
         }
       },
       "block_order": [
-        "buy_buttons_tNyxEk",
         "variant_picker_hx7XWR",
-        "description_rtybAb",
         "price_xLreHq",
+        "buy_buttons_tNyxEk",
+        "description_rtybAb",
         "title_WJV8Nq"
       ],
       "name": "Learning locales",
